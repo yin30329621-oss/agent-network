@@ -1,0 +1,42 @@
+[project]
+name = "agent-network"
+version = "0.2.0"
+description = "Multi-LLM technical report reviewer built with LangGraph and LiteLLM."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "Apache-2.0" }
+authors = [
+  { name = "Agent Network Maintainers" }
+]
+dependencies = [
+  "langgraph>=0.2.60",
+  "litellm>=1.55.0",
+  "pydantic>=2.10.0",
+  "python-dotenv>=1.0.1",
+  "pyyaml>=6.0.2",
+  "typer>=0.15.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.0",
+  "ruff>=0.8.0",
+]
+
+[project.scripts]
+agent-network = "agent_network.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+package = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

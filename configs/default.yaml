@@ -1,0 +1,102 @@
+app:
+  name: agent-network
+  environment: local
+
+llm:
+  default_provider: siliconflow
+  default_model: deepseek-ai/DeepSeek-V4-Pro
+  temperature: 0.1
+  max_tokens: 1600
+  timeout_seconds: 60
+  retry_attempts: 2
+  mode: auto
+  providers:
+    siliconflow:
+      api_key_env: SILICONFLOW_API_KEY
+      api_base: https://api.siliconflow.cn/v1
+      litellm_provider: openai
+      models:
+        reviewer: deepseek-ai/DeepSeek-V4-Pro
+        reasoner: deepseek-ai/DeepSeek-R1
+        flash: deepseek-ai/DeepSeek-V4-Flash
+        glm: zai-org/GLM-5.2
+        qwen_security: Qwen/Qwen3.6-35B-A3B
+    openai:
+      api_key_env: OPENAI_API_KEY
+      api_base: null
+      models:
+        reviewer: gpt-4o-mini
+    deepseek:
+      api_key_env: DEEPSEEK_API_KEY
+      api_base: null
+      litellm_provider: deepseek
+      models:
+        reviewer: deepseek/deepseek-chat
+        reasoner: deepseek/deepseek-reasoner
+    glm:
+      api_key_env: ZAI_API_KEY
+      api_base: https://open.bigmodel.cn/api/paas/v4
+      litellm_provider: openai
+      models:
+        reviewer: openai/glm-4-flash
+
+profiles:
+  balanced:
+    fact:
+      provider: siliconflow
+      model: deepseek-ai/DeepSeek-V4-Pro
+      timeout_seconds: 90
+    security:
+      provider: siliconflow
+      model: Qwen/Qwen3.6-35B-A3B
+      timeout_seconds: 180
+    logic:
+      provider: siliconflow
+      model: deepseek-ai/DeepSeek-V4-Flash
+      timeout_seconds: 120
+    merge:
+      provider: siliconflow
+      model: zai-org/GLM-5.2
+      timeout_seconds: 120
+  high_reasoning:
+    security:
+      provider: siliconflow
+      model: deepseek-ai/DeepSeek-R1
+      timeout_seconds: 240
+
+review:
+  default_provider: siliconflow
+  enabled_agents:
+    - fact
+    - security
+    - logic
+  agents:
+    fact:
+      provider: siliconflow
+      model: deepseek-ai/DeepSeek-V4-Pro
+      timeout_seconds: 90
+    security:
+      provider: siliconflow
+      model: Qwen/Qwen3.6-35B-A3B
+      timeout_seconds: 180
+    logic:
+      provider: siliconflow
+      model: deepseek-ai/DeepSeek-V4-Flash
+      timeout_seconds: 120
+    merge:
+      provider: siliconflow
+      model: zai-org/GLM-5.2
+      timeout_seconds: 120
+  output_formats:
+    - markdown
+    - json
+
+future_integrations:
+  mcp:
+    enabled: false
+  github:
+    enabled: false
+  kubernetes:
+    enabled: false
+  docker:
+    enabled: false
