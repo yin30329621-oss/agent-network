@@ -114,6 +114,20 @@ class AppConfig:
             raise ValueError(f"Document source {source_name} must define string domains")
         return set(domains)
 
+    def document_fetcher_config(self, source_name: str) -> dict[str, Any]:
+        config = self.document_source_config(source_name).get("fetcher") or {}
+        if not isinstance(config, dict):
+            raise ValueError(f"Document source {source_name} fetcher must be a mapping")
+        required = {
+            "timeout_seconds",
+            "maximum_response_bytes",
+            "maximum_redirects",
+            "user_agent",
+        }
+        if not required.issubset(config):
+            raise ValueError(f"Document source {source_name} fetcher configuration is incomplete")
+        return dict(config)
+
     def role_for_agent(self, agent: str) -> str:
         roles = {
             "fact": "Verify factual claims, evidence needs, citations, and technical accuracy.",

@@ -2,6 +2,11 @@
 
 from agent_network.evidence.matcher import DeterministicEvidenceMatcher, EvidenceMatch
 from agent_network.evidence.catalog import DocumentCatalogQuery, DocumentCatalogRepository
+from agent_network.evidence.document_fetcher import (
+    HttpOfficialDocumentFetcher,
+    OfficialDocumentFetchError,
+    OfficialDocumentFetchResult,
+)
 from agent_network.evidence.github_advisory import GitHubAdvisoryEvidenceSource
 from agent_network.evidence.http import EvidenceHttpClient
 from agent_network.evidence.nvd import NvdEvidenceSource
@@ -41,8 +46,11 @@ __all__ = [
     "FakeEvidenceSource",
     "FixtureOfficialDocumentEvidenceSource",
     "GitHubAdvisoryEvidenceSource",
+    "HttpOfficialDocumentFetcher",
     "NvdEvidenceSource",
     "OfflineEvidenceVerifier",
+    "OfficialDocumentFetchError",
+    "OfficialDocumentFetchResult",
     "OfficialDocumentEvidenceSource",
     "VerificationReport",
     "VerificationResult",

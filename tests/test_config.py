@@ -49,3 +49,14 @@ def test_long_report_profile_overrides_timeouts_and_retry_only() -> None:
     assert config.json_mode_for_agent("security") == "disabled"
     assert config.provider_capability_status_for_agent("security") == "unverified_for_model"
     assert config.provider_request_options_for_agent("security") == {}
+
+
+def test_rancher_document_fetcher_configuration_loads() -> None:
+    config = load_config("configs/default.yaml")
+
+    assert config.document_fetcher_config("rancher") == {
+        "timeout_seconds": 20,
+        "maximum_response_bytes": 1_000_000,
+        "maximum_redirects": 3,
+        "user_agent": "agent-network-document-fetcher/0.3",
+    }
