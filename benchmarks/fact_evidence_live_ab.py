@@ -17,7 +17,15 @@ import threading
 import time
 from typing import Any, Protocol
 
-from agent_network.evidence.fact_evidence import FactEvidenceLimits, build_fact_evidence_context
+from agent_network.evidence.cached_official_evidence import (
+    CachedEvidenceIndexBuilder,
+    CachedEvidenceRetrievalRequest,
+)
+from agent_network.evidence.fact_evidence import (
+    FactEvidenceLimits,
+    build_fact_evidence_context,
+    build_local_cache_fact_evidence_context,
+)
 from agent_network.evidence.official_evidence_retriever import (
     OfficialEvidenceRetrievalRequest,
     OfficialEvidenceRetrievalResult,
@@ -28,7 +36,11 @@ from agent_network.schemas import ReviewRequest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_FIXTURE_DIRECTORY = PROJECT_ROOT / "benchmarks" / "fixtures" / "fact-evidence-live-ab-v1"
+DEFAULT_LOCAL_CACHE_FIXTURE_DIRECTORY = (
+    PROJECT_ROOT / "benchmarks" / "fixtures" / "fact-evidence-local-cache-ab-v1"
+)
 RESULTS_ROOT = PROJECT_ROOT / "benchmarks" / "results-local"
+MAX_TIMEOUT_SECONDS = 600.0
 
 
 class LiveAbSafetyError(RuntimeError):
@@ -52,20 +64,32 @@ class FactEvidenceLiveAbRunConfig:
     save_results: bool = False
     redact_prompts: bool = True
     save_raw_model_response: bool = False
+    evidence_provider: str = "fixture"
+    cache_directory: str | None = None
+    document_ids: tuple[str, ...] = ()
+    max_documents: int = 1
+    top_k: int = 5
+    max_chunks_per_document: int = 0
+    min_documents_in_results: int = 1
+    min_score: float = 0.0
+    min_matched_terms: int = 1
+    exclude_navigation_like: bool = False
 
 
 @dataclass(frozen=True, slots=True)
 class FactEvidenceLiveAbCase:
     case_id: str
     claim_text: str
-    product: str
-    component: str
+    product: str | None
+    component: str | None
     expected_verdict: str
     expected_evidence_status: str
     expected_document_ids: list[str]
     forbidden_document_ids: list[str]
     evaluation_notes: str
     report_context: str = ""
+    expected_evidence_relation: str | None = None
+    expected_limitation_required: bool = False
 
 
 @dataclass(frozen=True, slots=True)
@@ -100,6 +124,13 @@ class FactEvidenceLiveAbCaseResult:
     latency_ms: float
     error_code: str | None = None
     safe_error_message: str | None = None
+    evidence_provider: str | None = None
+    loaded_document_count: int = 0
+    failed_document_count: int = 0
+    returned_document_count: int = 0
+    returned_evidence_count: int = 0
+    human_review: dict[str, Any] = field(default_factory=dict)
+    evidence_relation: str | None = None
 
 
 @dataclass(slots=True)
@@ -107,12 +138,14 @@ class FactEvidenceLiveAbRunResult:
     selected_case_count: int
     planned_fact_model_calls: int
     results: list[FactEvidenceLiveAbCaseResult] = field(default_factory=list)
+    summary: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "selected_case_count": self.selected_case_count,
             "planned_fact_model_calls": self.planned_fact_model_calls,
             "results": [asdict(item) for item in self.results],
+            "summary": self.summary,
         }
 
 
@@ -194,19 +227,26 @@ class FixtureLiveEvidenceRetriever:
 
 
 class FactEvidenceLiveAbEvaluator:
-    def __init__(self, fact_agent: FactAgentPort | None, retriever: Any | None = None) -> None:
+    def __init__(
+        self,
+        fact_agent: FactAgentPort | None,
+        retriever: Any | None = None,
+        local_cache_builder: CachedEvidenceIndexBuilder | None = None,
+        human_review_template: dict[str, Any] | None = None,
+    ) -> None:
         self.fact_agent = fact_agent
         self.retriever = retriever
+        self.local_cache_builder = local_cache_builder
+        self.human_review_template = human_review_template or {}
 
     def plan(
         self, cases: list[FactEvidenceLiveAbCase], config: FactEvidenceLiveAbRunConfig
-    ) -> dict[str, int | bool | str | list[str] | None]:
+    ) -> dict[str, Any]:
         selected = self._select(cases, config)
         calls_per_case = int(config.evidence_off_enabled) + int(config.evidence_on_enabled)
         calls = len(selected) * calls_per_case
-        estimated_characters = sum(
-            self._estimate_case_prompt_characters(case, config) for case in selected
-        )
+        off_characters, on_characters = self._estimate_prompt_characters(selected, config)
+        selected_document_ids = list(config.document_ids)
         return {
             "selected_case_ids": [case.case_id for case in selected],
             "selected_case_count": len(selected),
@@ -214,7 +254,9 @@ class FactEvidenceLiveAbEvaluator:
             "planned_off_calls": len(selected) * int(config.evidence_off_enabled),
             "planned_on_calls": len(selected) * int(config.evidence_on_enabled),
             "maximum_possible_calls": calls,
-            "estimated_prompt_characters": estimated_characters,
+            "estimated_prompt_characters": off_characters + on_characters,
+            "estimated_off_prompt_characters": off_characters,
+            "estimated_on_prompt_characters": on_characters,
             "model": config.model,
             "temperature": config.temperature,
             "timeout_per_call": config.timeout_seconds,
@@ -223,6 +265,10 @@ class FactEvidenceLiveAbEvaluator:
             "evidence_on_enabled": config.evidence_on_enabled,
             "live_calls_enabled": config.enabled and config.confirm_live_model_calls,
             "output_path": config.output_directory if config.save_results else None,
+            "evidence_provider": config.evidence_provider,
+            "cache_directory": _safe_cache_directory(config.cache_directory),
+            "selected_document_ids": selected_document_ids,
+            "network_request_count": 0,
         }
 
     def run(
@@ -255,46 +301,77 @@ class FactEvidenceLiveAbEvaluator:
                     self._run_case(case, "OFF", config, None, call_index, total_calls)
                 )
             if config.evidence_on_enabled:
-                if self.retriever is None:
-                    raise LiveAbSafetyError("Evidence ON requires an injected retriever")
-                retrieval = self.retriever.retrieve(
-                    OfficialEvidenceRetrievalRequest(
-                        query_text=case.claim_text,
-                        claim_id=case.case_id,
-                        product=case.product,
-                        component=case.component,
-                    )
-                )
-                context = build_fact_evidence_context(retrieval, FactEvidenceLimits())
+                context = self._evidence_context(case, config)
                 call_index += 1
                 result.results.append(
                     self._run_case(case, "ON", config, context, call_index, total_calls)
                 )
+        result.summary = _summarize_results(result.results, selected)
         if config.save_results:
             self._save(result, config.output_directory)
         return result
 
-    def _estimate_case_prompt_characters(
-        self, case: FactEvidenceLiveAbCase, config: FactEvidenceLiveAbRunConfig
-    ) -> int:
-        base = len(case.report_context or case.claim_text)
-        total = base * int(config.evidence_off_enabled)
+    def _estimate_prompt_characters(
+        self, cases: list[FactEvidenceLiveAbCase], config: FactEvidenceLiveAbRunConfig
+    ) -> tuple[int, int]:
+        off = sum(len(case.report_context or case.claim_text) for case in cases) * int(
+            config.evidence_off_enabled
+        )
+        on = 0
         if config.evidence_on_enabled:
-            context_size = 0
-            if self.retriever is not None:
-                retrieval = self.retriever.retrieve(
-                    OfficialEvidenceRetrievalRequest(
-                        query_text=case.claim_text,
-                        claim_id=case.case_id,
-                        product=case.product,
-                        component=case.component,
+            for case in cases:
+                context_size = 0
+                if not (config.evidence_provider == "fixture" and self.retriever is None):
+                    context = self._evidence_context(case, config)
+                    context_size = len(
+                        json.dumps(context, ensure_ascii=False, separators=(",", ":"))
                     )
+                on += len(case.report_context or case.claim_text) + context_size
+        return off, on
+
+    def _evidence_context(
+        self, case: FactEvidenceLiveAbCase, config: FactEvidenceLiveAbRunConfig
+    ) -> dict[str, Any]:
+        limits = FactEvidenceLimits(top_k=config.top_k)
+        if config.evidence_provider == "fixture":
+            if self.retriever is None:
+                raise LiveAbSafetyError("Evidence ON requires an injected retriever")
+            retrieval = self.retriever.retrieve(
+                OfficialEvidenceRetrievalRequest(
+                    query_text=case.claim_text,
+                    claim_id=case.case_id,
+                    product=case.product,
+                    component=case.component,
                 )
-                context_size = len(
-                    json.dumps(build_fact_evidence_context(retrieval, FactEvidenceLimits()))
-                )
-            total += base + context_size
-        return total
+            )
+            context = build_fact_evidence_context(retrieval, limits)
+            context["evidence_provider"] = "fixture"
+            return context
+        if config.evidence_provider == "local_cache":
+            if not config.cache_directory:
+                raise LiveAbSafetyError("local_cache evidence requires --cache-directory")
+            builder = self.local_cache_builder or CachedEvidenceIndexBuilder()
+            context = build_local_cache_fact_evidence_context(
+                builder,
+                CachedEvidenceRetrievalRequest(
+                    cache_directory=config.cache_directory,
+                    document_ids=config.document_ids or None,
+                    product=case.product or None,
+                    component=case.component or None,
+                    max_documents=config.max_documents,
+                    query_text=case.claim_text,
+                    top_chunks=config.top_k,
+                    min_score=config.min_score,
+                    min_matched_terms=config.min_matched_terms,
+                    exclude_navigation_like=config.exclude_navigation_like,
+                    max_chunks_per_document=config.max_chunks_per_document,
+                    min_documents_in_results=config.min_documents_in_results,
+                ),
+                limits,
+            )
+            context["claim_id"] = case.case_id
+            return context
+        raise LiveAbSafetyError(f"Unsupported evidence provider: {config.evidence_provider}")
 
     def _run_case(
         self, case, mode, config, context, call_index, total_calls
@@ -349,6 +426,8 @@ class FactEvidenceLiveAbEvaluator:
                 elapsed_ms,
                 "harness_timeout",
                 "Fact evaluation exceeded the harness deadline",
+                evidence_provider=config.evidence_provider if mode == "ON" else None,
+                human_review=_human_review_template(self.human_review_template, case.case_id, mode),
             )
         review, error = response.get_nowait()
         if error is not None:
@@ -380,6 +459,8 @@ class FactEvidenceLiveAbEvaluator:
                 elapsed_ms,
                 type(error).__name__,
                 "Fact evaluation call failed",
+                evidence_provider=config.evidence_provider if mode == "ON" else None,
+                human_review=_human_review_template(self.human_review_template, case.case_id, mode),
             )
         try:
             assert review is not None
@@ -413,6 +494,15 @@ class FactEvidenceLiveAbEvaluator:
                 review.model_call_count or 1,
                 review.evidence_network_request_count,
                 elapsed_ms,
+                evidence_provider=review.evidence_provider if mode == "ON" else None,
+                loaded_document_count=review.evidence_loaded_document_count,
+                failed_document_count=review.evidence_failed_document_count,
+                returned_document_count=review.evidence_returned_document_count,
+                returned_evidence_count=review.evidence_returned_evidence_count,
+                human_review=_human_review_template(self.human_review_template, case.case_id, mode),
+                evidence_relation=(
+                    review.evidence_relation.value if review.evidence_relation is not None else None
+                ),
             )
         except Exception as exc:
             return FactEvidenceLiveAbCaseResult(
@@ -438,6 +528,8 @@ class FactEvidenceLiveAbEvaluator:
                 elapsed_ms,
                 type(exc).__name__,
                 "Fact evaluation call failed",
+                evidence_provider=config.evidence_provider if mode == "ON" else None,
+                human_review=_human_review_template(self.human_review_template, case.case_id, mode),
             )
 
     def _select(self, cases, config):
@@ -453,7 +545,12 @@ class FactEvidenceLiveAbEvaluator:
     def _require_opt_in(self, config, planned_calls):
         if not config.enabled or not config.confirm_live_model_calls or not config.model:
             raise LiveAbSafetyError("Live model evaluation is disabled")
-        if config.max_cases <= 0 or config.confirm_planned_call_count != planned_calls:
+        if (
+            config.max_cases <= 0
+            or config.timeout_seconds <= 0
+            or config.timeout_seconds > MAX_TIMEOUT_SECONDS
+            or config.confirm_planned_call_count != planned_calls
+        ):
             raise LiveAbSafetyError("Live model call plan was not explicitly confirmed")
 
     def _save(self, result, output_directory):
@@ -462,6 +559,104 @@ class FactEvidenceLiveAbEvaluator:
         (target / "fact-evidence-live-ab.json").write_text(
             json.dumps(result.to_dict(), indent=2), encoding="utf-8"
         )
+
+
+def _safe_cache_directory(value: str | None) -> str | None:
+    if value is None:
+        return None
+    path = Path(value)
+    if path.is_absolute() or ".." in path.parts:
+        raise LiveAbSafetyError("Cache directory must stay below the official cache root")
+    return path.as_posix()
+
+
+def _human_review_template(template: dict[str, Any], case_id: str, mode: str) -> dict[str, Any]:
+    review = dict(template)
+    review["case_id"] = case_id
+    review["mode"] = mode.lower()
+    return review
+
+
+def _summarize_results(
+    results: list[FactEvidenceLiveAbCaseResult], cases: list[FactEvidenceLiveAbCase]
+) -> dict[str, Any]:
+    expected = {case.case_id: case for case in cases}
+    completed = [item for item in results if item.error_code is None]
+    off = [item for item in completed if item.mode.lower() == "off"]
+    on = [item for item in completed if item.mode.lower() == "on"]
+    return {
+        "selected_case_count": len(cases),
+        "completed_case_count": len(completed) // 2,
+        "failed_case_count": len(results) - len(completed),
+        "off_verdict_accuracy": _accuracy(off, expected, "verdict"),
+        "on_verdict_accuracy": _accuracy(on, expected, "verdict"),
+        "verdict_accuracy_delta": _accuracy(on, expected, "verdict")
+        - _accuracy(off, expected, "verdict"),
+        "off_relation_accuracy": _accuracy(off, expected, "relation"),
+        "on_relation_accuracy": _accuracy(on, expected, "relation"),
+        "on_valid_reference_rate": _valid_reference_rate(on),
+        "on_rejected_reference_count": sum(item.rejected_reference_count for item in on),
+        "off_insufficient_detection_rate": _insufficient_detection_rate(off, expected),
+        "on_insufficient_detection_rate": _insufficient_detection_rate(on, expected),
+        "prompt_character_delta": sum(item.prompt_character_count for item in on)
+        - sum(item.prompt_character_count for item in off),
+        "total_input_tokens": _sum_known(item.input_tokens for item in results),
+        "total_output_tokens": _sum_known(item.output_tokens for item in results),
+        "total_tokens": _sum_known(item.total_tokens for item in results),
+        "total_model_call_count": sum(item.model_call_count for item in results),
+        "off_model_call_count": sum(item.model_call_count for item in off),
+        "on_model_call_count": sum(item.model_call_count for item in on),
+        "total_network_request_count": sum(item.network_request_count for item in results),
+        "total_latency_ms": sum(item.latency_ms for item in results),
+    }
+
+
+def _accuracy(
+    results: list[FactEvidenceLiveAbCaseResult],
+    expected: dict[str, FactEvidenceLiveAbCase],
+    kind: str,
+) -> float:
+    if not results:
+        return 0.0
+    if kind == "relation":
+        matches = sum(
+            item.evidence_relation == expected[item.case_id].expected_evidence_relation
+            for item in results
+            if expected[item.case_id].expected_evidence_relation is not None
+        )
+        denominator = sum(
+            expected[item.case_id].expected_evidence_relation is not None for item in results
+        )
+        return matches / denominator if denominator else 0.0
+    return sum(item.verdict == expected[item.case_id].expected_verdict for item in results) / len(
+        results
+    )
+
+
+def _valid_reference_rate(results: list[FactEvidenceLiveAbCaseResult]) -> float:
+    total = sum(item.validated_reference_count + item.rejected_reference_count for item in results)
+    return sum(item.validated_reference_count for item in results) / total if total else 0.0
+
+
+def _insufficient_detection_rate(
+    results: list[FactEvidenceLiveAbCaseResult], expected: dict[str, FactEvidenceLiveAbCase]
+) -> float:
+    targets = [
+        item
+        for item in results
+        if expected[item.case_id].expected_verdict == "insufficient_evidence"
+    ]
+    if not targets:
+        return 0.0
+    return sum(
+        item.evidence_relation in {"absence_of_support", "indirect_evidence", "unavailable"}
+        for item in targets
+    ) / len(targets)
+
+
+def _sum_known(values) -> int | None:
+    values = list(values)
+    return sum(values) if values and all(value is not None for value in values) else None
 
 
 def safe_results_directory(output_directory: str | None) -> Path:
@@ -545,12 +740,29 @@ def _parser() -> argparse.ArgumentParser:
         "--redact-prompts", dest="redact_prompts", action="store_true", default=True
     )
     parser.add_argument("--no-redact-prompts", dest="redact_prompts", action="store_false")
+    parser.add_argument(
+        "--evidence-provider", choices=("fixture", "local_cache"), default="fixture"
+    )
+    parser.add_argument("--cache-directory")
+    parser.add_argument("--document-id", action="append", default=[])
+    parser.add_argument("--max-documents", type=int, default=1)
+    parser.add_argument("--top-k", type=int, default=5)
+    parser.add_argument("--max-chunks-per-document", type=int, default=0)
+    parser.add_argument("--min-documents-in-results", type=int, default=1)
+    parser.add_argument("--min-score", type=float, default=0.0)
+    parser.add_argument("--min-matched-terms", type=int, default=1)
+    parser.add_argument("--exclude-navigation-like", action="store_true")
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
-    fixture = load_live_ab_fixture()
+    fixture_directory = (
+        DEFAULT_LOCAL_CACHE_FIXTURE_DIRECTORY
+        if args.evidence_provider == "local_cache"
+        else DEFAULT_FIXTURE_DIRECTORY
+    )
+    fixture = load_live_ab_fixture(fixture_directory)
     config = FactEvidenceLiveAbRunConfig(
         enabled=args.run_live,
         confirm_live_model_calls=args.confirm_live_model_calls,
@@ -567,16 +779,37 @@ def main(argv: list[str] | None = None) -> int:
         save_results=args.save_results,
         redact_prompts=args.redact_prompts,
         save_raw_model_response=args.save_raw_model_response,
+        evidence_provider=args.evidence_provider,
+        cache_directory=args.cache_directory,
+        document_ids=tuple(args.document_id),
+        max_documents=args.max_documents,
+        top_k=args.top_k,
+        max_chunks_per_document=args.max_chunks_per_document,
+        min_documents_in_results=args.min_documents_in_results,
+        min_score=args.min_score,
+        min_matched_terms=args.min_matched_terms,
+        exclude_navigation_like=args.exclude_navigation_like,
     )
-    retriever = FixtureLiveEvidenceRetriever(fixture.evidence_by_case_id)
-    evaluator = FactEvidenceLiveAbEvaluator(None, retriever)
-    cases = load_live_ab_cases(case_ids=config.case_ids)
+    retriever = (
+        FixtureLiveEvidenceRetriever(fixture.evidence_by_case_id)
+        if config.evidence_provider == "fixture"
+        else None
+    )
+    evaluator = FactEvidenceLiveAbEvaluator(
+        None,
+        retriever,
+        CachedEvidenceIndexBuilder() if config.evidence_provider == "local_cache" else None,
+        fixture.human_review_template,
+    )
+    cases = load_live_ab_cases(fixture_directory, case_ids=config.case_ids)
     plan = evaluator.plan(cases, config)
     if not args.run_live:
         print(json.dumps(plan, ensure_ascii=False, indent=2))
         return 0
 
     evaluator._require_opt_in(config, int(plan["planned_fact_model_calls"]))
+    if config.evidence_provider == "local_cache" and not args.cache_directory:
+        raise LiveAbSafetyError("local_cache live evaluation requires --cache-directory")
     if config.save_results:
         safe_results_directory(config.output_directory)
     if not os.getenv("SILICONFLOW_API_KEY"):
