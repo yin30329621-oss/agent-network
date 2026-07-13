@@ -53,9 +53,11 @@ def test_parse_json_with_explanatory_text() -> None:
 
 
 def test_missing_fields_get_defaults() -> None:
-    review = parse_agent_review("fact", '{"summary":"ok","findings":[{"issue":"Needs proof"}]}')
+    review = parse_agent_review(
+        "fact", '{"summary":"ok","findings":[{"issue":"Needs proof","reason":"No source."}]}'
+    )
 
-    assert review.findings[0].evidence_needed == "Not specified"
+    assert review.findings[0].evidence_needed == ""
     assert review.findings[0].severity.value == "info"
 
 

@@ -4,13 +4,17 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from datetime import date
 from json import JSONDecodeError
 import re
 from typing import Protocol
 
+from pydantic import ValidationError
+
 from agent_network.llm import LLMClient
+from agent_network.language import ZH_REVIEW_INSTRUCTION, is_chinese_language
 from agent_network.prompts import PromptTemplate
-from agent_network.schemas import AgentReview, FindingStatus, ReviewRequest
+from agent_network.schemas import AgentReview, FindingStatus, ReviewFinding, ReviewRequest
 
 
 class ReviewerAgent(Protocol):
@@ -32,13 +36,22 @@ class LLMReviewerAgent:
     model: str | None = None
     provider: str | None = None
     timeout_seconds: int | None = None
+    max_tokens: int | None = None
 
     def review(self, request: ReviewRequest) -> AgentReview:
+        system_prompt = self.prompt.render().replace("{{CURRENT_DATE}}", date.today().isoformat())
+        if is_chinese_language(getattr(request, "language", "en")):
+            system_prompt = f"{system_prompt}\n\n{ZH_REVIEW_INSTRUCTION}"
+        request_options = {
+            "system_prompt": system_prompt,
+            "user_prompt": f"Source: {request.source_name}\n\n{request.markdown}",
+            "model": self.model,
+            "timeout_seconds": self.timeout_seconds,
+        }
+        if self.max_tokens is not None:
+            request_options["max_tokens"] = self.max_tokens
         content = self.llm.complete(
-            system_prompt=self.prompt.render(),
-            user_prompt=f"Source: {request.source_name}\n\n{request.markdown}",
-            model=self.model,
-            timeout_seconds=self.timeout_seconds,
+            **request_options,
         )
         provider_response_audit = getattr(self.llm, "last_response_audit", {})
         review = parse_agent_review(
@@ -50,6 +63,9 @@ class LLMReviewerAgent:
         )
         review.model = self.model
         review.provider = self.provider
+        review.apply_request_audit(provider_response_audit)
+        if self.name == "fact":
+            _enforce_fact_verification_boundaries(review)
         return review
 
 
@@ -71,15 +87,16 @@ def parse_agent_review(
         try:
             repaired = _local_json_repair(content)
             data = _parse_json_response(repaired)
-        except (JSONDecodeError, ValueError) as repair_exc:
+        except (JSONDecodeError, ValueError):
             return _parse_failed_review(
                 agent=agent,
                 provider=provider,
                 model=model,
                 content=original_debug_response or content,
-                error_type=type(repair_exc).__name__,
+                error_type=_json_parse_error_type(content, provider_response_audit),
                 parse_attempts=parse_attempts,
                 repair_status="failed",
+                failure_stage="json_decode",
                 provider_response_audit=provider_response_audit,
             )
     if not isinstance(data, dict):
@@ -88,17 +105,81 @@ def parse_agent_review(
             provider=provider,
             model=model,
             content=original_debug_response or content,
-            error_type="SchemaError",
+            error_type="schema_validation_error",
             parse_attempts=parse_attempts,
             repair_status="not_applicable",
+            failure_stage="schema_validation",
             provider_response_audit=provider_response_audit,
         )
-    review = AgentReview.from_dict(agent=agent, data=data, provider=provider, model=model)
-    review.status = "completed"
+    findings_data = data.get("findings", [])
+    if not isinstance(findings_data, list):
+        return _parse_failed_review(
+            agent=agent,
+            provider=provider,
+            model=model,
+            content=original_debug_response or content,
+            error_type="schema_validation_error",
+            parse_attempts=parse_attempts,
+            repair_status="not_applicable",
+            failure_stage="schema_validation",
+            provider_response_audit=provider_response_audit,
+        )
+    findings: list[ReviewFinding] = []
+    rejected: list[dict] = []
+    for index, item in enumerate(findings_data):
+        if not isinstance(item, dict):
+            rejected.append(
+                {
+                    "index": index,
+                    "error_type": "schema_validation_error",
+                    "error_message": "finding must be a JSON object",
+                }
+            )
+            continue
+        try:
+            findings.append(
+                ReviewFinding.from_dict(agent=agent, data=item, provider=provider, model=model)
+            )
+        except ValidationError as exc:
+            rejected.append(
+                {
+                    "index": index,
+                    "error_type": "schema_validation_error",
+                    "error_message": _validation_error_message(exc),
+                }
+            )
+    if findings_data and not findings:
+        return _parse_failed_review(
+            agent=agent,
+            provider=provider,
+            model=model,
+            content=original_debug_response or content,
+            error_type="schema_validation_error",
+            parse_attempts=parse_attempts,
+            repair_status="succeeded" if parse_attempts > 1 else "not_needed",
+            failure_stage="schema_validation",
+            provider_response_audit=provider_response_audit,
+            raw_finding_count=len(findings_data),
+            rejected_findings=rejected,
+        )
+    review = AgentReview(
+        agent=agent,
+        summary=str(data.get("summary") or ""),
+        findings=findings,
+        provider=provider,
+        model=model,
+    )
+    review.status = "completed_with_warnings" if rejected else "completed"
     review.parse_attempts = parse_attempts
     review.repair_attempted = parse_attempts > 1
     review.repair_status = "succeeded" if parse_attempts > 1 else "not_needed"
     review.provider_response_audit = provider_response_audit or {}
+    review.raw_finding_count = len(findings_data)
+    review.valid_finding_count = len(findings)
+    review.rejected_finding_count = len(rejected)
+    review.rejected_findings = rejected
+    review.parse_error_type = "schema_validation_error" if rejected else None
+    review.failure_stage = "schema_validation" if rejected else None
     for finding in review.findings:
         finding.agent = agent
         finding.provider = provider
@@ -179,8 +260,12 @@ def _parse_failed_review(
     error_type: str,
     parse_attempts: int,
     repair_status: str,
+    failure_stage: str,
     provider_response_audit: dict | None = None,
+    raw_finding_count: int = 0,
+    rejected_findings: list[dict] | None = None,
 ) -> AgentReview:
+    rejected = rejected_findings or []
     return AgentReview(
         agent=agent,
         summary=f"{agent.title()} Agent call completed, but structured parsing failed.",
@@ -192,13 +277,65 @@ def _parse_failed_review(
         error_message="Model response was not valid review JSON.",
         debug_response=_sanitize_debug_response(content),
         parse_attempts=parse_attempts,
-        repair_attempted=True,
+        repair_attempted=parse_attempts > 1,
         repair_status=repair_status,
         parse_error_type=error_type,
+        failure_stage=failure_stage,
+        raw_finding_count=raw_finding_count,
+        valid_finding_count=0,
+        rejected_finding_count=len(rejected),
+        rejected_findings=rejected,
         provider_response_audit=provider_response_audit or {},
     )
+
+
+def _validation_error_message(exc: ValidationError) -> str:
+    parts = []
+    for error in exc.errors(include_input=False):
+        location = ".".join(str(part) for part in error.get("loc", ())) or "finding"
+        parts.append(f"{location}: {error.get('msg', 'invalid value')}")
+    return "; ".join(parts)[:1000]
+
+
+def _json_parse_error_type(content: str, audit: dict | None) -> str:
+    provider_audit = audit or {}
+    if not content.strip():
+        return "empty_response"
+    if provider_audit.get("response_truncated"):
+        return "truncated_response"
+    return "json_decode_error"
 
 
 def _sanitize_debug_response(content: str, limit: int = 4000) -> str:
     redacted = content.replace("SILICONFLOW_API_KEY", "[REDACTED_ENV_NAME]")
     return redacted[:limit]
+
+
+def _enforce_fact_verification_boundaries(review: AgentReview) -> None:
+    time_sensitive_terms = (
+        "cve-",
+        "latest version",
+        "latest release",
+        "security advisory",
+        "patch version",
+        "最新版本",
+        "最新发布",
+        "安全公告",
+        "补丁版本",
+        "修复版本",
+    )
+    destructive_terms = ("delete", "remove", "删除", "移除")
+    for finding in review.findings:
+        searchable = " ".join(
+            [finding.issue, finding.reason, finding.evidence_needed, finding.suggestion]
+        ).lower()
+        if not any(term in searchable for term in time_sensitive_terms):
+            continue
+        if not finding.reference:
+            marker = "needs_external_verification: "
+            if not finding.evidence_needed.lower().startswith(marker):
+                finding.evidence_needed = marker + finding.evidence_needed
+            if any(term in finding.suggestion.lower() for term in destructive_terms):
+                finding.suggestion = (
+                    "先通过可验证的官方来源核实该时效性事实，再决定是否修改或删除相关结论。"
+                )

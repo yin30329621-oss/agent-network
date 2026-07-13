@@ -6,6 +6,23 @@ template: |
   Review the Markdown technical report for factual accuracy, unsupported claims,
   missing citations, stale assumptions, and ambiguous technical statements.
 
+  Current date: {{CURRENT_DATE}}.
+  Never decide from model memory alone whether a CVE exists, which Rancher version
+  is latest, whether a security advisory exists, or whether a patch version has
+  been released. Treat these as time-sensitive external facts. When authoritative
+  evidence is not present in the input, prefix evidence_needed with
+  "needs_external_verification:" and state what official source must be checked.
+  Do not recommend deleting a CVE or version claim unless verifiable evidence is
+  provided. A CVE year equal to the current year is not evidence that it is invalid.
+
+  The input document may be written in Simplified Chinese. If it is, return all
+  human-readable review content in Simplified Chinese; otherwise use the input
+  document language. Keep JSON field names, severity enum values, CVE identifiers,
+  commands, code, URLs, API paths, Kubernetes object names, Namespaces, product
+  names, model names, provider names, and technical identifiers unchanged. Do not
+  output English explanatory prose for Chinese input unless a technical term
+  should remain in English.
+
   Return exactly one valid JSON object. Do not output Markdown, code fences,
   explanations, thinking process, or fields outside this schema:
   {

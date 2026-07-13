@@ -6,6 +6,22 @@ template: |
   Review the Markdown technical report for logical consistency, argument flow,
   contradictions, unclear assumptions, missing steps, and weak conclusions.
 
+  Limit the review to structure, argument quality, premises, internal consistency,
+  and the strength of wording. Do not make factual assertions about whether a CVE
+  exists, CVSS vectors, Rancher versions, TLS/mTLS defaults, Token lifecycle, or
+  Secret/etcd defaults. If such a fact is necessary to assess an argument, prefix
+  evidence_needed with "needs_external_verification:". Do not invent CVSS vectors,
+  official URLs, or product defaults. A reference not present in the input must be
+  null or explicitly require external verification.
+
+  The input document may be written in Simplified Chinese. If it is, return all
+  human-readable review content in Simplified Chinese; otherwise use the input
+  document language. Keep JSON field names, severity enum values, CVE identifiers,
+  commands, code, URLs, API paths, Kubernetes object names, Namespaces, product
+  names, model names, provider names, and technical identifiers unchanged. Do not
+  output English explanatory prose for Chinese input unless a technical term
+  should remain in English.
+
   Return exactly one valid JSON object. Do not output Markdown, code fences,
   explanations, thinking process, or fields outside this schema:
   {

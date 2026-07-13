@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 
 from agent_network.agents.base import LLMReviewerAgent
+from agent_network.language import ZH_REVIEW_INSTRUCTION, is_chinese_language
 from agent_network.llm import LLMClient
 from agent_network.merge import merge_findings
 from agent_network.prompts import PromptRegistry
@@ -20,6 +21,7 @@ class FactAgent(LLMReviewerAgent):
         model: str | None = None,
         provider: str | None = None,
         timeout_seconds: int | None = None,
+        max_tokens: int | None = None,
     ) -> None:
         super().__init__(
             name="fact",
@@ -28,6 +30,7 @@ class FactAgent(LLMReviewerAgent):
             model=model,
             provider=provider,
             timeout_seconds=timeout_seconds,
+            max_tokens=max_tokens,
         )
 
 
@@ -40,6 +43,7 @@ class SecurityAgent(LLMReviewerAgent):
         model: str | None = None,
         provider: str | None = None,
         timeout_seconds: int | None = None,
+        max_tokens: int | None = None,
     ) -> None:
         super().__init__(
             name="security",
@@ -48,6 +52,7 @@ class SecurityAgent(LLMReviewerAgent):
             model=model,
             provider=provider,
             timeout_seconds=timeout_seconds,
+            max_tokens=max_tokens,
         )
 
 
@@ -60,6 +65,7 @@ class LogicAgent(LLMReviewerAgent):
         model: str | None = None,
         provider: str | None = None,
         timeout_seconds: int | None = None,
+        max_tokens: int | None = None,
     ) -> None:
         super().__init__(
             name="logic",
@@ -68,6 +74,7 @@ class LogicAgent(LLMReviewerAgent):
             model=model,
             provider=provider,
             timeout_seconds=timeout_seconds,
+            max_tokens=max_tokens,
         )
 
 
@@ -84,20 +91,23 @@ class MergeAgent:
         model: str | None = None,
         provider: str | None = None,
         timeout_seconds: int | None = None,
+        max_tokens: int | None = None,
     ) -> None:
         self.prompts = prompts
         self.llm = llm
         self.model = model
         self.provider = provider
         self.timeout_seconds = timeout_seconds
+        self.max_tokens = max_tokens
         self.last_merged_findings = []
         self.last_disagreements = []
+        self.last_potential_duplicates = []
 
-    def merge(self, reviews: list[AgentReview]) -> AgentReview:
+    def merge(self, reviews: list[AgentReview], language: str = "en") -> AgentReview:
         findings: list[ReviewFinding] = []
         summaries: list[str] = []
         for review in reviews:
-            if review.status == "completed":
+            if review.status in {"completed", "completed_with_warnings"}:
                 summaries.append(f"## {review.agent.title()} Agent\n\n{review.summary}")
             else:
                 summaries.append(
@@ -106,7 +116,7 @@ class MergeAgent:
                     f"Error: {review.error_type}."
                 )
             findings.extend(review.findings)
-        merged_findings, potential_duplicates = merge_findings(findings)
+        merged_findings, potential_duplicates = merge_findings(findings, language=language)
         self.last_merged_findings = merged_findings
         self.last_disagreements = [
             {
@@ -119,30 +129,48 @@ class MergeAgent:
             for finding in merged_findings
             if finding.dissenting_agents
         ]
-        self.last_disagreements.extend(
-            {"type": "potential_duplicate", **item} for item in potential_duplicates
-        )
+        self.last_potential_duplicates = potential_duplicates
         if self.llm and self.model and self.prompts:
             prompt = self.prompts.load("merge_agent")
+            system_prompt = prompt.render()
+            if is_chinese_language(language):
+                system_prompt = f"{system_prompt}\n\n{ZH_REVIEW_INSTRUCTION}"
             payload = {
                 "agent_reviews": [review.to_dict() for review in reviews],
                 "findings": [finding.to_dict() for finding in findings],
                 "merged_findings": [finding.to_dict() for finding in merged_findings],
             }
-            content = self.llm.complete(
-                system_prompt=prompt.render(),
-                user_prompt=json.dumps(payload, ensure_ascii=False, indent=2),
-                model=self.model,
-                timeout_seconds=self.timeout_seconds,
+            request_options = {
+                "system_prompt": system_prompt,
+                "user_prompt": json.dumps(payload, ensure_ascii=False, indent=2),
+                "model": self.model,
+                "timeout_seconds": self.timeout_seconds,
+            }
+            if self.max_tokens is not None:
+                request_options["max_tokens"] = self.max_tokens
+            self.llm.complete(**request_options)
+            audit = _normalized_provider_audit(getattr(self.llm, "last_response_audit", {}) or {})
+            response_truncated = bool(
+                audit.get("response_truncated") or audit.get("finish_reason") == "length"
             )
-            summary = _extract_merge_summary(content)
-            return AgentReview(
+            summary = _structured_merge_summary(merged_findings, reviews, language)
+            review = AgentReview(
                 agent=self.name,
                 summary=summary,
                 findings=findings,
                 model=self.model,
                 provider=self.provider,
+                status="truncated" if response_truncated else "completed",
+                error_type="ResponseTruncated" if response_truncated else None,
+                error_message=(
+                    "Merge provider response reached its output limit."
+                    if response_truncated
+                    else None
+                ),
+                provider_response_audit=audit,
             )
+            review.apply_request_audit(audit)
+            return review
         summary = (
             "# Technical Report Review\n\n"
             f"Reviewed by {len(reviews)} agents. "
@@ -160,20 +188,51 @@ class MergeAgent:
         raise NotImplementedError("MergeAgent expects agent reviews, not raw Markdown.")
 
 
-def _extract_merge_summary(content: str) -> str:
-    stripped = content.strip()
-    try:
-        data = json.loads(stripped)
-    except json.JSONDecodeError:
-        start = stripped.find("{")
-        end = stripped.rfind("}")
-        if start >= 0 and end >= start:
-            try:
-                data = json.loads(stripped[start : end + 1])
-            except json.JSONDecodeError:
-                return stripped
-        else:
-            return stripped
-    if isinstance(data, dict):
-        return str(data.get("summary") or data.get("markdown") or stripped)
-    return stripped
+def _structured_merge_summary(merged_findings, reviews: list[AgentReview], language: str) -> str:
+    completed = sum(review.status in {"completed", "completed_with_warnings"} for review in reviews)
+    degraded = len(reviews) - completed
+    if is_chinese_language(language):
+        return (
+            f"结构化合并完成：共 {len(merged_findings)} 条综合发现；"
+            f"{completed} 个专业 Agent 完成，{degraded} 个结果缺失或不完整。"
+        )
+    return (
+        f"Structured merge completed with {len(merged_findings)} findings; "
+        f"{completed} specialist agents completed and {degraded} were incomplete."
+    )
+
+
+def _normalized_provider_audit(audit: dict) -> dict:
+    usage = audit.get("usage") or {}
+    normalized = dict(audit)
+    for key in (
+        "finish_reason",
+        "content_is_none",
+        "content_length",
+        "reasoning_content_length",
+        "extracted_field",
+    ):
+        normalized.setdefault(key, None)
+    for key in ("prompt_tokens", "completion_tokens", "total_tokens"):
+        normalized.setdefault(key, usage.get(key))
+    for key in (
+        "model_call_count",
+        "request_attempt_count",
+        "retry_count",
+        "timeout_count",
+    ):
+        normalized.setdefault(key, 0)
+    for key in (
+        "request_started_at",
+        "request_completed_at",
+        "last_error_type",
+        "last_error_message",
+        "configured_timeout_seconds",
+        "configured_max_tokens",
+        "effective_elapsed_seconds",
+    ):
+        normalized.setdefault(key, None)
+    normalized["response_truncated"] = bool(
+        normalized.get("response_truncated") or normalized.get("finish_reason") == "length"
+    )
+    return normalized

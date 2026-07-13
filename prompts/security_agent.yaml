@@ -7,9 +7,19 @@ template: |
   Focus on unsafe defaults, Kubernetes/container risks, secrets handling,
   over-privileged access, weak threat modeling, and supply-chain gaps.
 
-  Return exactly one compact JSON object and nothing else.
-  Do not output Markdown, code fences, explanations, or thinking process.
-  Include at most 5 findings. Keep issue, reason, and suggestion concise.
+  The input document may be written in Simplified Chinese. If it is, return all
+  human-readable review content in Simplified Chinese; otherwise use the input
+  document language. Keep JSON field names, severity enum values, CVE identifiers,
+  commands, code, URLs, API paths, Kubernetes object names, Namespaces, product
+  names, model names, provider names, and technical identifiers unchanged. Do not
+  output English explanatory prose for Chinese input unless a technical term
+  should remain in English.
+
+  Start the response with "{" and return exactly one compact JSON object.
+  Do not output Markdown, code fences, document summaries, analysis, explanations,
+  reasoning, or thinking process. The summary must be one short sentence. Include
+  at most 3 findings. Keep each issue, reason, and suggestion to one concise sentence
+  of no more than 120 Chinese characters or 240 English characters.
   {
     "summary": "short summary",
     "findings": [

@@ -14,6 +14,15 @@ import typer
 
 from agent_network import __version__
 from agent_network.config import load_config
+from agent_network.evidence.reporting import write_report as write_evidence_report
+from agent_network.evidence.cache import EvidenceCache
+from agent_network.evidence.github_advisory import GitHubAdvisoryEvidenceSource
+from agent_network.evidence.http import EvidenceHttpClient
+from agent_network.evidence.nvd import NvdEvidenceSource
+from agent_network.evidence.pilot import public_cve_claim, write_pilot_output
+from agent_network.evidence.sources import EvidenceFixture, FakeEvidenceSource
+from agent_network.evidence.verifier import OfflineEvidenceVerifier
+from agent_network.input_analysis import analyze_input
 from agent_network.llm import LiteLLMClient, MockLLMClient, load_dotenv_if_available
 from agent_network.outputs import write_outputs
 from agent_network.prompts import PromptRegistry
@@ -40,10 +49,14 @@ def review(
     output: Path = typer.Option(Path("outputs"), "--output", "-o"),
     config: Path = typer.Option(Path("configs/default.yaml"), "--config", "-c"),
     prompts: Path = typer.Option(Path("prompts"), "--prompts"),
+    profile: str = typer.Option("balanced", "--profile", help="Execution profile."),
     only: str | None = typer.Option(
         None, "--only", help="Run only one agent: fact, security, or logic."
     ),
     mode: ReviewMode = "auto",
+    language: str = typer.Option(
+        "en", "--language", help="Human-readable review language: en or zh."
+    ),
     mock: bool = typer.Option(False, "--mock", help="Force deterministic local mock review."),
     open_output: bool = typer.Option(
         False, "--open", help="Open generated review.md after completion."
@@ -52,12 +65,26 @@ def review(
     """Review a Markdown technical report."""
 
     load_dotenv_if_available()
-    app_config = load_config(config)
+    base_config = load_config(config)
+    try:
+        app_config = base_config.with_profile(profile)
+    except ValueError as exc:
+        raise typer.BadParameter(str(exc), param_hint="--profile") from exc
+    markdown = report.read_text(encoding="utf-8")
+    input_analysis = analyze_input(markdown)
+    if input_analysis.input_size_class == "long" and profile == "balanced":
+        typer.echo(
+            "警告：当前输入属于长报告，balanced profile 可能发生超时。"
+            "建议使用 --profile long-report。"
+        )
     selected_agents = [only] if only else ["fact", "security", "logic"]
     _validate_agents(selected_agents)
     selected_mode = "mock" if mock else mode.lower()
     if selected_mode not in {"auto", "mock", "real"}:
         raise typer.BadParameter("--mode must be one of: auto, mock, real")
+    selected_language = language.lower()
+    if selected_language not in {"en", "zh"}:
+        raise typer.BadParameter("--language must be one of: en, zh")
     required_agents = selected_agents if only else [*selected_agents, "merge"]
     missing_agents = [
         agent for agent in required_agents if not app_config.has_api_key_for_agent(agent)
@@ -83,7 +110,7 @@ def review(
     )
     started_at = now_iso()
     started = time.monotonic()
-    request = ReviewRequest(markdown=report.read_text(encoding="utf-8"), source_name=report.name)
+    request = ReviewRequest(markdown=markdown, source_name=report.name, language=selected_language)
     result = (
         workflow.run_only(request, only, progress=_print_progress)
         if only
@@ -94,10 +121,12 @@ def review(
         "version": "0.2.0",
         "timestamp": now_iso(),
         "source_file": str(report),
-        "profile": "balanced",
+        "profile": profile,
         "provider": app_config.provider_for_agent("fact"),
         "mode": selected_mode,
+        "language": selected_language,
         "total_elapsed_seconds": total_elapsed,
+        **input_analysis.to_dict(),
     }
     markdown_path, json_path = write_outputs(result, output)
     register_run(
@@ -107,7 +136,7 @@ def review(
         output_root="outputs",
         source_file=str(report),
         mode=selected_mode,
-        profile="balanced",
+        profile=profile,
         config=app_config,
         started_at=started_at,
         completed_at=now_iso(),
@@ -160,6 +189,93 @@ def doctor(config: Path = typer.Option(Path("configs/default.yaml"), "--config",
         status = "configured" if env_name and os.getenv(env_name) else "missing"
         active = " active" if provider in seen_providers else ""
         typer.echo(f"  {provider}: key={env_name} status={status}{active}")
+
+
+@app.command("verify-evidence")
+def verify_evidence(
+    fixture: Path = typer.Argument(..., exists=True, file_okay=False, readable=True),
+    claim: str | None = typer.Option(None, "--claim", help="Verify one fixture claim ID."),
+    output: Path = typer.Option(Path("outputs/evidence-phase1"), "--output", "-o"),
+    output_format: str = typer.Option(
+        "both", "--format", help="Output format: json, markdown, or both."
+    ),
+) -> None:
+    """Run deterministic offline evidence verification against local fixtures."""
+
+    selected_format = output_format.lower()
+    if selected_format not in {"json", "markdown", "both"}:
+        raise typer.BadParameter("--format must be one of: json, markdown, both")
+    dataset = EvidenceFixture.load(fixture)
+    claims = dataset.claims
+    if claim:
+        claims = [item for item in claims if item.claim_id == claim]
+        if not claims:
+            raise typer.BadParameter(f"Unknown fixture claim ID: {claim}", param_hint="--claim")
+    source = FakeEvidenceSource(dataset.evidence)
+    verifier = OfflineEvidenceVerifier(source)
+    report = verifier.verify_all(
+        claims,
+        fixture_id=dataset.fixture_id,
+        fixture_notice=dataset.fixture_notice,
+    )
+    paths = write_evidence_report(
+        report,
+        output,
+        output_format=selected_format,
+        fixture_path=fixture,
+        claim_filter=claim,
+    )
+    typer.echo("Offline fixture verification completed.")
+    typer.echo(f"Claims: {report.claim_count}; Evidence: {report.evidence_count}")
+    typer.echo("Model calls: 0; Network requests: 0")
+    for path in paths.values():
+        typer.echo(f"Wrote {path}")
+
+
+@app.command("fetch-evidence")
+def fetch_evidence(
+    cve_id: str = typer.Argument(..., help="Public CVE ID, for example CVE-2022-45157."),
+    source: str = typer.Option(..., "--source", help="Official source: nvd or github."),
+    output: Path = typer.Option(Path("outputs/evidence-pilot"), "--output", "-o"),
+    cache: Path = typer.Option(
+        Path(".cache/agent-network/evidence"), "--cache", help="Local response cache."
+    ),
+    timeout_seconds: float = typer.Option(20.0, "--timeout", min=1.0, max=120.0),
+) -> None:
+    """Fetch public CVE evidence without invoking any LLM."""
+
+    selected_source = source.lower()
+    if selected_source not in {"nvd", "github"}:
+        raise typer.BadParameter("--source must be one of: nvd, github")
+    try:
+        claim = public_cve_claim(cve_id)
+    except ValueError as exc:
+        raise typer.BadParameter(str(exc), param_hint="CVE_ID") from exc
+    client = EvidenceHttpClient(
+        cache=EvidenceCache(cache),
+        timeout_seconds=timeout_seconds,
+        minimum_interval_seconds=0.6 if selected_source == "nvd" else 0.0,
+    )
+    if selected_source == "nvd":
+        evidence_source = NvdEvidenceSource(client, api_key=os.getenv("NVD_API_KEY"))
+    else:
+        evidence_source = GitHubAdvisoryEvidenceSource(client, token=os.getenv("GITHUB_TOKEN"))
+    evidence = evidence_source.search(claim)
+    audit = evidence_source.last_audit.to_dict() if evidence_source.last_audit else None
+    paths = write_pilot_output(
+        output_dir=output,
+        cve_id=cve_id,
+        source_name=selected_source,
+        evidence=evidence,
+        audit=audit,
+        network_request_count=evidence_source.network_request_count,
+    )
+    typer.echo(f"Public CVE pilot completed: source={selected_source} evidence={len(evidence)}")
+    typer.echo(f"Network requests: {evidence_source.network_request_count}; Model calls: 0")
+    if audit and audit.get("error_type"):
+        typer.echo(f"Source error: {audit['error_type']}")
+    for path in paths.values():
+        typer.echo(f"Wrote {path}")
 
 
 @app.command()
@@ -285,15 +401,21 @@ def _print_progress(agent: str, event: str, elapsed_seconds: float | None, revie
     if event == "start":
         lead = f"[{prefix}] " if prefix else ""
         typer.echo(f"{lead}Running {label}...")
-    elif event == "complete":
+    elif event in {"complete", "completed"}:
         model = f" model={review.model}" if review and review.model else ""
         provider = f" provider={review.provider}" if review and review.provider else ""
         typer.echo(f"{label} completed in {elapsed_seconds or 0:.1f}s{provider}{model}")
-    elif event == "failed":
+    elif event in {
+        "completed_with_warnings",
+        "parse_failed",
+        "failed",
+        "skipped",
+        "truncated",
+    }:
         provider = f" provider={review.provider}" if review and review.provider else ""
+        error = f" error={review.error_type}" if review and review.error_type else ""
         typer.echo(
-            f"{label} failed in {elapsed_seconds or 0:.1f}s "
-            f"{provider} model={review.model} error={review.error_type}"
+            f"{label} {event} in {elapsed_seconds or 0:.1f}s{provider} model={review.model}{error}"
         )
 
 

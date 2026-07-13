@@ -24,7 +24,9 @@ KEYWORD_GROUPS = {
 }
 
 
-def merge_findings(findings: list[ReviewFinding]) -> tuple[list[MergedFinding], list[dict]]:
+def merge_findings(
+    findings: list[ReviewFinding], language: str = "en"
+) -> tuple[list[MergedFinding], list[dict]]:
     groups: list[list[ReviewFinding]] = []
     potential_duplicates: list[dict] = []
     for finding in findings:
@@ -45,20 +47,32 @@ def merge_findings(findings: list[ReviewFinding]) -> tuple[list[MergedFinding], 
                 )
         if not matched:
             groups.append([finding])
-    merged = [_merge_group(group) for group in groups]
+    merged = [_merge_group(group, language) for group in groups]
     return merged, potential_duplicates
 
 
-def _merge_group(group: list[ReviewFinding]) -> MergedFinding:
-    severities = {item.agent: item.severity.value for item in group}
+def _merge_group(group: list[ReviewFinding], language: str = "en") -> MergedFinding:
+    severities = [
+        {
+            "agent": item.agent,
+            "finding_id": item.id,
+            "severity": item.severity.value,
+        }
+        for item in group
+    ]
     merged_severity = max((item.severity for item in group), key=lambda item: SEVERITY_RANK[item])
     agents = sorted({item.agent for item in group})
+    max_severity_by_agent = {
+        agent: max(
+            (item.severity for item in group if item.agent == agent),
+            key=lambda item: SEVERITY_RANK[item],
+        )
+        for agent in agents
+    }
     dissenting = sorted(
-        {
-            item.agent
-            for item in group
-            if len({finding.severity for finding in group}) > 1 and item.severity != merged_severity
-        }
+        agent
+        for agent, agent_severity in max_severity_by_agent.items()
+        if agent_severity != merged_severity
     )
     title = _title_for(group[0])
     evidence = sorted({item.evidence_needed for item in group if item.evidence_needed})
@@ -75,7 +89,7 @@ def _merge_group(group: list[ReviewFinding]) -> MergedFinding:
         source_finding_ids=[item.id for item in group],
         original_severities=severities,
         merged_severity=merged_severity,
-        decision_reason=_decision_reason(group, merged_severity, dissenting),
+        decision_reason=_decision_reason(group, merged_severity, dissenting, language),
         reason=_combine_text([item.reason for item in group]),
         combined_evidence_needed=_combine_text(evidence),
         combined_references=references,
@@ -89,6 +103,8 @@ def _merge_group(group: list[ReviewFinding]) -> MergedFinding:
 
 
 def _similarity(left: ReviewFinding, right: ReviewFinding) -> float:
+    if _same_cve_topic(left, right):
+        return 1.0
     left_key = _canonical_key(left)
     right_key = _canonical_key(right)
     if left_key and left_key == right_key:
@@ -115,9 +131,38 @@ def _normalize(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
 
 
+def _shared_cve_identifiers(left: ReviewFinding, right: ReviewFinding) -> set[str]:
+    pattern = r"\bCVE-\d{4}-\d{4,}\b"
+    left_ids = {
+        value.upper()
+        for value in re.findall(pattern, f"{left.location} {left.issue} {left.reason}", re.I)
+    }
+    right_ids = {
+        value.upper()
+        for value in re.findall(pattern, f"{right.location} {right.issue} {right.reason}", re.I)
+    }
+    return left_ids & right_ids
+
+
+def _same_cve_topic(left: ReviewFinding, right: ReviewFinding) -> bool:
+    if not _shared_cve_identifiers(left, right):
+        return False
+    categories = (
+        {"exist", "invalid", "fiction", "year", "编号", "年份", "真实", "虚构", "存在", "核验"},
+        {"attack", "exploit", "token", "攻击", "利用", "令牌", "前提"},
+        {"patch", "fix", "upgrade", "补丁", "修复", "升级"},
+    )
+    left_text = f"{left.location} {left.issue} {left.reason}".lower()
+    right_text = f"{right.location} {right.issue} {right.reason}".lower()
+    return any(
+        any(term in left_text for term in category) and any(term in right_text for term in category)
+        for category in categories
+    )
+
+
 def _title_for(finding: ReviewFinding) -> str:
     issue = finding.issue.strip().rstrip(".")
-    return issue[:90] or "Untitled finding"
+    return issue or "Untitled finding"
 
 
 def _combine_text(values: list[str]) -> str:
@@ -130,8 +175,27 @@ def _combine_text(values: list[str]) -> str:
 
 
 def _decision_reason(
-    group: list[ReviewFinding], merged_severity: Severity, dissenting_agents: list[str]
+    group: list[ReviewFinding],
+    merged_severity: Severity,
+    dissenting_agents: list[str],
+    language: str = "en",
 ) -> str:
+    if language.lower().startswith("zh"):
+        severity_label = {
+            Severity.INFO: "信息",
+            Severity.LOW: "低危",
+            Severity.MEDIUM: "中危",
+            Severity.HIGH: "高危",
+            Severity.CRITICAL: "严重",
+        }[merged_severity]
+        if dissenting_agents:
+            return (
+                f"综合严重程度定为{severity_label}，因为最高影响 Agent 的依据表明"
+                "发布风险更高；其他严重程度意见已保留供人工复核。"
+            )
+        if len(group) > 1:
+            return f"综合严重程度定为{severity_label}，因为多个 Agent 报告了同一问题。"
+        return f"沿用来源 Agent 给出的严重程度：{severity_label}。"
     if dissenting_agents:
         return (
             f"Severity set to {merged_severity.value} because the highest-impact agent rationale "

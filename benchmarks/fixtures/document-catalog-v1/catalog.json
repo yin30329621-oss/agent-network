@@ -1,0 +1,38 @@
+[
+  {
+    "document_id": "rancher-cluster-agent-2-10",
+    "source_name": "rancher",
+    "title": "FIXTURE: Downstream Cluster Communication",
+    "canonical_url": "https://ranchermanager.docs.rancher.com/fixture/cluster-agent",
+    "official_domain": "ranchermanager.docs.rancher.com",
+    "product": "Rancher Manager",
+    "components": ["cattle-cluster-agent", "Rancher Server"],
+    "product_version": "2.10",
+    "documentation_version": "2.10",
+    "language": "en",
+    "updated_at": "2026-07-13T00:00:00Z",
+    "tags": ["cluster agent", "rancher server", "communication"],
+    "supported_claim_ids": ["catalog-claim-cluster-agent"],
+    "fixture_excerpt": "FIXTURE ONLY: Cluster Agent establishes an outbound management connection.",
+    "source_priority": 100,
+    "fixture_only": true
+  },
+  {
+    "document_id": "fleet-bundle-0-10",
+    "source_name": "rancher",
+    "title": "FIXTURE: Fleet Bundle Overview",
+    "canonical_url": "https://fleet.rancher.io/fixture/bundle",
+    "official_domain": "fleet.rancher.io",
+    "product": "Fleet",
+    "components": ["Fleet Agent", "Bundle"],
+    "product_version": "0.10",
+    "documentation_version": "0.10",
+    "language": "en",
+    "updated_at": "2026-07-13T00:00:00Z",
+    "tags": ["fleet agent", "bundle"],
+    "supported_claim_ids": ["catalog-claim-fleet-bundle"],
+    "fixture_excerpt": "FIXTURE ONLY: Fleet Agent applies Bundle resources to target clusters.",
+    "source_priority": 95,
+    "fixture_only": true
+  }
+]

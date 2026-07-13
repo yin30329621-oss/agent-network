@@ -10,7 +10,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from agent_network.config import AppConfig
-from agent_network.schemas import ReviewResult, now_iso
+from agent_network.schemas import ReviewResult, determine_overall_status, now_iso
 
 
 @dataclass(slots=True)
@@ -45,6 +45,10 @@ def register_run(
     run_meta = run_dir / "run.json"
     shutil.copy2(markdown_path, run_md)
     shutil.copy2(json_path, run_json)
+    per_agent_call_counts = {
+        review.agent: review.model_call_count for review in result.agent_reviews
+    }
+    overall_status = result.overall_status or determine_overall_status(result)
     record = {
         "run_id": run_id,
         "started_at": started_at,
@@ -53,13 +57,39 @@ def register_run(
         "profile": profile,
         "mode": mode,
         "output_directory": str(run_dir),
-        "status": "completed",
+        "status": overall_status,
+        "overall_status": overall_status,
+        "language": result.metadata.get("language"),
+        "version": result.metadata.get("version"),
+        "merged_findings_count": len(result.merged_findings),
+        "disagreements_count": len(result.disagreements),
+        "potential_duplicates_count": len(result.potential_duplicates),
         "total_elapsed_seconds": total_elapsed_seconds,
+        "retry_attempts": config.retry_attempts,
+        "configured_timeout_seconds": {
+            agent: config.timeout_for_agent(agent)
+            for agent in ("fact", "security", "logic", "merge")
+        },
+        "configured_max_tokens": {
+            agent: config.max_tokens_for_agent(agent)
+            for agent in ("fact", "security", "logic", "merge")
+        },
+        "total_model_call_count": sum(per_agent_call_counts.values()),
+        "total_retry_count": sum(review.retry_count for review in result.agent_reviews),
+        "per_agent_call_counts": per_agent_call_counts,
+        "input_characters": result.metadata.get("input_characters"),
+        "input_lines": result.metadata.get("input_lines"),
+        "estimated_input_tokens": result.metadata.get("estimated_input_tokens"),
+        "input_size_class": result.metadata.get("input_size_class"),
         "models": {
             agent: {
                 "provider": config.provider_for_agent(agent),
                 "model": config.model_for_agent(agent),
                 "timeout_seconds": config.timeout_for_agent(agent),
+                "max_tokens": config.max_tokens_for_agent(agent),
+                "reasoning_mode": config.reasoning_mode_for_agent(agent),
+                "json_mode": config.json_mode_for_agent(agent),
+                "provider_capability_status": config.provider_capability_status_for_agent(agent),
             }
             for agent in ("fact", "security", "logic", "merge")
         },
@@ -71,6 +101,35 @@ def register_run(
                 "model": review.model,
                 "elapsed_seconds": review.elapsed_seconds,
                 "error_type": review.error_type,
+                "error_message": review.error_message,
+                "skip_reason": review.skip_reason,
+                "model_call_count": review.model_call_count,
+                "request_attempt_count": review.request_attempt_count,
+                "retry_count": review.retry_count,
+                "timeout_count": review.timeout_count,
+                "request_started_at": review.request_started_at,
+                "request_completed_at": review.request_completed_at,
+                "last_error_type": review.last_error_type,
+                "last_error_message": review.last_error_message,
+                "configured_timeout_seconds": review.configured_timeout_seconds
+                or config.timeout_for_agent(review.agent),
+                "configured_max_tokens": review.configured_max_tokens
+                or config.max_tokens_for_agent(review.agent),
+                "effective_elapsed_seconds": review.effective_elapsed_seconds,
+                "parse_attempts": review.parse_attempts,
+                "repair_attempted": review.repair_attempted,
+                "repair_status": review.repair_status,
+                "parse_error_type": review.parse_error_type,
+                "failure_stage": review.failure_stage,
+                "raw_finding_count": review.raw_finding_count,
+                "valid_finding_count": review.valid_finding_count,
+                "rejected_finding_count": review.rejected_finding_count,
+                "rejected_findings": review.rejected_findings,
+                "reasoning_mode": config.reasoning_mode_for_agent(review.agent),
+                "json_mode": config.json_mode_for_agent(review.agent),
+                "provider_capability_status": config.provider_capability_status_for_agent(
+                    review.agent
+                ),
             }
             for review in result.agent_reviews
         ],

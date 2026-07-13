@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from copy import deepcopy
 import os
 from pathlib import Path
 from typing import Any
@@ -13,6 +14,27 @@ class AppConfig:
     """Application configuration wrapper."""
 
     raw: dict[str, Any]
+    profile_name: str = "balanced"
+
+    def with_profile(self, profile_name: str) -> "AppConfig":
+        profiles = self.raw.get("profiles", {})
+        if profile_name not in profiles:
+            available = ", ".join(sorted(profiles)) or "none"
+            raise ValueError(f"Unknown profile {profile_name!r}. Available profiles: {available}")
+        raw = deepcopy(self.raw)
+        profile = profiles[profile_name] or {}
+        review_agents = raw.setdefault("review", {}).setdefault("agents", {})
+        for agent in ("fact", "security", "logic", "merge"):
+            override = profile.get(agent)
+            if isinstance(override, dict):
+                review_agents.setdefault(agent, {}).update(override)
+        if "retry_attempts" in profile:
+            raw.setdefault("llm", {})["retry_attempts"] = int(profile["retry_attempts"])
+        return AppConfig(raw=raw, profile_name=profile_name)
+
+    @property
+    def available_profiles(self) -> tuple[str, ...]:
+        return tuple(sorted(self.raw.get("profiles", {})))
 
     @property
     def default_model(self) -> str:
@@ -51,6 +73,46 @@ class AppConfig:
         review_config = self.raw.get("review", {})
         agent_config = review_config.get("agents", {}).get(agent, {})
         return int(agent_config.get("timeout_seconds") or self.timeout_seconds)
+
+    def max_tokens_for_agent(self, agent: str) -> int:
+        review_config = self.raw.get("review", {})
+        agent_config = review_config.get("agents", {}).get(agent, {})
+        return int(agent_config.get("max_tokens") or self.max_tokens)
+
+    def reasoning_mode_for_agent(self, agent: str) -> str:
+        agent_config = self.raw.get("review", {}).get("agents", {}).get(agent, {})
+        return str(agent_config.get("reasoning_mode") or "provider_default")
+
+    def json_mode_for_agent(self, agent: str) -> str:
+        agent_config = self.raw.get("review", {}).get("agents", {}).get(agent, {})
+        return str(agent_config.get("json_mode") or "disabled")
+
+    def provider_capability_status_for_agent(self, agent: str) -> str:
+        agent_config = self.raw.get("review", {}).get("agents", {}).get(agent, {})
+        return str(agent_config.get("provider_capability_status") or "not_configured")
+
+    def provider_request_options_for_agent(self, agent: str) -> dict[str, Any]:
+        """Return only provider options explicitly marked as verified."""
+
+        agent_config = self.raw.get("review", {}).get("agents", {}).get(agent, {})
+        if agent_config.get("provider_capability_status") != "verified":
+            return {}
+        options = agent_config.get("provider_request_options")
+        return dict(options) if isinstance(options, dict) else {}
+
+    def document_source_config(self, source_name: str) -> dict[str, Any]:
+        sources = self.raw.get("evidence", {}).get("document_sources", {})
+        config = sources.get(source_name)
+        if not isinstance(config, dict):
+            raise ValueError(f"Unknown document evidence source: {source_name}")
+        return dict(config)
+
+    def document_source_domains(self, source_name: str) -> set[str]:
+        config = self.document_source_config(source_name)
+        domains = config.get("domains") or []
+        if not isinstance(domains, list) or not all(isinstance(domain, str) for domain in domains):
+            raise ValueError(f"Document source {source_name} must define string domains")
+        return set(domains)
 
     def role_for_agent(self, agent: str) -> str:
         roles = {

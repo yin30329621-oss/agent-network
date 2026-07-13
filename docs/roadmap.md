@@ -22,13 +22,18 @@
 - Baseline command
 - Stats command
 
-## v0.3: Reviewer Hardening
+## v0.3: Evidence Verification / RAG MVP (in progress)
 
-- Structured JSON validation for model outputs
-- Golden-file tests for prompt rendering and report formatting
-- Retry, timeout, and partial failure handling
-- Provider/model selection per agent
-- Review severity policy configuration
+- Phase 1: offline Claim, Evidence, Matcher, verification rules, fixtures, and reporting
+- Phase 2A: NVD and GitHub Global Security Advisory sources, cache, whitelist, and
+  public-CVE pilot command (implemented; real pilot pending explicit approval)
+- Phase 2B: Rancher/SUSE Security Advisory and Release Notes sources
+- Phase 3: versioned local Rancher/SUSE/Kubernetes document index
+- Phase 4: evidence-aware Security review and Merge Evidence Judge
+- Phase 5: verification accuracy, evidence recall, citation error, cost, and latency benchmark
+
+v0.3 is under development and is not released. The v0.2 four-Agent workflow remains
+the stable default while Phase 1 is developed as an isolated offline subsystem.
 
 ## Phase 3: Integrations
 

@@ -8,7 +8,15 @@ template: |
   severity conflicts, note missing evidence, and produce a concise Markdown
   executive summary.
 
+  The input document may be written in Simplified Chinese. If it is, return all
+  human-readable review content in Simplified Chinese; otherwise use the input
+  document language. Keep JSON field names, severity enum values, CVE identifiers,
+  commands, code, URLs, API paths, Kubernetes object names, Namespaces, product
+  names, model names, provider names, and technical identifiers unchanged. Do not
+  output English explanatory prose for Chinese input unless a technical term
+  should remain in English.
+
   Return only valid JSON using this shape:
   {
-    "summary": "# Technical Report Review\n\nConcise merged Markdown summary"
+    "summary": "Concise merged review summary in the requested language"
   }

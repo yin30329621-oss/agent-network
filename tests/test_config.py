@@ -26,3 +26,26 @@ def test_default_config_sets_agent_models_and_cost_controls() -> None:
     assert config.max_tokens == 1600
     assert config.timeout_seconds == 60
     assert config.retry_attempts == 2
+
+
+def test_long_report_profile_overrides_timeouts_and_retry_only() -> None:
+    config = load_config("configs/default.yaml").with_profile("long-report")
+
+    assert config.profile_name == "long-report"
+    assert config.retry_attempts == 1
+    assert config.timeout_for_agent("fact") == 600
+    assert config.timeout_for_agent("security") == 240
+    assert config.timeout_for_agent("logic") == 600
+    assert config.timeout_for_agent("merge") == 240
+    assert config.max_tokens_for_agent("fact") == 2400
+    assert config.max_tokens_for_agent("security") == 3200
+    assert config.max_tokens_for_agent("logic") == 3200
+    assert config.max_tokens_for_agent("merge") == 2400
+    assert config.model_for_agent("fact") == "deepseek-ai/DeepSeek-V4-Pro"
+    assert config.model_for_agent("security") == "Qwen/Qwen3.6-35B-A3B"
+    assert config.model_for_agent("logic") == "deepseek-ai/DeepSeek-V4-Flash"
+    assert config.model_for_agent("merge") == "zai-org/GLM-5.2"
+    assert config.reasoning_mode_for_agent("security") == "provider_default"
+    assert config.json_mode_for_agent("security") == "disabled"
+    assert config.provider_capability_status_for_agent("security") == "unverified_for_model"
+    assert config.provider_request_options_for_agent("security") == {}

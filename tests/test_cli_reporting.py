@@ -2,7 +2,8 @@ import json
 
 from typer.testing import CliRunner
 
-from agent_network.cli import app
+from agent_network.cli import _print_progress, app
+from agent_network.schemas import AgentReview
 
 
 def test_stats_handles_no_latest(tmp_path, monkeypatch) -> None:
@@ -37,3 +38,115 @@ def test_baseline_from_review_json(tmp_path) -> None:
     assert result.exit_code == 0
     assert output.exists()
     assert "Agent Network Baseline" in output.read_text(encoding="utf-8")
+
+
+def test_review_accepts_explicit_chinese_language(tmp_path, monkeypatch) -> None:
+    report = tmp_path / "rancher.md"
+    report.write_text("中文 Rancher Kubernetes RBAC WebSocket 审查报告。", encoding="utf-8")
+    output = tmp_path / "review-output"
+    monkeypatch.setattr("agent_network.cli.register_run", lambda **kwargs: None)
+    runner = CliRunner()
+
+    result = runner.invoke(
+        app,
+        [
+            "review",
+            str(report),
+            "--mock",
+            "--language",
+            "zh",
+            "--config",
+            "configs/default.yaml",
+            "--prompts",
+            "prompts",
+            "--output",
+            str(output),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    payload = json.loads((output / "review.json").read_text(encoding="utf-8"))
+    markdown = (output / "review.md").read_text(encoding="utf-8")
+    assert payload["metadata"]["language"] == "zh"
+    assert len(payload["execution"]) == 4
+    assert markdown.startswith("# 审查报告")
+
+
+def test_balanced_profile_warns_for_long_input(tmp_path, monkeypatch) -> None:
+    report = tmp_path / "long.md"
+    report.write_text("中" * 20_001, encoding="utf-8")
+    output = tmp_path / "review-output"
+    monkeypatch.setattr("agent_network.cli.register_run", lambda **kwargs: None)
+    runner = CliRunner()
+
+    result = runner.invoke(
+        app,
+        [
+            "review",
+            str(report),
+            "--mock",
+            "--language",
+            "zh",
+            "--output",
+            str(output),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "当前输入属于长报告" in result.output
+    assert "--profile long-report" in result.output
+    payload = json.loads((output / "review.json").read_text(encoding="utf-8"))
+    assert payload["metadata"]["profile"] == "balanced"
+    assert payload["metadata"]["input_size_class"] == "long"
+
+
+def test_long_report_profile_is_explicit_and_suppresses_warning(tmp_path, monkeypatch) -> None:
+    report = tmp_path / "long.md"
+    report.write_text("中" * 20_001, encoding="utf-8")
+    output = tmp_path / "review-output"
+    monkeypatch.setattr("agent_network.cli.register_run", lambda **kwargs: None)
+    runner = CliRunner()
+
+    result = runner.invoke(
+        app,
+        [
+            "review",
+            str(report),
+            "--mock",
+            "--profile",
+            "long-report",
+            "--output",
+            str(output),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "当前输入属于长报告" not in result.output
+    payload = json.loads((output / "review.json").read_text(encoding="utf-8"))
+    assert payload["metadata"]["profile"] == "long-report"
+
+
+def test_progress_prints_final_business_status(capsys) -> None:
+    _print_progress(
+        "security",
+        "parse_failed",
+        40.8,
+        AgentReview(agent="security", summary="", status="parse_failed"),
+    )
+    _print_progress(
+        "logic",
+        "failed",
+        729.8,
+        AgentReview(agent="logic", summary="", status="failed", error_type="Timeout"),
+    )
+    _print_progress(
+        "merge",
+        "skipped",
+        0.0,
+        AgentReview(agent="merge", summary="", status="skipped"),
+    )
+
+    output = capsys.readouterr().out
+    assert "Security Agent parse_failed in 40.8s" in output
+    assert "Logic Agent failed in 729.8s" in output
+    assert "Merge Agent skipped in 0.0s" in output

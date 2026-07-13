@@ -58,6 +58,31 @@ profiles:
       provider: siliconflow
       model: zai-org/GLM-5.2
       timeout_seconds: 120
+  long-report:
+    retry_attempts: 1
+    fact:
+      provider: siliconflow
+      model: deepseek-ai/DeepSeek-V4-Pro
+      timeout_seconds: 600
+      max_tokens: 2400
+    security:
+      provider: siliconflow
+      model: Qwen/Qwen3.6-35B-A3B
+      timeout_seconds: 240
+      max_tokens: 3200
+      reasoning_mode: provider_default
+      json_mode: disabled
+      provider_capability_status: unverified_for_model
+    logic:
+      provider: siliconflow
+      model: deepseek-ai/DeepSeek-V4-Flash
+      timeout_seconds: 600
+      max_tokens: 3200
+    merge:
+      provider: siliconflow
+      model: zai-org/GLM-5.2
+      timeout_seconds: 240
+      max_tokens: 2400
   high_reasoning:
     security:
       provider: siliconflow
@@ -90,6 +115,18 @@ review:
   output_formats:
     - markdown
     - json
+
+evidence:
+  document_sources:
+    rancher:
+      mode: catalog_only
+      domains:
+        - ranchermanager.docs.rancher.com
+        - rancher.com
+        - fleet.rancher.io
+      products:
+        - rancher_manager
+        - fleet
 
 future_integrations:
   mcp:
