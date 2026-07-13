@@ -5,6 +5,7 @@ __pycache__/
 .ruff_cache/
 .mypy_cache/
 .cache/
+benchmarks/results-local/
 dist/
 build/
 *.egg-info/
