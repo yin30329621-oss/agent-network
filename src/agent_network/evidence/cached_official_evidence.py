@@ -7,6 +7,7 @@ from datetime import UTC, datetime
 from hashlib import sha256
 import json
 from pathlib import Path
+import re
 from typing import Any
 
 from agent_network.evidence.document_bm25 import Bm25SearchQuery, OfficialDocumentBm25Index
@@ -375,8 +376,63 @@ def _filtered_reason(result, request: CachedEvidenceRetrievalRequest) -> str | N
 def _is_navigation_like_chunk(chunk: DocumentChunk) -> bool:
     marker_text = f"{chunk.section_heading}\n{chunk.text}".lower()
     markers = ("on this page", "table of contents", "本页目录")
-    if not any(marker in marker_text for marker in markers):
-        return False
     lines = [line.strip() for line in chunk.text.splitlines() if line.strip()]
-    list_lines = [line for line in lines if line.startswith(("- ", "* ", "+ "))]
-    return len(list_lines) >= 2 and len(list_lines) * 2 >= len(lines)
+    list_lines = [line for line in lines if _is_list_line(line)]
+    if len(list_lines) < 3 or len(list_lines) * 2 < len(lines):
+        return False
+    if any(marker in marker_text for marker in markers):
+        return _mostly_short_names(list_lines)
+
+    explanatory_lines = sum(_is_explanatory_line(line) for line in lines)
+    if explanatory_lines > max(1, len(lines) // 3):
+        return False
+    if not _mostly_short_names(list_lines):
+        return False
+    protected_items = sum(_is_action_or_permission_item(line) for line in list_lines)
+    return protected_items / len(list_lines) < 0.4
+
+
+_LIST_LINE = re.compile(r"^\s*(?:[-*+]\s+|\d+[.)]\s+)")
+_ACTION_PREFIX = re.compile(
+    r"^(?:install|configure|create|update|run|check|verify|use|set|apply|delete|allow|deny|grant|bind|authenticate|connect|deploy)\b",
+    re.I,
+)
+
+
+def _is_list_line(line: str) -> bool:
+    return bool(_LIST_LINE.match(line))
+
+
+def _list_item_text(line: str) -> str:
+    return _LIST_LINE.sub("", line).strip()
+
+
+def _mostly_short_names(lines: list[str]) -> bool:
+    names = [_list_item_text(line) for line in lines]
+    short_names = [
+        name for name in names if len(name) <= 80 and not re.search(r"[.!?。！？;；]$", name)
+    ]
+    return len(short_names) / len(names) >= 0.75
+
+
+def _is_explanatory_line(line: str) -> bool:
+    text = _list_item_text(line) if _is_list_line(line) else line
+    words = re.findall(r"[A-Za-z0-9]+", text)
+    return (
+        bool(re.search(r"[.!?。！？;；]$", text))
+        or len(words) >= 10
+        or bool(re.match(r"^(?:the|a|an|each|this|these)\b", text, re.I))
+    )
+
+
+def _is_action_or_permission_item(line: str) -> bool:
+    text = _list_item_text(line)
+    if _ACTION_PREFIX.match(text):
+        return True
+    return bool(
+        re.search(
+            r"\b(?:permission|permissions|role|roles|access|allow|deny|must|required|can)\b",
+            text,
+            re.I,
+        )
+    )

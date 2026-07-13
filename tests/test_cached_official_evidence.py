@@ -11,7 +11,9 @@ from agent_network.evidence.cached_official_evidence import (
     CachedDocumentLoadError,
     CachedEvidenceIndexBuilder,
     CachedEvidenceRetrievalRequest,
+    _is_navigation_like_chunk,
 )
+from agent_network.evidence.document_chunker import DocumentChunk
 from retrieve_from_official_cache import _parser, build_plan
 
 
@@ -205,6 +207,49 @@ def test_navigation_like_cached_chunks_are_optionally_excluded(tmp_path: Path) -
 
     assert result.returned_evidence_count == 0
     assert result.filtered_reasons_summary == {"navigation_like": 1}
+
+
+def _quality_chunk(text: str, heading: str = "Section") -> DocumentChunk:
+    from datetime import UTC, datetime
+
+    return DocumentChunk(
+        chunk_id="quality-check",
+        document_id="quality-check",
+        canonical_url="https://ranchermanager.docs.rancher.com/fixture",
+        final_url="https://ranchermanager.docs.rancher.com/fixture",
+        product="Rancher Manager",
+        component="Cluster Agent",
+        document_type="reference",
+        document_title="Quality fixture",
+        section_heading=heading,
+        section_heading_level=2,
+        section_order=0,
+        chunk_order=0,
+        text=text,
+        character_count=len(text),
+        source_fetched_at=datetime(2026, 7, 13, tzinfo=UTC),
+    )
+
+
+def test_navigation_detector_handles_name_directory_but_preserves_technical_lists() -> None:
+    directory = _quality_chunk(
+        "A source index.\n\n- GitHub repository\n- Rancher charts\n- System components\n- Resource pages"
+    )
+    steps = _quality_chunk("- Install the agent\n- Configure the endpoint\n- Verify the connection")
+    permissions = _quality_chunk(
+        "- ClusterRole grants read access\n- RoleBinding connects the ServiceAccount\n"
+        "- Permissions must be reviewed"
+    )
+    explanation = _quality_chunk(
+        "The component list explains how requests are handled.\n"
+        "- Cluster Agent maintains a connection to the server.\n"
+        "- The server validates the request before forwarding it."
+    )
+
+    assert _is_navigation_like_chunk(directory) is True
+    assert _is_navigation_like_chunk(steps) is False
+    assert _is_navigation_like_chunk(permissions) is False
+    assert _is_navigation_like_chunk(explanation) is False
 
 
 def test_cache_path_escape_is_rejected_and_plan_is_read_only(tmp_path: Path) -> None:
