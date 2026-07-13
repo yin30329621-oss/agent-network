@@ -26,6 +26,14 @@ from agent_network.evidence.document_bm25 import (
     Bm25SearchResult,
     OfficialDocumentBm25Index,
 )
+from agent_network.evidence.official_evidence_retriever import (
+    FixtureOfficialDocumentContentProvider,
+    OfficialEvidenceRetrievalError,
+    OfficialEvidenceRetrievalRequest,
+    OfficialEvidenceRetrievalResult,
+    OfficialEvidenceRetriever,
+    RetrievedOfficialEvidence,
+)
 from agent_network.evidence.github_advisory import GitHubAdvisoryEvidenceSource
 from agent_network.evidence.http import EvidenceHttpClient
 from agent_network.evidence.nvd import NvdEvidenceSource
@@ -74,6 +82,7 @@ __all__ = [
     "EvidenceStrength",
     "FakeEvidenceSource",
     "FixtureOfficialDocumentEvidenceSource",
+    "FixtureOfficialDocumentContentProvider",
     "GitHubAdvisoryEvidenceSource",
     "HttpOfficialDocumentFetcher",
     "NvdEvidenceSource",
@@ -84,6 +93,11 @@ __all__ = [
     "OfficialDocumentBm25Index",
     "OfficialDocumentChunker",
     "OfficialDocumentEvidenceSource",
+    "OfficialEvidenceRetrievalError",
+    "OfficialEvidenceRetrievalRequest",
+    "OfficialEvidenceRetrievalResult",
+    "OfficialEvidenceRetriever",
+    "RetrievedOfficialEvidence",
     "VerificationReport",
     "VerificationResult",
     "VerificationStatus",
