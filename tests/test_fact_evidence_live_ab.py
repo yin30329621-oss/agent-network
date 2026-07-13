@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 import sys
+import threading
 
 import pytest
 
@@ -93,6 +94,37 @@ def test_plan_is_bounded_and_reports_deterministic_call_and_character_counts() -
     assert plan["estimated_prompt_characters"] == 20
     assert plan["live_calls_enabled"] is False
     assert plan["output_path"] is None
+    assert plan["timeout_per_call"] == 100.0
+    assert plan["maximum_expected_wait_seconds"] == 400.0
+
+
+def test_harness_watchdog_returns_timeout_and_does_not_block_follow_up(capsys) -> None:
+    class BlockingFact:
+        def __init__(self):
+            self.started = threading.Event()
+
+        def review(self, request):
+            self.started.set()
+            threading.Event().wait(1)
+
+    fact = BlockingFact()
+    evaluator = FactEvidenceLiveAbEvaluator(fact)
+    config = FactEvidenceLiveAbRunConfig(
+        enabled=True,
+        confirm_live_model_calls=True,
+        model="explicit-model",
+        max_cases=1,
+        evidence_off_enabled=True,
+        evidence_on_enabled=False,
+        confirm_planned_call_count=1,
+        timeout_seconds=0.01,
+    )
+
+    result = evaluator.run([case()], config)
+
+    assert fact.started.is_set()
+    assert result.results[0].error_code == "harness_timeout"
+    assert "token_usage_available=false" in capsys.readouterr().out
 
 
 def test_plan_mode_does_not_require_api_key_or_call_network_or_models(monkeypatch, capsys) -> None:

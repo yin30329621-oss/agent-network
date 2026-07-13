@@ -12,6 +12,8 @@ from datetime import UTC, datetime
 import json
 import os
 from pathlib import Path
+import queue
+import threading
 import time
 from typing import Any, Protocol
 
@@ -40,6 +42,7 @@ class FactEvidenceLiveAbRunConfig:
     model: str | None = None
     temperature: float = 0.0
     max_output_tokens: int = 800
+    timeout_seconds: float = 100.0
     case_ids: tuple[str, ...] = ()
     max_cases: int = 3
     evidence_off_enabled: bool = True
@@ -214,6 +217,8 @@ class FactEvidenceLiveAbEvaluator:
             "estimated_prompt_characters": estimated_characters,
             "model": config.model,
             "temperature": config.temperature,
+            "timeout_per_call": config.timeout_seconds,
+            "maximum_expected_wait_seconds": calls * config.timeout_seconds,
             "evidence_off_enabled": config.evidence_off_enabled,
             "evidence_on_enabled": config.evidence_on_enabled,
             "live_calls_enabled": config.enabled and config.confirm_live_model_calls,
@@ -229,9 +234,26 @@ class FactEvidenceLiveAbEvaluator:
             raise LiveAbSafetyError("Live model evaluation requires a Fact Agent")
         selected = self._select(cases, config)
         result = FactEvidenceLiveAbRunResult(len(selected), int(plan["planned_fact_model_calls"]))
+        total_calls = int(plan["planned_fact_model_calls"])
+        print(
+            "Live A/B plan: "
+            + json.dumps(
+                {
+                    "selected_case_ids": plan["selected_case_ids"],
+                    "planned_fact_model_calls": plan["planned_fact_model_calls"],
+                    "timeout_per_call": plan["timeout_per_call"],
+                    "maximum_expected_wait_seconds": plan["maximum_expected_wait_seconds"],
+                },
+                ensure_ascii=False,
+            )
+        )
+        call_index = 0
         for case in selected:
             if config.evidence_off_enabled:
-                result.results.append(self._run_case(case, "off", config, None))
+                call_index += 1
+                result.results.append(
+                    self._run_case(case, "OFF", config, None, call_index, total_calls)
+                )
             if config.evidence_on_enabled:
                 if self.retriever is None:
                     raise LiveAbSafetyError("Evidence ON requires an injected retriever")
@@ -244,7 +266,10 @@ class FactEvidenceLiveAbEvaluator:
                     )
                 )
                 context = build_fact_evidence_context(retrieval, FactEvidenceLimits())
-                result.results.append(self._run_case(case, "on", config, context))
+                call_index += 1
+                result.results.append(
+                    self._run_case(case, "ON", config, context, call_index, total_calls)
+                )
         if config.save_results:
             self._save(result, config.output_directory)
         return result
@@ -271,15 +296,102 @@ class FactEvidenceLiveAbEvaluator:
             total += base + context_size
         return total
 
-    def _run_case(self, case, mode, config, context) -> FactEvidenceLiveAbCaseResult:
+    def _run_case(
+        self, case, mode, config, context, call_index, total_calls
+    ) -> FactEvidenceLiveAbCaseResult:
         assert self.fact_agent is not None
         request = ReviewRequest(
             markdown=case.report_context or case.claim_text, fact_evidence_context=context
         )
+        print(
+            f"Calling case_id={case.case_id} mode={mode} "
+            f"call={call_index}/{total_calls} model={config.model or ''} "
+            f"timeout_seconds={config.timeout_seconds}"
+        )
         started = time.monotonic()
+        response: queue.Queue[tuple[object | None, BaseException | None]] = queue.Queue(maxsize=1)
+
+        def invoke() -> None:
+            try:
+                response.put((self.fact_agent.review(request), None))
+            except BaseException as exc:  # pragma: no cover - exercised by integration stubs
+                response.put((None, exc))
+
+        worker = threading.Thread(target=invoke, daemon=True)
+        worker.start()
+        worker.join(config.timeout_seconds)
+        elapsed_ms = (time.monotonic() - started) * 1000
+        if worker.is_alive():
+            print(
+                f"Call failed case_id={case.case_id} mode={mode} "
+                f"latency_ms={elapsed_ms:.1f} token_usage_available=false error_code=harness_timeout"
+            )
+            return FactEvidenceLiveAbCaseResult(
+                case.case_id,
+                mode.lower(),
+                config.model or "",
+                None,
+                None,
+                None,
+                [],
+                [],
+                [],
+                [],
+                0,
+                0,
+                len(case.claim_text),
+                0,
+                None,
+                None,
+                None,
+                1,
+                0,
+                elapsed_ms,
+                "harness_timeout",
+                "Fact evaluation exceeded the harness deadline",
+            )
+        review, error = response.get_nowait()
+        if error is not None:
+            print(
+                f"Call failed case_id={case.case_id} mode={mode} "
+                f"latency_ms={elapsed_ms:.1f} token_usage_available=false "
+                f"error_code={type(error).__name__}"
+            )
+            return FactEvidenceLiveAbCaseResult(
+                case.case_id,
+                mode.lower(),
+                config.model or "",
+                None,
+                None,
+                None,
+                [],
+                [],
+                [],
+                [],
+                0,
+                0,
+                len(case.claim_text),
+                0,
+                None,
+                None,
+                None,
+                1,
+                0,
+                elapsed_ms,
+                type(error).__name__,
+                "Fact evaluation call failed",
+            )
         try:
-            review = self.fact_agent.review(request)
+            assert review is not None
             audit = getattr(getattr(self.fact_agent, "llm", None), "last_response_audit", {}) or {}
+            token_usage_available = any(
+                audit.get(key) is not None
+                for key in ("prompt_tokens", "completion_tokens", "total_tokens")
+            )
+            print(
+                f"Call success case_id={case.case_id} mode={mode} "
+                f"latency_ms={elapsed_ms:.1f} token_usage_available={token_usage_available}"
+            )
             return FactEvidenceLiveAbCaseResult(
                 case.case_id,
                 mode,
@@ -300,7 +412,7 @@ class FactEvidenceLiveAbEvaluator:
                 audit.get("total_tokens"),
                 review.model_call_count or 1,
                 review.evidence_network_request_count,
-                (time.monotonic() - started) * 1000,
+                elapsed_ms,
             )
         except Exception as exc:
             return FactEvidenceLiveAbCaseResult(
@@ -323,7 +435,7 @@ class FactEvidenceLiveAbEvaluator:
                 None,
                 1,
                 0,
-                (time.monotonic() - started) * 1000,
+                elapsed_ms,
                 type(exc).__name__,
                 "Fact evaluation call failed",
             )
@@ -419,6 +531,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-cases", type=int, default=3)
     parser.add_argument("--temperature", type=float, default=0.0)
     parser.add_argument("--max-output-tokens", type=int, default=800)
+    parser.add_argument("--timeout-seconds", type=float, default=100.0)
     parser.add_argument("--enable-off", dest="enable_off", action="store_true", default=True)
     parser.add_argument("--disable-off", dest="enable_off", action="store_false")
     parser.add_argument("--enable-on", dest="enable_on", action="store_true", default=True)
@@ -444,6 +557,7 @@ def main(argv: list[str] | None = None) -> int:
         model=args.model,
         temperature=args.temperature,
         max_output_tokens=args.max_output_tokens,
+        timeout_seconds=args.timeout_seconds,
         case_ids=tuple(args.case_id),
         max_cases=args.max_cases,
         evidence_off_enabled=args.enable_off,
@@ -487,7 +601,7 @@ def _live_fact_agent(config: FactEvidenceLiveAbRunConfig) -> FactAgentPort:
         default_model=config.model or "",
         temperature=config.temperature,
         max_tokens=config.max_output_tokens,
-        timeout_seconds=app_config.timeout_for_agent("fact"),
+        timeout_seconds=config.timeout_seconds,
         retry_attempts=1,
         model_options={config.model or "": fact_options},
     )
@@ -496,7 +610,7 @@ def _live_fact_agent(config: FactEvidenceLiveAbRunConfig) -> FactAgentPort:
         prompts=PromptRegistry(PROJECT_ROOT / "prompts"),
         model=config.model,
         provider=app_config.provider_for_agent("fact"),
-        timeout_seconds=app_config.timeout_for_agent("fact"),
+        timeout_seconds=config.timeout_seconds,
         max_tokens=config.max_output_tokens,
     )
 
