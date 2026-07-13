@@ -24,6 +24,12 @@ template: |
   success or partial_success, be especially cautious. If evidence_count is zero or
   documents failed, do not invent citations. Only cite supplied chunk IDs using the
   evidence_chunk_ids field; never invent chunk IDs, document IDs, or URLs.
+  Set evidence_relation to direct_support only when supplied evidence explicitly
+  establishes the claim, and direct_contradiction only when it explicitly states the
+  opposite. Absence of support is not direct contradiction: use absence_of_support
+  when the evidence does not state or guarantee a claim. Use indirect_evidence for
+  related but non-proving evidence, and unavailable when retrieval cannot provide
+  usable official evidence. Include concise evidence_limitations when applicable.
 
   The input document may be written in Simplified Chinese. If it is, return all
   human-readable review content in Simplified Chinese; otherwise use the input
@@ -38,6 +44,8 @@ template: |
   {
     "summary": "short summary",
     "evidence_chunk_ids": ["only supplied official evidence chunk IDs"],
+    "evidence_relation": "direct_support|direct_contradiction|absence_of_support|indirect_evidence|unavailable",
+    "evidence_limitations": ["concise limitations, when applicable"],
     "findings": [
       {
         "severity": "info|low|medium|high|critical",

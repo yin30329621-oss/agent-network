@@ -76,39 +76,49 @@ def retrieval_result(
 
 class CapturingLLM:
     def __init__(
-        self, chunk_ids: list[str] | None = None, *, include_finding: bool = False
+        self,
+        chunk_ids: list[str] | None = None,
+        *,
+        include_finding: bool = False,
+        evidence_relation: str | None = None,
+        evidence_limitations: list[str] | None = None,
     ) -> None:
         self.calls = 0
         self.user_prompts: list[str] = []
         self.chunk_ids = chunk_ids or []
         self.include_finding = include_finding
+        self.evidence_relation = evidence_relation
+        self.evidence_limitations = evidence_limitations
         self.last_response_audit = {}
 
     def complete(self, **kwargs) -> str:
         self.calls += 1
         self.user_prompts.append(kwargs["user_prompt"])
-        return json.dumps(
-            {
-                "summary": "Fact result",
-                "evidence_chunk_ids": self.chunk_ids,
-                "findings": (
-                    [
-                        {
-                            "severity": "low",
-                            "location": "Summary",
-                            "issue": "Needs evidence",
-                            "reason": "The claim requires support.",
-                            "evidence_needed": "Official source",
-                            "reference": "https://invented.invalid/reference",
-                            "suggestion": "Add a citation.",
-                            "confidence": 0.7,
-                        }
-                    ]
-                    if self.include_finding
-                    else []
-                ),
-            }
-        )
+        payload = {
+            "summary": "Fact result",
+            "evidence_chunk_ids": self.chunk_ids,
+            "findings": (
+                [
+                    {
+                        "severity": "low",
+                        "location": "Summary",
+                        "issue": "Needs evidence",
+                        "reason": "The claim requires support.",
+                        "evidence_needed": "Official source",
+                        "reference": "https://invented.invalid/reference",
+                        "suggestion": "Add a citation.",
+                        "confidence": 0.7,
+                    }
+                ]
+                if self.include_finding
+                else []
+            ),
+        }
+        if self.evidence_relation is not None:
+            payload["evidence_relation"] = self.evidence_relation
+        if self.evidence_limitations is not None:
+            payload["evidence_limitations"] = self.evidence_limitations
+        return json.dumps(payload)
 
 
 def test_fact_evidence_context_enforces_limits_and_preserves_order() -> None:
@@ -184,6 +194,92 @@ def test_partial_success_keeps_evidence_and_records_document_limitations() -> No
     assert "document_processing_failures_present" in review.evidence_limitations
 
 
+@pytest.mark.parametrize(
+    ("relation", "chunk_ids", "expected_relation"),
+    [
+        ("direct_support", ["chunk-1"], "direct_support"),
+        ("direct_contradiction", ["chunk-1"], "direct_contradiction"),
+        ("absence_of_support", [], "absence_of_support"),
+        ("indirect_evidence", ["chunk-1"], "indirect_evidence"),
+    ],
+)
+def test_fact_evidence_relation_is_audited_and_cautious(
+    relation: str, chunk_ids: list[str], expected_relation: str
+) -> None:
+    context = build_fact_evidence_context(retrieval_result(), FactEvidenceLimits())
+    review = FactAgent(
+        llm=CapturingLLM(chunk_ids, evidence_relation=relation), prompts=PromptRegistry("prompts")
+    ).review(ReviewRequest(markdown="# Report", fact_evidence_context=context))
+
+    assert review.evidence_relation is not None
+    assert review.evidence_relation.value == expected_relation
+    if expected_relation == "absence_of_support":
+        assert "Provided official evidence does not state or guarantee this claim." in (
+            review.evidence_limitations
+        )
+    if expected_relation == "indirect_evidence":
+        assert "Provided evidence is related but does not directly establish the claim." in (
+            review.evidence_limitations
+        )
+
+
+@pytest.mark.parametrize(
+    ("status", "expected_relation"),
+    [
+        ("no_catalog_match", "unavailable"),
+        ("no_chunk_match", "absence_of_support"),
+        ("all_documents_failed", "unavailable"),
+    ],
+)
+def test_retrieval_degradation_controls_evidence_relation(
+    status: str, expected_relation: str
+) -> None:
+    context = build_fact_evidence_context(retrieval_result(status, []), FactEvidenceLimits())
+    review = FactAgent(
+        llm=CapturingLLM([], evidence_relation="direct_support"), prompts=PromptRegistry("prompts")
+    ).review(ReviewRequest(markdown="# Report", fact_evidence_context=context))
+
+    assert review.evidence_relation is not None
+    assert review.evidence_relation.value == expected_relation
+
+
+def test_direct_relation_without_verified_citation_and_invalid_relation_degrade_safely() -> None:
+    context = build_fact_evidence_context(retrieval_result(), FactEvidenceLimits())
+    unsupported = FactAgent(
+        llm=CapturingLLM([], evidence_relation="direct_contradiction"),
+        prompts=PromptRegistry("prompts"),
+    ).review(ReviewRequest(markdown="# Report", fact_evidence_context=context))
+    invalid = FactAgent(
+        llm=CapturingLLM(["chunk-1"], evidence_relation="unsupported_value"),
+        prompts=PromptRegistry("prompts"),
+    ).review(ReviewRequest(markdown="# Report", fact_evidence_context=context))
+
+    assert unsupported.evidence_relation is not None
+    assert unsupported.evidence_relation.value == "indirect_evidence"
+    assert "evidence_relation_requires_verified_chunk" in unsupported.evidence_warnings
+    assert invalid.evidence_relation is not None
+    assert invalid.evidence_relation.value == "indirect_evidence"
+    assert "invalid_evidence_relation:unsupported_value" in invalid.evidence_warnings
+
+
+def test_limitations_are_stable_deduplicated_and_chinese_when_requested() -> None:
+    context = build_fact_evidence_context(
+        retrieval_result("partial_success"), FactEvidenceLimits(), language="zh-CN"
+    )
+    review = FactAgent(
+        llm=CapturingLLM(
+            ["chunk-1"],
+            evidence_relation="indirect_evidence",
+            evidence_limitations=["自定义局限", "自定义局限"],
+        ),
+        prompts=PromptRegistry("prompts"),
+    ).review(ReviewRequest(markdown="# 报告", language="zh-CN", fact_evidence_context=context))
+
+    assert review.evidence_limitations.count("自定义局限") == 1
+    assert "部分官方文档处理失败。" in review.evidence_limitations
+    assert "提供的证据与该主张相关，但不能直接证明该主张。" in review.evidence_limitations
+
+
 class StubRetriever:
     def __init__(self, result: OfficialEvidenceRetrievalResult | Exception) -> None:
         self.result = result
@@ -246,3 +342,4 @@ def test_recoverable_retriever_error_and_disabled_feature_keep_fact_running() ->
     assert degraded.agent_reviews[0].evidence_used is False
     assert llm.calls == 1
     assert disabled.retrieval_status is None
+    assert disabled.evidence_relation is None

@@ -15,7 +15,13 @@ from agent_network.llm import LLMClient
 from agent_network.evidence.fact_evidence import validate_fact_evidence_citations
 from agent_network.language import ZH_REVIEW_INSTRUCTION, is_chinese_language
 from agent_network.prompts import PromptTemplate
-from agent_network.schemas import AgentReview, FindingStatus, ReviewFinding, ReviewRequest
+from agent_network.schemas import (
+    AgentReview,
+    EvidenceRelation,
+    FindingStatus,
+    ReviewFinding,
+    ReviewRequest,
+)
 
 
 class ReviewerAgent(Protocol):
@@ -331,19 +337,29 @@ def _fact_user_prompt(report_prompt: str, context: dict) -> str:
 
 def _apply_fact_evidence_audit(review: AgentReview, content: str, context: dict) -> None:
     requested_chunk_ids: object = []
+    requested_relation: object = None
+    requested_limitations: object = None
     try:
         data = _parse_json_response(content)
         if isinstance(data, dict):
             requested_chunk_ids = data.get("evidence_chunk_ids", [])
+            requested_relation = data.get("evidence_relation")
+            requested_limitations = data.get("evidence_limitations")
     except (JSONDecodeError, ValueError):
         pass
-    audit = validate_fact_evidence_citations(requested_chunk_ids, context)
+    audit = validate_fact_evidence_citations(
+        requested_chunk_ids,
+        context,
+        requested_relation=requested_relation,
+        requested_limitations=requested_limitations,
+    )
     allowed_urls = set(audit["evidence_urls"])
     for finding in review.findings:
         if finding.reference and finding.reference not in allowed_urls:
             finding.reference = None
             audit["evidence_warnings"].append("unknown_evidence_url")
     review.evidence_status = audit["evidence_status"]
+    review.evidence_relation = EvidenceRelation(audit["evidence_relation"])
     review.evidence_used = audit["evidence_used"]
     review.evidence_chunk_ids = audit["evidence_chunk_ids"]
     review.evidence_document_ids = audit["evidence_document_ids"]

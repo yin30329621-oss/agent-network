@@ -270,11 +270,13 @@ class ReviewWorkflow:
                 max_chars_per_evidence=int(config.get("max_chars_per_evidence", 1600)),
                 max_total_evidence_chars=int(config.get("max_total_evidence_chars", 6000)),
             )
-            context = build_fact_evidence_context(result, limits)
+            context = build_fact_evidence_context(result, limits, language=request.language)
             context["claim_id"] = query_data.get("claim_id")
             context["claim_text"] = retrieval_request.query_text
         except Exception as exc:
-            context = unavailable_fact_evidence_context(getattr(exc, "code", type(exc).__name__))
+            context = unavailable_fact_evidence_context(
+                getattr(exc, "code", type(exc).__name__), language=request.language
+            )
         return replace(request, fact_evidence_context=context)
 
     def _skip_merge(self, language: str) -> AgentReview:

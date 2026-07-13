@@ -31,6 +31,16 @@ class FindingStatus(StrEnum):
     PARSE_FAILED = "parse_failed"
 
 
+class EvidenceRelation(StrEnum):
+    """How supplied official evidence relates to a Fact Agent claim."""
+
+    DIRECT_SUPPORT = "direct_support"
+    DIRECT_CONTRADICTION = "direct_contradiction"
+    ABSENCE_OF_SUPPORT = "absence_of_support"
+    INDIRECT_EVIDENCE = "indirect_evidence"
+    UNAVAILABLE = "unavailable"
+
+
 SEVERITY_RANK = {
     Severity.INFO: 0,
     Severity.LOW: 1,
@@ -183,6 +193,7 @@ class AgentReview:
     configured_max_tokens: int | None = None
     effective_elapsed_seconds: float | None = None
     evidence_status: str | None = None
+    evidence_relation: EvidenceRelation | None = None
     evidence_used: bool = False
     evidence_chunk_ids: list[str] = field(default_factory=list)
     evidence_document_ids: list[str] = field(default_factory=list)
@@ -229,6 +240,9 @@ class AgentReview:
         }
         if self.agent == "fact" and self.retrieval_status is not None:
             data["evidence_status"] = self.evidence_status
+            data["evidence_relation"] = (
+                self.evidence_relation.value if self.evidence_relation is not None else None
+            )
             data["evidence_used"] = self.evidence_used
             data["evidence_chunk_ids"] = self.evidence_chunk_ids
             data["evidence_document_ids"] = self.evidence_document_ids
