@@ -22,20 +22,20 @@
 - Baseline command
 - Stats command
 
-## v0.3: Evidence Verification / RAG MVP (in progress)
+## v0.3: Official Evidence Foundation (release candidate)
 
-- Phase 1: offline Claim, Evidence, Matcher, verification rules, fixtures, and reporting
-- Phase 2A: NVD and GitHub Global Security Advisory sources, cache, whitelist, and
-  public-CVE pilot command (implemented; real pilot pending explicit approval)
-- Phase 2B: Rancher/SUSE Security Advisory and Release Notes sources
-- Phase 3: versioned local Rancher/SUSE/Kubernetes document index
-- Phase 4: evidence-aware Security review and Merge Evidence Judge
-- Phase 5: verification accuracy, evidence recall, citation error, cost, and latency benchmark
+- Offline Claim, Evidence, Matcher, verification rules, fixtures, and reporting
+- NVD and GitHub Global Security Advisory sources with cache, whitelist, and public-CVE pilot
+- Official Document Catalog, HTTPS Fetcher, Cleaner, deterministic Chunker, and offline BM25
+- Official Evidence Retriever, Synchronizer / Cache, and cached multi-document retrieval
+- Optional Fact Evidence grounding through fixture or forced-offline `local_cache` providers
+- Programmatic citation validation, `evidence_relation`, and `evidence_limitations`
+- Evidence OFF / ON acceptance harnesses with explicit live-model safety gates
 
-v0.3 is under development and is not released. The v0.2 four-Agent workflow remains
-the stable default while Phase 1 is developed as an isolated offline subsystem.
+v0.3.0 is frozen for release-candidate validation. The default reviewer remains the
+four-Agent workflow, while evidence is opt-in and does not enable network access by default.
 
-## Phase 3: Integrations
+## v0.4: Integrations And Evidence Expansion
 
 - GitHub pull request review
 - MCP client and server adapters

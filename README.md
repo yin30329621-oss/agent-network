@@ -4,8 +4,12 @@ Agent Network is a Python 3.12 multi-agent platform. The first MVP is a
 **Multi-LLM Technical Report Reviewer** that reviews Markdown reports through
 specialized agents and produces Markdown plus JSON review results.
 
-Current stable version: **v0.2**. See
-[docs/release-v0.2.md](docs/release-v0.2.md) for the full release notes.
+Current release candidate: **v0.3.0**. See
+[docs/release-v0.3.0.md](docs/release-v0.3.0.md) for release notes and
+[docs/runbook-v0.3.md](docs/runbook-v0.3.md) for reproducible local workflows.
+
+v0.3 adds an opt-in official-evidence foundation for Fact Agent grounding. The
+default review path remains evidence-disabled and preserves the v0.2 workflow.
 
 ## MVP Scope
 
@@ -143,4 +147,6 @@ src/agent_network/    Python package source
 tests/                Unit tests
 ```
 
-See [docs/architecture.md](docs/architecture.md) for the full architecture.
+See [docs/architecture.md](docs/architecture.md) for the reviewer architecture and
+[docs/architecture-v0.3-evidence-pipeline.md](docs/architecture-v0.3-evidence-pipeline.md)
+for the official-evidence pipeline.

@@ -1,6 +1,6 @@
 [project]
 name = "agent-network"
-version = "0.2.0"
+version = "0.3.0"
 description = "Multi-LLM technical report reviewer built with LangGraph and LiteLLM."
 readme = "README.md"
 requires-python = ">=3.12,<3.13"

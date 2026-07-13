@@ -118,7 +118,7 @@ def review(
     )
     total_elapsed = time.monotonic() - started
     result.metadata = {
-        "version": "0.2.0",
+        "version": __version__,
         "timestamp": now_iso(),
         "source_file": str(report),
         "profile": profile,
