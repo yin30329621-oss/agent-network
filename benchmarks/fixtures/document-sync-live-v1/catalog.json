@@ -1,0 +1,28 @@
+[
+  {
+    "document_id": "rancher-downstream-cluster-communication",
+    "source_name": "rancher-docs",
+    "title": "Communicating with Downstream User Clusters",
+    "canonical_url": "https://ranchermanager.docs.rancher.com/v2.14/reference-guides/rancher-manager-architecture/communicating-with-downstream-user-clusters",
+    "official_domain": "ranchermanager.docs.rancher.com",
+    "document_type": "architecture",
+    "product": "Rancher Manager",
+    "components": ["Cluster Agent", "Rancher Server"],
+    "language": "en",
+    "tags": ["cluster agent", "communication"],
+    "supported_claim_ids": ["cluster-agent-communication"]
+  },
+  {
+    "document_id": "fleet-overview",
+    "source_name": "rancher-docs",
+    "title": "Fleet Overview",
+    "canonical_url": "https://ranchermanager.docs.rancher.com/v2.14/integrations-in-rancher/fleet/overview",
+    "official_domain": "ranchermanager.docs.rancher.com",
+    "document_type": "feature_overview",
+    "product": "Fleet",
+    "components": ["Fleet Agent", "Bundle"],
+    "language": "en",
+    "tags": ["fleet", "bundle"],
+    "supported_claim_ids": ["fleet-bundle-overview"]
+  }
+]
