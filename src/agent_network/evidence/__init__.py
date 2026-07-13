@@ -7,6 +7,12 @@ from agent_network.evidence.document_fetcher import (
     OfficialDocumentFetchError,
     OfficialDocumentFetchResult,
 )
+from agent_network.evidence.document_cleaner import (
+    CleanedOfficialDocument,
+    DocumentCleaningError,
+    DocumentSection,
+    OfficialDocumentCleaner,
+)
 from agent_network.evidence.github_advisory import GitHubAdvisoryEvidenceSource
 from agent_network.evidence.http import EvidenceHttpClient
 from agent_network.evidence.nvd import NvdEvidenceSource
@@ -32,11 +38,14 @@ from agent_network.evidence.verifier import OfflineEvidenceVerifier, Verificatio
 __all__ = [
     "Claim",
     "ClaimType",
+    "CleanedOfficialDocument",
     "DeterministicEvidenceMatcher",
     "DocumentCatalog",
     "DocumentCatalogFixture",
     "DocumentCatalogQuery",
     "DocumentCatalogRepository",
+    "DocumentCleaningError",
+    "DocumentSection",
     "DocumentType",
     "Evidence",
     "EvidenceFixture",
@@ -51,6 +60,7 @@ __all__ = [
     "OfflineEvidenceVerifier",
     "OfficialDocumentFetchError",
     "OfficialDocumentFetchResult",
+    "OfficialDocumentCleaner",
     "OfficialDocumentEvidenceSource",
     "VerificationReport",
     "VerificationResult",
