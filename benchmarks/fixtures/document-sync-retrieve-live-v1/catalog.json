@@ -1,0 +1,54 @@
+[
+  {
+    "document_id": "rancher-downstream-cluster-communication",
+    "source_name": "rancher-docs",
+    "title": "Communicating with Downstream User Clusters",
+    "canonical_url": "https://ranchermanager.docs.rancher.com/v2.14/reference-guides/rancher-manager-architecture/communicating-with-downstream-user-clusters",
+    "official_domain": "ranchermanager.docs.rancher.com",
+    "document_type": "architecture",
+    "product": "Rancher Manager",
+    "components": ["Cluster Agent", "Rancher Server"],
+    "language": "en",
+    "tags": ["cluster agent", "downstream communication"],
+    "supported_claim_ids": ["cluster-agent-communication"]
+  },
+  {
+    "document_id": "rancher-rbac-reference",
+    "source_name": "rancher-docs",
+    "title": "Role-Based Access Control",
+    "canonical_url": "https://ranchermanager.docs.rancher.com/v2.14/reference-guides/user-settings/role-based-access-control",
+    "official_domain": "ranchermanager.docs.rancher.com",
+    "document_type": "reference",
+    "product": "Rancher Manager",
+    "components": ["ServiceAccount", "RBAC"],
+    "language": "en",
+    "tags": ["serviceaccount", "rbac"],
+    "supported_claim_ids": ["serviceaccount-rbac"]
+  },
+  {
+    "document_id": "fleet-overview",
+    "source_name": "rancher-docs",
+    "title": "Fleet Overview",
+    "canonical_url": "https://ranchermanager.docs.rancher.com/v2.14/integrations-in-rancher/fleet/overview",
+    "official_domain": "ranchermanager.docs.rancher.com",
+    "document_type": "feature_overview",
+    "product": "Fleet",
+    "components": ["Fleet Agent", "Bundle"],
+    "language": "en",
+    "tags": ["fleet", "bundle", "gitops"],
+    "supported_claim_ids": ["fleet-bundle-overview"]
+  },
+  {
+    "document_id": "rancher-tls-settings",
+    "source_name": "rancher-docs",
+    "title": "TLS Settings",
+    "canonical_url": "https://ranchermanager.docs.rancher.com/v2.14/getting-started/installation-and-upgrade/installation-references/tls-settings",
+    "official_domain": "ranchermanager.docs.rancher.com",
+    "document_type": "security_advisory",
+    "product": "Rancher Manager",
+    "components": ["HTTPS", "TLS"],
+    "language": "en",
+    "tags": ["tls", "https"],
+    "supported_claim_ids": ["tls-transport"]
+  }
+]
