@@ -5,6 +5,7 @@ __pycache__/
 .ruff_cache/
 .mypy_cache/
 .cache/
+data/official-evidence-cache/
 benchmarks/results-local/
 dist/
 build/
