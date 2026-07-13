@@ -18,6 +18,7 @@ from retrieve_from_official_cache import _parser, build_plan
 
 
 FETCHED_AT = "2026-07-13T00:00:00+00:00"
+MULTIDOC_FIXTURE = Path("benchmarks/fixtures/cached-multidoc-retrieval-v1/documents.json")
 
 
 def _stable_hash(value: dict) -> str:
@@ -90,6 +91,13 @@ def request(**overrides) -> CachedEvidenceRetrievalRequest:
     return CachedEvidenceRetrievalRequest(**values)
 
 
+def write_multidoc_fixture(root: Path) -> list[str]:
+    documents = json.loads(MULTIDOC_FIXTURE.read_text(encoding="utf-8"))
+    for document in documents:
+        write_cached_document(root, **document)
+    return [document["document_id"] for document in documents]
+
+
 def test_valid_cache_loads_chunks_and_retrieves_expected_evidence(tmp_path: Path) -> None:
     write_cached_document(tmp_path, "rancher-downstream-cluster-communication")
     subject = CachedEvidenceIndexBuilder(cache_root=tmp_path)
@@ -158,7 +166,104 @@ def test_one_broken_cache_does_not_hide_other_valid_document(tmp_path: Path) -> 
     assert result.loaded_document_count == 1
     assert result.failed_document_count == 1
     assert result.evidences[0].document_id == "valid"
+    failures = {item.document_id: item.failure_code for item in result.per_document_summary}
+    assert failures["broken"] == "checksum_mismatch"
     assert before == {path.name: path.read_bytes() for path in valid.iterdir()}
+
+
+def test_multidocument_fixture_uses_one_shared_index_and_stable_selection(tmp_path: Path) -> None:
+    document_ids = write_multidoc_fixture(tmp_path)
+    subject = CachedEvidenceIndexBuilder(cache_root=tmp_path)
+    query = "Cluster Agent ServiceAccount RBAC manages downstream clusters"
+
+    forward = subject.retrieve(
+        request(document_ids=tuple(document_ids), max_documents=4, query_text=query, top_chunks=4)
+    )
+    reverse = subject.retrieve(
+        request(
+            document_ids=tuple(reversed(document_ids)),
+            max_documents=4,
+            query_text=query,
+            top_chunks=4,
+        )
+    )
+
+    assert forward.loaded_document_count == forward.selected_document_count == 4
+    assert forward.total_chunk_count == 4
+    assert [summary.document_id for summary in forward.per_document_summary] == document_ids
+    assert {item.document_id for item in forward.evidences} >= {
+        "cluster-agent-tunnel",
+        "serviceaccount-rbac",
+    }
+    assert [item.chunk_id for item in forward.evidences] == [
+        item.chunk_id for item in reverse.evidences
+    ]
+    assert forward.network_request_count == 0
+
+
+def test_document_selection_filters_and_max_documents_are_strict(tmp_path: Path) -> None:
+    write_multidoc_fixture(tmp_path)
+    subject = CachedEvidenceIndexBuilder(cache_root=tmp_path)
+
+    result = subject.retrieve(
+        request(
+            document_ids=("fleet-bundle", "cluster-agent-tunnel", "serviceaccount-rbac"),
+            max_documents=2,
+            product="Rancher Manager",
+            query_text="Cluster Agent ServiceAccount",
+        )
+    )
+
+    assert result.selected_document_count == 2
+    assert {item.document_id for item in result.evidences} == {
+        "cluster-agent-tunnel",
+        "serviceaccount-rbac",
+    }
+    assert all(item.document_id != "fleet-bundle" for item in result.evidences)
+
+    fleet = subject.retrieve(
+        request(
+            document_ids=("cluster-agent-tunnel", "fleet-bundle"),
+            product="Fleet",
+            component="Fleet Agent",
+            document_type="reference",
+            query_text="Fleet Bundle GitOps",
+        )
+    )
+    assert [item.document_id for item in fleet.evidences] == ["fleet-bundle"]
+
+
+def test_multidocument_diversity_and_per_document_cap_are_deterministic(tmp_path: Path) -> None:
+    cluster_text = (
+        "Cluster Agent connects Rancher Server to downstream clusters through a tunnel. " * 35
+    )
+    rbac_text = "Cluster Agent uses a ServiceAccount with RBAC for downstream cluster access. " * 12
+    write_cached_document(tmp_path, "cluster", text=cluster_text)
+    write_cached_document(tmp_path, "rbac", component="ServiceAccount", text=rbac_text)
+    subject = CachedEvidenceIndexBuilder(cache_root=tmp_path)
+    baseline = subject.retrieve(
+        request(
+            document_ids=("cluster", "rbac"),
+            query_text="Cluster Agent ServiceAccount RBAC downstream",
+            top_chunks=1,
+        )
+    )
+
+    result = subject.retrieve(
+        request(
+            document_ids=("cluster", "rbac"),
+            query_text="Cluster Agent ServiceAccount RBAC downstream",
+            top_chunks=2,
+            max_chunks_per_document=1,
+            min_documents_in_results=2,
+        )
+    )
+
+    assert result.evidences[0].chunk_id == baseline.evidences[0].chunk_id
+    assert {item.document_id for item in result.evidences} == {"cluster", "rbac"}
+    assert result.returned_document_count == 2
+    assert [item.rank for item in result.evidences] == [1, 2]
+    assert all(summary.returned_evidence_count <= 1 for summary in result.per_document_summary)
 
 
 def test_filters_ranks_and_no_match_are_deterministic(tmp_path: Path) -> None:
@@ -275,3 +380,21 @@ def test_benchmark_uses_explicit_quality_defaults_without_changing_library_defau
     )
     assert (args.min_score, args.min_matched_terms, args.exclude_navigation_like) == (1.0, 2, True)
     assert args.include_filtered_summary is False
+
+
+def test_benchmark_accepts_repeated_document_ids_and_multidocument_options() -> None:
+    args = _parser().parse_args(
+        [
+            "--document-id",
+            "cluster",
+            "--document-id",
+            "rbac",
+            "--max-chunks-per-document",
+            "2",
+            "--min-documents-in-results",
+            "2",
+        ]
+    )
+
+    assert args.document_id == ["cluster", "rbac"]
+    assert args.max_chunks_per_document == args.min_documents_in_results == 2

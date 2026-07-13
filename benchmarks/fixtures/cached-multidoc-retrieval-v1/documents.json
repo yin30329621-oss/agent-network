@@ -1,0 +1,30 @@
+[
+  {
+    "document_id": "cluster-agent-tunnel",
+    "product": "Rancher Manager",
+    "component": "Cluster Agent",
+    "document_type": "architecture",
+    "text": "Cluster Agent establishes a reverse tunnel to Rancher Server for downstream cluster management. The connection lets Rancher Server communicate with the downstream cluster through the agent. Cluster Agent maintains the connection while the downstream cluster remains managed."
+  },
+  {
+    "document_id": "serviceaccount-rbac",
+    "product": "Rancher Manager",
+    "component": "ServiceAccount",
+    "document_type": "security",
+    "text": "Cluster Agent uses a ServiceAccount in the downstream cluster. RBAC roles and bindings grant the ServiceAccount the permissions needed to access Kubernetes resources. Administrators should review Role and ClusterRole permissions before deployment."
+  },
+  {
+    "document_id": "fleet-bundle",
+    "product": "Fleet",
+    "component": "Fleet Agent",
+    "document_type": "reference",
+    "text": "Fleet Bundle describes GitOps resources for delivery to target clusters. Fleet Agent applies Bundle resources to the selected cluster and reports deployment state. Rancher Manager Cluster Agent architecture is not required for this Bundle workflow."
+  },
+  {
+    "document_id": "tls-registration",
+    "product": "Rancher Manager",
+    "component": "Cluster Agent",
+    "document_type": "security",
+    "text": "Registration uses a short-lived token to authenticate a new cluster. HTTPS and TLS protect communication between Cluster Agent and Rancher Server. Operators should rotate registration credentials and verify the configured server endpoint."
+  }
+]

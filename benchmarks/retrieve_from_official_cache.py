@@ -16,6 +16,7 @@ from agent_network.evidence.cached_official_evidence import (
 class CacheRetrievalPlan:
     selected_cache_directory: str | None
     discovered_document_ids: list[str]
+    discovered_document_count: int
     selected_document_ids: list[str]
     selected_document_count: int
     query_text: str
@@ -23,6 +24,8 @@ class CacheRetrievalPlan:
     min_score: float
     min_matched_terms: int
     exclude_navigation_like: bool
+    max_chunks_per_document: int
+    min_documents_in_results: int
     network_request_count: int
     run_enabled: bool
 
@@ -37,6 +40,7 @@ def build_plan(
     return CacheRetrievalPlan(
         selected_cache_directory=request.cache_directory,
         discovered_document_ids=loaded.discovered_document_ids,
+        discovered_document_count=len(loaded.discovered_document_ids),
         selected_document_ids=loaded.selected_document_ids,
         selected_document_count=len(loaded.selected_document_ids),
         query_text=request.query_text,
@@ -44,6 +48,8 @@ def build_plan(
         min_score=request.min_score,
         min_matched_terms=request.min_matched_terms,
         exclude_navigation_like=request.exclude_navigation_like,
+        max_chunks_per_document=request.max_chunks_per_document,
+        min_documents_in_results=request.min_documents_in_results,
         network_request_count=0,
         run_enabled=run,
     )
@@ -56,7 +62,7 @@ def _parser() -> argparse.ArgumentParser:
         "--run", action="store_true", help="Build Chunk/BM25 from local cache only."
     )
     parser.add_argument("--cache-directory")
-    parser.add_argument("--document-id")
+    parser.add_argument("--document-id", action="append")
     parser.add_argument("--product")
     parser.add_argument("--component")
     parser.add_argument("--document-type")
@@ -65,6 +71,8 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-documents", type=int, default=1)
     parser.add_argument("--min-score", type=float, default=1.0)
     parser.add_argument("--min-matched-terms", type=int, default=2)
+    parser.add_argument("--max-chunks-per-document", type=int, default=0)
+    parser.add_argument("--min-documents-in-results", type=int, default=1)
     parser.add_argument(
         "--exclude-navigation-like",
         action=argparse.BooleanOptionalAction,
@@ -83,7 +91,12 @@ def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     request = CachedEvidenceRetrievalRequest(
         cache_directory=args.cache_directory,
-        document_id=args.document_id,
+        document_id=args.document_id[0]
+        if args.document_id and len(args.document_id) == 1
+        else None,
+        document_ids=tuple(args.document_id)
+        if args.document_id and len(args.document_id) > 1
+        else None,
         product=args.product,
         component=args.component,
         document_type=args.document_type,
@@ -93,6 +106,8 @@ def main(argv: list[str] | None = None) -> int:
         min_score=args.min_score,
         min_matched_terms=args.min_matched_terms,
         exclude_navigation_like=args.exclude_navigation_like,
+        max_chunks_per_document=args.max_chunks_per_document,
+        min_documents_in_results=args.min_documents_in_results,
     )
     builder = CachedEvidenceIndexBuilder()
     plan = build_plan(builder, request, run=args.run)

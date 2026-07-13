@@ -29,6 +29,7 @@ class CachedDocumentLoadError(RuntimeError):
 class CachedEvidenceRetrievalRequest:
     cache_directory: str | None = None
     document_id: str | None = None
+    document_ids: tuple[str, ...] | None = None
     product: str | None = None
     component: str | None = None
     document_type: str | None = None
@@ -38,6 +39,8 @@ class CachedEvidenceRetrievalRequest:
     min_score: float = 0.0
     min_matched_terms: int = 1
     exclude_navigation_like: bool = False
+    max_chunks_per_document: int = 0
+    min_documents_in_results: int = 1
 
 
 @dataclass(slots=True)
@@ -45,6 +48,7 @@ class CachedDocumentFailure:
     document_id: str
     error_code: str
     safe_message: str
+    stage: str = "load"
 
     def to_dict(self) -> dict[str, str]:
         return asdict(self)
@@ -59,30 +63,50 @@ class CachedDocumentLoadResult:
 
 
 @dataclass(slots=True)
+class CachedDocumentSummary:
+    document_id: str
+    loaded: bool
+    chunk_count: int
+    returned_evidence_count: int
+    failure_code: str | None = None
+
+    def to_dict(self) -> dict[str, object]:
+        return asdict(self)
+
+
+@dataclass(slots=True)
 class CachedEvidenceRetrievalResult:
+    discovered_document_count: int
+    selected_document_count: int
     loaded_document_count: int
     failed_document_count: int
     total_chunk_count: int
     candidate_evidence_count: int
     returned_evidence_count: int
+    returned_document_count: int
     filtered_evidence_count: int
     filtered_reasons_summary: dict[str, int]
     network_request_count: int
     evidences: list[RetrievedOfficialEvidence]
     cache_failures: list[CachedDocumentFailure]
+    per_document_summary: list[CachedDocumentSummary]
 
     def to_dict(self) -> dict[str, object]:
         return {
+            "discovered_document_count": self.discovered_document_count,
+            "selected_document_count": self.selected_document_count,
             "loaded_document_count": self.loaded_document_count,
             "failed_document_count": self.failed_document_count,
             "total_chunk_count": self.total_chunk_count,
             "candidate_evidence_count": self.candidate_evidence_count,
             "returned_evidence_count": self.returned_evidence_count,
+            "returned_document_count": self.returned_document_count,
             "filtered_evidence_count": self.filtered_evidence_count,
             "filtered_reasons_summary": self.filtered_reasons_summary,
             "network_request_count": self.network_request_count,
             "evidences": [item.to_dict() for item in self.evidences],
             "cache_failures": [item.to_dict() for item in self.cache_failures],
+            "per_document_summary": [item.to_dict() for item in self.per_document_summary],
         }
 
 
@@ -109,7 +133,8 @@ class CachedEvidenceIndexBuilder:
         if not documents_root.is_dir():
             raise CachedDocumentLoadError("cache_read_error", "Cache documents path is invalid")
         discovered = sorted(path.name for path in documents_root.iterdir() if path.is_dir())
-        selected = discovered if request.document_id is None else [request.document_id]
+        requested_ids = _requested_document_ids(request)
+        selected = discovered if requested_ids is None else list(requested_ids)
         documents: list[CleanedOfficialDocument] = []
         failures: list[CachedDocumentFailure] = []
         selected_ids: list[str] = []
@@ -123,7 +148,7 @@ class CachedEvidenceIndexBuilder:
                 documents.append(loaded)
                 selected_ids.append(document_id)
             except CachedDocumentLoadError as exc:
-                failures.append(CachedDocumentFailure(document_id, exc.code, str(exc)))
+                failures.append(CachedDocumentFailure(document_id, exc.code, str(exc), "load"))
                 selected_ids.append(document_id)
         return CachedDocumentLoadResult(documents, failures, discovered, selected_ids)
 
@@ -142,20 +167,25 @@ class CachedEvidenceIndexBuilder:
                         document.document_id,
                         getattr(exc, "code", "chunk_error"),
                         "Cached document could not be chunked",
+                        "chunk",
                     )
                 )
         if not chunks:
             return CachedEvidenceRetrievalResult(
+                discovered_document_count=len(loaded.discovered_document_ids),
+                selected_document_count=len(loaded.selected_document_ids),
                 loaded_document_count=len(loaded.documents),
                 failed_document_count=len(failures),
                 total_chunk_count=0,
                 candidate_evidence_count=0,
                 returned_evidence_count=0,
+                returned_document_count=0,
                 filtered_evidence_count=0,
                 filtered_reasons_summary={},
                 network_request_count=0,
                 evidences=[],
                 cache_failures=failures,
+                per_document_summary=_per_document_summary(loaded, [], failures, {}),
             )
         results = OfficialDocumentBm25Index(chunks).search(
             Bm25SearchQuery(
@@ -164,21 +194,26 @@ class CachedEvidenceIndexBuilder:
                 product=request.product,
                 component=request.component,
                 document_type=request.document_type,
-                document_id=request.document_id,
+                document_id=request.document_id if request.document_ids is None else None,
             )
         )
         evidences, filtered_reasons = _filter_evidences(results, request)
+        chunk_counts = _chunk_counts(chunks)
         return CachedEvidenceRetrievalResult(
+            discovered_document_count=len(loaded.discovered_document_ids),
+            selected_document_count=len(loaded.selected_document_ids),
             loaded_document_count=len(loaded.documents),
             failed_document_count=len(failures),
             total_chunk_count=len(chunks),
             candidate_evidence_count=len(results),
             returned_evidence_count=len(evidences),
+            returned_document_count=len({evidence.document_id for evidence in evidences}),
             filtered_evidence_count=sum(filtered_reasons.values()),
             filtered_reasons_summary=filtered_reasons,
             network_request_count=0,
             evidences=evidences,
             cache_failures=failures,
+            per_document_summary=_per_document_summary(loaded, evidences, failures, chunk_counts),
         )
 
 
@@ -300,10 +335,23 @@ def _validate_request(request: CachedEvidenceRetrievalRequest) -> None:
         or request.top_chunks <= 0
         or request.min_score < 0
         or request.min_matched_terms <= 0
+        or request.max_chunks_per_document < 0
+        or request.min_documents_in_results <= 0
     ):
         raise CachedDocumentLoadError(
             "invalid_request", "Document limits and quality thresholds are invalid"
         )
+
+
+def _requested_document_ids(request: CachedEvidenceRetrievalRequest) -> tuple[str, ...] | None:
+    identifiers: list[str] = []
+    if request.document_id is not None:
+        identifiers.append(request.document_id)
+    if request.document_ids is not None:
+        identifiers.extend(request.document_ids)
+    if not identifiers:
+        return None
+    return tuple(dict.fromkeys(identifiers))
 
 
 def _stable_json_bytes(value: dict[str, Any]) -> bytes:
@@ -346,7 +394,7 @@ def _filter_evidences(
     results: list, request: CachedEvidenceRetrievalRequest
 ) -> tuple[list[RetrievedOfficialEvidence], dict[str, int]]:
     reasons: dict[str, int] = {}
-    selected: list[RetrievedOfficialEvidence] = []
+    eligible: list[RetrievedOfficialEvidence] = []
     seen_chunk_ids: set[str] = set()
     for result in results:
         reason = _filtered_reason(result, request)
@@ -356,11 +404,87 @@ def _filter_evidences(
         if result.chunk.chunk_id in seen_chunk_ids:
             continue
         seen_chunk_ids.add(result.chunk.chunk_id)
-        selected.append(_evidence(result))
-    selected = selected[: request.top_chunks]
+        eligible.append(_evidence(result))
+    selected = _select_evidences(eligible, request, reasons)
     return [
         replace(evidence, rank=rank) for rank, evidence in enumerate(selected, start=1)
     ], reasons
+
+
+def _select_evidences(
+    candidates: list[RetrievedOfficialEvidence],
+    request: CachedEvidenceRetrievalRequest,
+    reasons: dict[str, int],
+) -> list[RetrievedOfficialEvidence]:
+    if not candidates:
+        return []
+    selected_ids: set[str] = {candidates[0].chunk_id}
+    per_document = {candidates[0].document_id: 1}
+    available_documents = {candidate.document_id for candidate in candidates}
+    target_documents = min(
+        request.min_documents_in_results, request.top_chunks, len(available_documents)
+    )
+    for candidate in candidates[1:]:
+        if len(per_document) >= target_documents:
+            break
+        if candidate.document_id in per_document or not _within_document_cap(
+            candidate, per_document, request
+        ):
+            continue
+        selected_ids.add(candidate.chunk_id)
+        per_document[candidate.document_id] = 1
+    for candidate in candidates:
+        if len(selected_ids) >= request.top_chunks:
+            break
+        if candidate.chunk_id in selected_ids:
+            continue
+        if not _within_document_cap(candidate, per_document, request):
+            reasons["max_chunks_per_document"] = reasons.get("max_chunks_per_document", 0) + 1
+            continue
+        selected_ids.add(candidate.chunk_id)
+        per_document[candidate.document_id] = per_document.get(candidate.document_id, 0) + 1
+    return [candidate for candidate in candidates if candidate.chunk_id in selected_ids]
+
+
+def _within_document_cap(
+    candidate: RetrievedOfficialEvidence,
+    per_document: dict[str, int],
+    request: CachedEvidenceRetrievalRequest,
+) -> bool:
+    return (
+        request.max_chunks_per_document == 0
+        or per_document.get(candidate.document_id, 0) < request.max_chunks_per_document
+    )
+
+
+def _chunk_counts(chunks: list[DocumentChunk]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for chunk in chunks:
+        counts[chunk.document_id] = counts.get(chunk.document_id, 0) + 1
+    return counts
+
+
+def _per_document_summary(
+    loaded: CachedDocumentLoadResult,
+    evidences: list[RetrievedOfficialEvidence],
+    failures: list[CachedDocumentFailure],
+    chunk_counts: dict[str, int],
+) -> list[CachedDocumentSummary]:
+    failures_by_document = {failure.document_id: failure.error_code for failure in failures}
+    evidence_counts: dict[str, int] = {}
+    for evidence in evidences:
+        evidence_counts[evidence.document_id] = evidence_counts.get(evidence.document_id, 0) + 1
+    loaded_ids = {document.document_id for document in loaded.documents}
+    return [
+        CachedDocumentSummary(
+            document_id=document_id,
+            loaded=document_id in loaded_ids,
+            chunk_count=chunk_counts.get(document_id, 0),
+            returned_evidence_count=evidence_counts.get(document_id, 0),
+            failure_code=failures_by_document.get(document_id),
+        )
+        for document_id in loaded.selected_document_ids
+    ]
 
 
 def _filtered_reason(result, request: CachedEvidenceRetrievalRequest) -> str | None:
