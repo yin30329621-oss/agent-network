@@ -12,7 +12,12 @@ from agent_network.llm import LLMClient
 from agent_network.evidence.fact_evidence import (
     FactEvidenceLimits,
     build_fact_evidence_context,
+    build_local_cache_fact_evidence_context,
     unavailable_fact_evidence_context,
+)
+from agent_network.evidence.cached_official_evidence import (
+    CachedEvidenceIndexBuilder,
+    CachedEvidenceRetrievalRequest,
 )
 from agent_network.evidence.official_evidence_retriever import (
     OfficialEvidenceRetrievalRequest,
@@ -49,6 +54,7 @@ class ReviewWorkflow:
     logic_agent: ReviewerAgent
     merge_agent: MergeAgent
     fact_evidence_retriever: OfficialEvidenceRetriever | None = None
+    fact_local_cache_builder: CachedEvidenceIndexBuilder | None = None
     fact_evidence_config: dict[str, object] = field(default_factory=dict)
 
     @classmethod
@@ -58,6 +64,7 @@ class ReviewWorkflow:
         llm: LLMClient,
         prompts: PromptRegistry,
         fact_evidence_retriever: OfficialEvidenceRetriever | None = None,
+        fact_local_cache_builder: CachedEvidenceIndexBuilder | None = None,
         fact_evidence_config: dict[str, object] | None = None,
     ) -> "ReviewWorkflow":
         return cls(
@@ -66,6 +73,7 @@ class ReviewWorkflow:
             logic_agent=LogicAgent(llm=llm, prompts=prompts),
             merge_agent=MergeAgent(prompts=prompts, llm=llm),
             fact_evidence_retriever=fact_evidence_retriever,
+            fact_local_cache_builder=fact_local_cache_builder,
             fact_evidence_config=fact_evidence_config or {},
         )
 
@@ -77,6 +85,7 @@ class ReviewWorkflow:
         prompts: PromptRegistry,
         config,
         fact_evidence_retriever: OfficialEvidenceRetriever | None = None,
+        fact_local_cache_builder: CachedEvidenceIndexBuilder | None = None,
     ) -> "ReviewWorkflow":
         return cls(
             fact_agent=FactAgent(
@@ -112,6 +121,7 @@ class ReviewWorkflow:
                 max_tokens=config.max_tokens_for_agent("merge"),
             ),
             fact_evidence_retriever=fact_evidence_retriever,
+            fact_local_cache_builder=fact_local_cache_builder,
             fact_evidence_config=config.fact_evidence_config(),
         )
 
@@ -256,27 +266,56 @@ class ReviewWorkflow:
         if not config.get("enabled") or not query_data:
             return request
         try:
-            retrieval_request = OfficialEvidenceRetrievalRequest(
-                **{
-                    **query_data,
-                    "allow_network": bool(config.get("allow_network", False)),
-                }
-            )
-            if self.fact_evidence_retriever is None:
-                raise RuntimeError("retriever_not_configured")
-            result = self.fact_evidence_retriever.retrieve(retrieval_request)
             limits = FactEvidenceLimits(
                 top_k=int(config.get("top_k", 5)),
                 max_chars_per_evidence=int(config.get("max_chars_per_evidence", 1600)),
                 max_total_evidence_chars=int(config.get("max_total_evidence_chars", 6000)),
             )
-            context = build_fact_evidence_context(result, limits, language=request.language)
+            provider = str(config.get("provider", "fixture")).strip().lower()
+            if provider == "fixture":
+                retrieval_request = OfficialEvidenceRetrievalRequest(
+                    **{
+                        **query_data,
+                        "allow_network": bool(config.get("allow_network", False)),
+                    }
+                )
+                if self.fact_evidence_retriever is None:
+                    raise RuntimeError("retriever_not_configured")
+                result = self.fact_evidence_retriever.retrieve(retrieval_request)
+                context = build_fact_evidence_context(result, limits, language=request.language)
+                context["evidence_provider"] = "fixture"
+                context["cache_directory"] = None
+                context["selected_document_ids"] = []
+                context["loaded_document_count"] = 0
+                context["failed_document_count"] = result.failed_document_count
+                context["returned_document_count"] = len(
+                    {item.document_id for item in result.evidences}
+                )
+                context["returned_evidence_count"] = result.returned_evidence_count
+                context["cache_failures"] = []
+                context["claim_text"] = retrieval_request.query_text
+            elif provider == "local_cache":
+                if bool(config.get("allow_network", False)):
+                    raise ValueError("local_cache provider requires allow_network=false")
+                local_config = config.get("local_cache")
+                if not isinstance(local_config, dict) or not local_config.get("cache_directory"):
+                    raise ValueError("local_cache provider requires cache_directory")
+                cache_request = _local_cache_request(
+                    query_data, local_config, int(config.get("top_k", 5))
+                )
+                builder = self.fact_local_cache_builder or CachedEvidenceIndexBuilder()
+                context = build_local_cache_fact_evidence_context(
+                    builder, cache_request, limits, language=request.language
+                )
+                context["claim_text"] = cache_request.query_text
+            else:
+                raise ValueError(f"unsupported_fact_evidence_provider:{provider}")
             context["claim_id"] = query_data.get("claim_id")
-            context["claim_text"] = retrieval_request.query_text
         except Exception as exc:
             context = unavailable_fact_evidence_context(
                 getattr(exc, "code", type(exc).__name__), language=request.language
             )
+            context["evidence_provider"] = str(config.get("provider", "fixture"))
         return replace(request, fact_evidence_context=context)
 
     def _skip_merge(self, language: str) -> AgentReview:
@@ -539,3 +578,39 @@ def _has_valid_agent_findings(reviews: list[AgentReview]) -> bool:
         for review in reviews
         if review.agent in {"fact", "security", "logic"}
     )
+
+
+def _local_cache_request(
+    query_data: dict[str, object], local_config: dict[str, object], top_k: int
+) -> CachedEvidenceRetrievalRequest:
+    """Build a bounded, no-network cache request from explicitly supported fields."""
+
+    values: dict[str, object] = {
+        "cache_directory": local_config.get("cache_directory"),
+        "document_ids": _tuple_of_strings(local_config.get("document_ids")),
+        "product": local_config.get("product"),
+        "component": local_config.get("component"),
+        "document_type": local_config.get("document_type"),
+        "max_documents": int(local_config.get("max_documents", 1)),
+        "query_text": str(query_data.get("query_text") or ""),
+        "top_chunks": top_k,
+        "min_score": float(local_config.get("min_score", 0.0)),
+        "min_matched_terms": int(local_config.get("min_matched_terms", 1)),
+        "exclude_navigation_like": bool(local_config.get("exclude_navigation_like", False)),
+        "max_chunks_per_document": int(local_config.get("max_chunks_per_document", 0)),
+        "min_documents_in_results": int(local_config.get("min_documents_in_results", 1)),
+    }
+    for key in ("product", "component", "document_type", "document_id"):
+        if query_data.get(key) is not None:
+            values[key] = query_data[key]
+    if query_data.get("document_ids") is not None:
+        values["document_ids"] = _tuple_of_strings(query_data["document_ids"])
+    return CachedEvidenceRetrievalRequest(**values)
+
+
+def _tuple_of_strings(value: object) -> tuple[str, ...] | None:
+    if value is None:
+        return None
+    if not isinstance(value, (list, tuple)) or not all(isinstance(item, str) for item in value):
+        raise ValueError("document_ids must be a list of strings")
+    return tuple(value)

@@ -119,10 +119,23 @@ review:
 evidence:
   fact_agent:
     enabled: false
+    provider: fixture
     top_k: 5
     max_chars_per_evidence: 1600
     max_total_evidence_chars: 6000
     allow_network: false
+    local_cache:
+      cache_directory: null
+      document_ids: []
+      product: null
+      component: null
+      document_type: null
+      max_documents: 3
+      max_chunks_per_document: 0
+      min_documents_in_results: 1
+      min_score: 0.0
+      min_matched_terms: 1
+      exclude_navigation_like: false
   document_sources:
     rancher:
       mode: catalog_only

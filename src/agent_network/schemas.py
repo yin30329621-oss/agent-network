@@ -202,6 +202,14 @@ class AgentReview:
     retrieval_status: str | None = None
     evidence_warnings: list[str] = field(default_factory=list)
     evidence_network_request_count: int = 0
+    evidence_provider: str | None = None
+    evidence_cache_directory: str | None = None
+    evidence_selected_document_ids: list[str] = field(default_factory=list)
+    evidence_loaded_document_count: int = 0
+    evidence_failed_document_count: int = 0
+    evidence_returned_document_count: int = 0
+    evidence_returned_evidence_count: int = 0
+    evidence_cache_failures: list[dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         data = {
@@ -251,6 +259,14 @@ class AgentReview:
             data["retrieval_status"] = self.retrieval_status
             data["evidence_warnings"] = self.evidence_warnings
             data["evidence_network_request_count"] = self.evidence_network_request_count
+            data["evidence_provider"] = self.evidence_provider
+            data["evidence_cache_directory"] = self.evidence_cache_directory
+            data["evidence_selected_document_ids"] = self.evidence_selected_document_ids
+            data["evidence_loaded_document_count"] = self.evidence_loaded_document_count
+            data["evidence_failed_document_count"] = self.evidence_failed_document_count
+            data["evidence_returned_document_count"] = self.evidence_returned_document_count
+            data["evidence_returned_evidence_count"] = self.evidence_returned_evidence_count
+            data["evidence_cache_failures"] = self.evidence_cache_failures
         return data
 
     def apply_request_audit(self, audit: dict[str, Any] | None = None) -> None:

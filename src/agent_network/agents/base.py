@@ -368,6 +368,14 @@ def _apply_fact_evidence_audit(review: AgentReview, content: str, context: dict)
     review.retrieval_status = audit["retrieval_status"]
     review.evidence_warnings = audit["evidence_warnings"]
     review.evidence_network_request_count = audit["evidence_network_request_count"]
+    review.evidence_provider = context.get("evidence_provider")
+    review.evidence_cache_directory = context.get("cache_directory")
+    review.evidence_selected_document_ids = list(context.get("selected_document_ids") or [])
+    review.evidence_loaded_document_count = int(context.get("loaded_document_count") or 0)
+    review.evidence_failed_document_count = int(context.get("failed_document_count") or 0)
+    review.evidence_returned_document_count = int(context.get("returned_document_count") or 0)
+    review.evidence_returned_evidence_count = int(context.get("returned_evidence_count") or 0)
+    review.evidence_cache_failures = list(context.get("cache_failures") or [])
 
 
 def _enforce_fact_verification_boundaries(review: AgentReview) -> None:

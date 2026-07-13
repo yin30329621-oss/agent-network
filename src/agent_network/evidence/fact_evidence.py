@@ -5,6 +5,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from agent_network.evidence.cached_official_evidence import (
+    CachedDocumentFailure,
+    CachedEvidenceIndexBuilder,
+    CachedEvidenceRetrievalRequest,
+    CachedEvidenceRetrievalResult,
+)
 from agent_network.evidence.official_evidence_retriever import OfficialEvidenceRetrievalResult
 from agent_network.language import is_chinese_language
 from agent_network.schemas import EvidenceRelation
@@ -97,6 +103,51 @@ def unavailable_fact_evidence_context(error_code: str, *, language: str = "en") 
     }
 
 
+def build_local_cache_fact_evidence_context(
+    builder: CachedEvidenceIndexBuilder,
+    request: CachedEvidenceRetrievalRequest,
+    limits: FactEvidenceLimits,
+    *,
+    language: str = "en",
+) -> dict[str, Any]:
+    """Read local cache evidence through the shared cached retrieval pipeline only."""
+
+    result = builder.retrieve(request)
+    status = _cached_retrieval_status(result)
+    failures = list(result.cache_failures)
+    if not result.discovered_document_count and not result.selected_document_count and not failures:
+        failures.append(
+            CachedDocumentFailure(
+                document_id="local_cache",
+                error_code="cache_not_found",
+                safe_message="Configured official evidence cache was not found",
+                stage="load",
+            )
+        )
+    context = _build_fact_context_from_evidences(
+        query_text=request.query_text,
+        retrieval_status=status,
+        evidences=result.evidences,
+        failures=failures,
+        network_request_count=result.network_request_count,
+        limits=limits,
+        language=language,
+    )
+    context.update(
+        {
+            "evidence_provider": "local_cache",
+            "cache_directory": _safe_cache_directory(request.cache_directory),
+            "selected_document_ids": [item.document_id for item in result.per_document_summary],
+            "loaded_document_count": result.loaded_document_count,
+            "failed_document_count": result.failed_document_count,
+            "returned_document_count": result.returned_document_count,
+            "returned_evidence_count": result.returned_evidence_count,
+            "cache_failures": [failure.to_dict() for failure in failures],
+        }
+    )
+    return context
+
+
 def validate_fact_evidence_citations(
     requested_chunk_ids: object,
     context: dict[str, Any],
@@ -181,6 +232,97 @@ def _limitations(
     if result.document_failures:
         limitations.append("document_processing_failures_present")
         limitations.append(_limitation("partial_success", language))
+    if any(item["text_truncated"] for item in selected):
+        limitations.append("evidence_text_truncated")
+    if not selected:
+        limitations.append("no_official_evidence_chunks")
+    return _stable_unique(limitations)
+
+
+def _build_fact_context_from_evidences(
+    *,
+    query_text: str,
+    retrieval_status: str,
+    evidences: list[Any],
+    failures: list[Any],
+    network_request_count: int,
+    limits: FactEvidenceLimits,
+    language: str,
+) -> dict[str, Any]:
+    selected: list[dict[str, Any]] = []
+    seen_chunk_ids: set[str] = set()
+    remaining = limits.max_total_evidence_chars
+    for evidence in evidences:
+        if len(selected) >= limits.top_k or evidence.chunk_id in seen_chunk_ids or remaining <= 0:
+            continue
+        seen_chunk_ids.add(evidence.chunk_id)
+        text_limit = min(limits.max_chars_per_evidence, remaining)
+        text = evidence.text[:text_limit]
+        selected.append(
+            {
+                "rank": evidence.rank,
+                "score": evidence.score,
+                "matched_terms": list(evidence.matched_terms),
+                "chunk_id": evidence.chunk_id,
+                "document_id": evidence.document_id,
+                "canonical_url": evidence.canonical_url,
+                "product": evidence.product,
+                "component": evidence.component,
+                "document_type": evidence.document_type,
+                "document_title": evidence.document_title,
+                "section_heading": evidence.section_heading,
+                "text": text,
+                "text_truncated": len(text) < len(evidence.text),
+                "source_fetched_at": evidence.source_fetched_at.isoformat(),
+            }
+        )
+        remaining -= len(text)
+    limitations = _limitations_from_values(retrieval_status, selected, failures, language)
+    return {
+        "claim_id": None,
+        "claim_text": query_text,
+        "retrieval_status": retrieval_status,
+        "language": language,
+        "evidence_status": _evidence_status(retrieval_status, bool(selected)),
+        "evidence_count": len(selected),
+        "evidence_relation": _fallback_relation(retrieval_status, bool(selected), bool(selected)),
+        "official_evidences": selected,
+        "document_failures": [failure.to_dict() for failure in failures],
+        "network_request_count": network_request_count,
+        "evidence_limitations": limitations,
+    }
+
+
+def _cached_retrieval_status(result: CachedEvidenceRetrievalResult) -> str:
+    if result.returned_evidence_count:
+        return "partial_success" if result.failed_document_count else "success"
+    if result.loaded_document_count:
+        return "no_chunk_match"
+    if result.failed_document_count or not result.selected_document_count:
+        return "all_documents_failed"
+    return "no_chunk_match"
+
+
+def _safe_cache_directory(cache_directory: str | None) -> str | None:
+    if cache_directory is None:
+        return None
+    return cache_directory.replace("\\", "/")
+
+
+def _limitations_from_values(
+    retrieval_status: str, selected: list[dict[str, Any]], failures: list[Any], language: str
+) -> list[str]:
+    limitations: list[str] = []
+    if retrieval_status not in {"success", "partial_success"}:
+        limitations.append(f"retrieval_status:{retrieval_status}")
+    if retrieval_status == "no_chunk_match":
+        limitations.append(_limitation("no_chunk_match", language))
+    elif retrieval_status == "all_documents_failed":
+        limitations.append(_limitation("all_documents_failed", language))
+    if failures:
+        limitations.extend(
+            ["document_processing_failures_present", _limitation("partial_success", language)]
+        )
     if any(item["text_truncated"] for item in selected):
         limitations.append("evidence_text_truncated")
     if not selected:

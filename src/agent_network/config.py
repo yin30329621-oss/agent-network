@@ -134,12 +134,20 @@ class AppConfig:
             raise ValueError("Fact evidence configuration must be a mapping")
         defaults = {
             "enabled": False,
+            "provider": "fixture",
             "top_k": 5,
             "max_chars_per_evidence": 1600,
             "max_total_evidence_chars": 6000,
             "allow_network": False,
+            "local_cache": {},
         }
         defaults.update(config)
+        provider = str(defaults["provider"]).strip().lower()
+        if provider not in {"fixture", "local_cache"}:
+            raise ValueError(f"Unknown Fact evidence provider: {provider}")
+        defaults["provider"] = provider
+        if not isinstance(defaults["local_cache"], dict):
+            raise ValueError("Fact local_cache configuration must be a mapping")
         return defaults
 
     def role_for_agent(self, agent: str) -> str:

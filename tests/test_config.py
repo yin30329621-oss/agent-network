@@ -1,4 +1,6 @@
-from agent_network.config import load_config
+import pytest
+
+from agent_network.config import AppConfig, load_config
 
 
 def test_default_config_sets_agent_models_and_cost_controls() -> None:
@@ -60,3 +62,11 @@ def test_rancher_document_fetcher_configuration_loads() -> None:
         "maximum_redirects": 3,
         "user_agent": "agent-network-document-fetcher/0.3",
     }
+
+
+def test_fact_evidence_provider_defaults_to_fixture_and_rejects_unknown_values() -> None:
+    config = load_config("configs/default.yaml")
+
+    assert config.fact_evidence_config()["provider"] == "fixture"
+    with pytest.raises(ValueError, match="Unknown Fact evidence provider"):
+        AppConfig(raw={"evidence": {"fact_agent": {"provider": "other"}}}).fact_evidence_config()
