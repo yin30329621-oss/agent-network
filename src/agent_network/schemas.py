@@ -182,9 +182,18 @@ class AgentReview:
     configured_timeout_seconds: float | None = None
     configured_max_tokens: int | None = None
     effective_elapsed_seconds: float | None = None
+    evidence_status: str | None = None
+    evidence_used: bool = False
+    evidence_chunk_ids: list[str] = field(default_factory=list)
+    evidence_document_ids: list[str] = field(default_factory=list)
+    evidence_urls: list[str] = field(default_factory=list)
+    evidence_limitations: list[str] = field(default_factory=list)
+    retrieval_status: str | None = None
+    evidence_warnings: list[str] = field(default_factory=list)
+    evidence_network_request_count: int = 0
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        data = {
             "agent": self.agent,
             "summary": self.summary,
             "findings": [finding.to_dict() for finding in self.findings],
@@ -218,6 +227,17 @@ class AgentReview:
             "configured_max_tokens": self.configured_max_tokens,
             "effective_elapsed_seconds": self.effective_elapsed_seconds,
         }
+        if self.agent == "fact" and self.retrieval_status is not None:
+            data["evidence_status"] = self.evidence_status
+            data["evidence_used"] = self.evidence_used
+            data["evidence_chunk_ids"] = self.evidence_chunk_ids
+            data["evidence_document_ids"] = self.evidence_document_ids
+            data["evidence_urls"] = self.evidence_urls
+            data["evidence_limitations"] = self.evidence_limitations
+            data["retrieval_status"] = self.retrieval_status
+            data["evidence_warnings"] = self.evidence_warnings
+            data["evidence_network_request_count"] = self.evidence_network_request_count
+        return data
 
     def apply_request_audit(self, audit: dict[str, Any] | None = None) -> None:
         data = audit or self.provider_response_audit
@@ -354,6 +374,8 @@ class ReviewRequest:
     markdown: str
     source_name: str = "input.md"
     language: str = "en"
+    fact_evidence_query: dict[str, Any] | None = None
+    fact_evidence_context: dict[str, Any] | None = None
 
 
 def build_summary_stats(

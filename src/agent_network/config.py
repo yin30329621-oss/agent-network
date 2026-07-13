@@ -128,6 +128,20 @@ class AppConfig:
             raise ValueError(f"Document source {source_name} fetcher configuration is incomplete")
         return dict(config)
 
+    def fact_evidence_config(self) -> dict[str, Any]:
+        config = self.raw.get("evidence", {}).get("fact_agent") or {}
+        if not isinstance(config, dict):
+            raise ValueError("Fact evidence configuration must be a mapping")
+        defaults = {
+            "enabled": False,
+            "top_k": 5,
+            "max_chars_per_evidence": 1600,
+            "max_total_evidence_chars": 6000,
+            "allow_network": False,
+        }
+        defaults.update(config)
+        return defaults
+
     def role_for_agent(self, agent: str) -> str:
         roles = {
             "fact": "Verify factual claims, evidence needs, citations, and technical accuracy.",

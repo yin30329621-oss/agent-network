@@ -117,6 +117,12 @@ review:
     - json
 
 evidence:
+  fact_agent:
+    enabled: false
+    top_k: 5
+    max_chars_per_evidence: 1600
+    max_total_evidence_chars: 6000
+    allow_network: false
   document_sources:
     rancher:
       mode: catalog_only

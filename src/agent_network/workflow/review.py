@@ -2,13 +2,22 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field, replace
 import time
 from collections.abc import Callable
 from typing import TypedDict
 
 from agent_network.agents import FactAgent, LogicAgent, MergeAgent, ReviewerAgent, SecurityAgent
 from agent_network.llm import LLMClient
+from agent_network.evidence.fact_evidence import (
+    FactEvidenceLimits,
+    build_fact_evidence_context,
+    unavailable_fact_evidence_context,
+)
+from agent_network.evidence.official_evidence_retriever import (
+    OfficialEvidenceRetrievalRequest,
+    OfficialEvidenceRetriever,
+)
 from agent_network.prompts import PromptRegistry
 from agent_network.schemas import (
     AgentReview,
@@ -39,18 +48,36 @@ class ReviewWorkflow:
     security_agent: ReviewerAgent
     logic_agent: ReviewerAgent
     merge_agent: MergeAgent
+    fact_evidence_retriever: OfficialEvidenceRetriever | None = None
+    fact_evidence_config: dict[str, object] = field(default_factory=dict)
 
     @classmethod
-    def from_llm(cls, *, llm: LLMClient, prompts: PromptRegistry) -> "ReviewWorkflow":
+    def from_llm(
+        cls,
+        *,
+        llm: LLMClient,
+        prompts: PromptRegistry,
+        fact_evidence_retriever: OfficialEvidenceRetriever | None = None,
+        fact_evidence_config: dict[str, object] | None = None,
+    ) -> "ReviewWorkflow":
         return cls(
             fact_agent=FactAgent(llm=llm, prompts=prompts),
             security_agent=SecurityAgent(llm=llm, prompts=prompts),
             logic_agent=LogicAgent(llm=llm, prompts=prompts),
             merge_agent=MergeAgent(prompts=prompts, llm=llm),
+            fact_evidence_retriever=fact_evidence_retriever,
+            fact_evidence_config=fact_evidence_config or {},
         )
 
     @classmethod
-    def from_config(cls, *, llm: LLMClient, prompts: PromptRegistry, config) -> "ReviewWorkflow":
+    def from_config(
+        cls,
+        *,
+        llm: LLMClient,
+        prompts: PromptRegistry,
+        config,
+        fact_evidence_retriever: OfficialEvidenceRetriever | None = None,
+    ) -> "ReviewWorkflow":
         return cls(
             fact_agent=FactAgent(
                 llm=llm,
@@ -84,13 +111,16 @@ class ReviewWorkflow:
                 timeout_seconds=config.timeout_for_agent("merge"),
                 max_tokens=config.max_tokens_for_agent("merge"),
             ),
+            fact_evidence_retriever=fact_evidence_retriever,
+            fact_evidence_config=config.fact_evidence_config(),
         )
 
     def run_sequential(
         self, request: ReviewRequest, progress: ProgressCallback | None = None
     ) -> ReviewResult:
+        fact_request = self._fact_request(request)
         reviews = [
-            self._run_agent("fact", self.fact_agent, request, 1, 3, progress),
+            self._run_agent("fact", self.fact_agent, fact_request, 1, 3, progress),
             self._run_agent("security", self.security_agent, request, 2, 3, progress),
             self._run_agent("logic", self.logic_agent, request, 3, 3, progress),
         ]
@@ -116,7 +146,8 @@ class ReviewWorkflow:
             raise ValueError(
                 f"Unknown agent {agent_name!r}. Expected fact, security, logic, or merge."
             )
-        review = self._run_agent(agent_name, agents[agent_name], request, 1, 1, progress)
+        agent_request = self._fact_request(request) if agent_name == "fact" else request
+        review = self._run_agent(agent_name, agents[agent_name], agent_request, 1, 1, progress)
         merged = (
             self.merge_agent.merge([review], language=request.language)
             if _has_valid_agent_findings([review])
@@ -170,8 +201,9 @@ class ReviewWorkflow:
             )
 
     def run(self, request: ReviewRequest, progress: ProgressCallback | None = None) -> ReviewResult:
+        fact_request = self._fact_request(request)
         reviews = [
-            self._run_agent("fact", self.fact_agent, request, 1, 4, progress),
+            self._run_agent("fact", self.fact_agent, fact_request, 1, 4, progress),
             self._run_agent("security", self.security_agent, request, 2, 4, progress),
             self._run_agent("logic", self.logic_agent, request, 3, 4, progress),
         ]
@@ -217,6 +249,33 @@ class ReviewWorkflow:
             if progress:
                 progress("merge", "failed", elapsed, merged)
         return self._result_from_merge(reviews, merged, request.language)
+
+    def _fact_request(self, request: ReviewRequest) -> ReviewRequest:
+        config = self.fact_evidence_config
+        query_data = request.fact_evidence_query
+        if not config.get("enabled") or not query_data:
+            return request
+        try:
+            retrieval_request = OfficialEvidenceRetrievalRequest(
+                **{
+                    **query_data,
+                    "allow_network": bool(config.get("allow_network", False)),
+                }
+            )
+            if self.fact_evidence_retriever is None:
+                raise RuntimeError("retriever_not_configured")
+            result = self.fact_evidence_retriever.retrieve(retrieval_request)
+            limits = FactEvidenceLimits(
+                top_k=int(config.get("top_k", 5)),
+                max_chars_per_evidence=int(config.get("max_chars_per_evidence", 1600)),
+                max_total_evidence_chars=int(config.get("max_total_evidence_chars", 6000)),
+            )
+            context = build_fact_evidence_context(result, limits)
+            context["claim_id"] = query_data.get("claim_id")
+            context["claim_text"] = retrieval_request.query_text
+        except Exception as exc:
+            context = unavailable_fact_evidence_context(getattr(exc, "code", type(exc).__name__))
+        return replace(request, fact_evidence_context=context)
 
     def _skip_merge(self, language: str) -> AgentReview:
         self.merge_agent.last_merged_findings = []
@@ -305,7 +364,7 @@ class ReviewWorkflow:
         graph = StateGraph(ReviewState)
 
         def fact(state: ReviewState) -> ReviewState:
-            return {"fact": self.fact_agent.review(state["request"])}
+            return {"fact": self.fact_agent.review(self._fact_request(state["request"]))}
 
         def security(state: ReviewState) -> ReviewState:
             return {"security": self.security_agent.review(state["request"])}
