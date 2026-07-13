@@ -9,9 +9,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "benchmarks"))
 
 from fact_evidence_live_ab import (
     FactEvidenceLiveAbCase,
+    FactEvidenceLiveAbCaseResult,
     FactEvidenceLiveAbEvaluator,
     FactEvidenceLiveAbRunConfig,
     LiveAbSafetyError,
+    _summarize_results,
     load_live_ab_cases,
     load_live_ab_fixture,
     main,
@@ -168,3 +170,89 @@ def test_cli_help_is_available(capsys) -> None:
 
     assert error.value.code == 0
     assert "--run-live" in capsys.readouterr().out
+
+
+def _scored_result(
+    case_id: str, mode: str, verdict: str | None, relation: str
+) -> FactEvidenceLiveAbCaseResult:
+    return FactEvidenceLiveAbCaseResult(
+        case_id=case_id,
+        mode=mode,
+        model="test-model",
+        verdict=verdict,
+        confidence=None,
+        evidence_status="official_evidence_available",
+        evidence_chunk_ids=[],
+        evidence_document_ids=[],
+        evidence_urls=[],
+        evidence_limitations=[],
+        validated_reference_count=0,
+        rejected_reference_count=0,
+        prompt_character_count=10,
+        response_character_count=10,
+        input_tokens=None,
+        output_tokens=None,
+        total_tokens=None,
+        model_call_count=1,
+        network_request_count=0,
+        latency_ms=0.0,
+        evidence_relation=relation,
+        verdict_scoring_available=verdict is not None,
+    )
+
+
+def test_summary_scores_explicit_verdict_and_relation_enums() -> None:
+    expected = FactEvidenceLiveAbCase(
+        "structured",
+        "claim",
+        "Rancher Manager",
+        "Cluster Agent",
+        "supported",
+        "official_evidence_available",
+        [],
+        [],
+        "test",
+        expected_evidence_relation="direct_support",
+    )
+
+    summary = _summarize_results(
+        [
+            _scored_result("structured", "off", "supported", "direct_support"),
+            _scored_result("structured", "on", "supported", "direct_support"),
+        ],
+        [expected],
+    )
+
+    assert summary["verdict_scoring_available"] is True
+    assert summary["verdict_scored_case_count"] == 1
+    assert summary["unscored_verdict_case_count"] == 0
+    assert summary["off_verdict_accuracy"] == 1.0
+    assert summary["on_verdict_accuracy"] == 1.0
+    assert summary["off_relation_accuracy"] == summary["on_relation_accuracy"] == 1.0
+
+
+def test_summary_does_not_score_natural_language_verdict() -> None:
+    expected = FactEvidenceLiveAbCase(
+        "natural",
+        "claim",
+        "Rancher Manager",
+        "Cluster Agent",
+        "supported",
+        "official_evidence_available",
+        [],
+        [],
+        "test",
+        expected_evidence_relation="direct_support",
+    )
+
+    summary = _summarize_results(
+        [_scored_result("natural", "off", None, "direct_support")], [expected]
+    )
+
+    assert summary["verdict_scoring_available"] is False
+    assert summary["verdict_scored_case_count"] == 0
+    assert summary["unscored_verdict_case_count"] == 1
+    assert summary["off_verdict_accuracy"] is None
+    assert summary["on_verdict_accuracy"] is None
+    assert summary["verdict_accuracy_delta"] is None
+    assert summary["off_relation_accuracy"] == 1.0

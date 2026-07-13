@@ -144,6 +144,10 @@ def test_local_cache_fixture_has_six_controlled_cases() -> None:
     assert [case.case_id for case in fixture.cases[:2]] == ["cluster-agent-cache", "tunnel-cache"]
     assert len(fixture.cases) == 6
     assert "evidence_relation_correct" in fixture.human_review_template
+    # The RBAC claim states the role distinction itself; the fixture evidence
+    # explicitly names those role types, so direct_support is intentional.
+    rbac = next(case for case in fixture.cases if case.case_id == "rbac-cache")
+    assert rbac.expected_evidence_relation == "direct_support"
 
 
 def test_local_cache_plan_is_four_calls_and_off_does_not_read_cache(tmp_path: Path) -> None:

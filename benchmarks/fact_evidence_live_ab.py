@@ -131,6 +131,7 @@ class FactEvidenceLiveAbCaseResult:
     returned_evidence_count: int = 0
     human_review: dict[str, Any] = field(default_factory=dict)
     evidence_relation: str | None = None
+    verdict_scoring_available: bool = False
 
 
 @dataclass(slots=True)
@@ -477,7 +478,7 @@ class FactEvidenceLiveAbEvaluator:
                 case.case_id,
                 mode,
                 config.model or "",
-                review.summary,
+                _structured_verdict_from_review(review),
                 None,
                 review.evidence_status,
                 review.evidence_chunk_ids,
@@ -503,6 +504,7 @@ class FactEvidenceLiveAbEvaluator:
                 evidence_relation=(
                     review.evidence_relation.value if review.evidence_relation is not None else None
                 ),
+                verdict_scoring_available=_structured_verdict_from_review(review) is not None,
             )
         except Exception as exc:
             return FactEvidenceLiveAbCaseResult(
@@ -584,14 +586,27 @@ def _summarize_results(
     completed = [item for item in results if item.error_code is None]
     off = [item for item in completed if item.mode.lower() == "off"]
     on = [item for item in completed if item.mode.lower() == "on"]
+    scored_case_ids = {
+        item.case_id
+        for item in results
+        if item.verdict_scoring_available and _valid_verdict(item.verdict) is not None
+    }
+    verdict_scoring_available = bool(scored_case_ids)
+    off_accuracy = _accuracy(off, expected, "verdict")
+    on_accuracy = _accuracy(on, expected, "verdict")
+    verdict_delta = (
+        on_accuracy - off_accuracy if off_accuracy is not None and on_accuracy is not None else None
+    )
     return {
         "selected_case_count": len(cases),
         "completed_case_count": len(completed) // 2,
         "failed_case_count": len(results) - len(completed),
-        "off_verdict_accuracy": _accuracy(off, expected, "verdict"),
-        "on_verdict_accuracy": _accuracy(on, expected, "verdict"),
-        "verdict_accuracy_delta": _accuracy(on, expected, "verdict")
-        - _accuracy(off, expected, "verdict"),
+        "off_verdict_accuracy": off_accuracy,
+        "on_verdict_accuracy": on_accuracy,
+        "verdict_accuracy_delta": verdict_delta,
+        "verdict_scoring_available": verdict_scoring_available,
+        "verdict_scored_case_count": len(scored_case_ids),
+        "unscored_verdict_case_count": len(cases) - len(scored_case_ids),
         "off_relation_accuracy": _accuracy(off, expected, "relation"),
         "on_relation_accuracy": _accuracy(on, expected, "relation"),
         "on_valid_reference_rate": _valid_reference_rate(on),
@@ -615,9 +630,9 @@ def _accuracy(
     results: list[FactEvidenceLiveAbCaseResult],
     expected: dict[str, FactEvidenceLiveAbCase],
     kind: str,
-) -> float:
+) -> float | None:
     if not results:
-        return 0.0
+        return None if kind == "verdict" else 0.0
     if kind == "relation":
         matches = sum(
             item.evidence_relation == expected[item.case_id].expected_evidence_relation
@@ -628,9 +643,32 @@ def _accuracy(
             expected[item.case_id].expected_evidence_relation is not None for item in results
         )
         return matches / denominator if denominator else 0.0
-    return sum(item.verdict == expected[item.case_id].expected_verdict for item in results) / len(
-        results
+    scored = [
+        item
+        for item in results
+        if item.verdict_scoring_available and _valid_verdict(item.verdict) is not None
+    ]
+    if not scored:
+        return None
+    return sum(item.verdict == expected[item.case_id].expected_verdict for item in scored) / len(
+        scored
     )
+
+
+def _valid_verdict(value: object) -> str | None:
+    if value in {"supported", "contradicted", "insufficient_evidence"}:
+        return str(value)
+    return None
+
+
+def _structured_verdict_from_review(review: object) -> str | None:
+    """Read only an explicit stable verdict/category field; never infer from prose."""
+
+    for field_name in ("verdict", "category"):
+        verdict = _valid_verdict(getattr(review, field_name, None))
+        if verdict is not None:
+            return verdict
+    return None
 
 
 def _valid_reference_rate(results: list[FactEvidenceLiveAbCaseResult]) -> float:
