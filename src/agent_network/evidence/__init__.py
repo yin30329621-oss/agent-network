@@ -19,6 +19,13 @@ from agent_network.evidence.document_chunker import (
     DocumentChunkingError,
     OfficialDocumentChunker,
 )
+from agent_network.evidence.document_bm25 import (
+    Bm25Config,
+    Bm25Error,
+    Bm25SearchQuery,
+    Bm25SearchResult,
+    OfficialDocumentBm25Index,
+)
 from agent_network.evidence.github_advisory import GitHubAdvisoryEvidenceSource
 from agent_network.evidence.http import EvidenceHttpClient
 from agent_network.evidence.nvd import NvdEvidenceSource
@@ -44,6 +51,10 @@ from agent_network.evidence.verifier import OfflineEvidenceVerifier, Verificatio
 __all__ = [
     "Claim",
     "ClaimType",
+    "Bm25Config",
+    "Bm25Error",
+    "Bm25SearchQuery",
+    "Bm25SearchResult",
     "CleanedOfficialDocument",
     "DeterministicEvidenceMatcher",
     "DocumentCatalog",
@@ -70,6 +81,7 @@ __all__ = [
     "OfficialDocumentFetchError",
     "OfficialDocumentFetchResult",
     "OfficialDocumentCleaner",
+    "OfficialDocumentBm25Index",
     "OfficialDocumentChunker",
     "OfficialDocumentEvidenceSource",
     "VerificationReport",
