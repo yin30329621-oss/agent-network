@@ -16,11 +16,11 @@
     "document_id": "rancher-rbac-reference",
     "source_name": "rancher-docs",
     "title": "Role-Based Access Control",
-    "canonical_url": "https://ranchermanager.docs.rancher.com/v2.14/reference-guides/user-settings/role-based-access-control",
+    "canonical_url": "https://ranchermanager.docs.rancher.com/v2.14/how-to-guides/new-user-guides/authentication-permissions-and-global-configuration/manage-role-based-access-control-rbac",
     "official_domain": "ranchermanager.docs.rancher.com",
     "document_type": "reference",
     "product": "Rancher Manager",
-    "components": ["ServiceAccount", "RBAC"],
+    "components": ["RBAC", "Global Role", "Cluster Role", "Project Role"],
     "language": "en",
     "tags": ["serviceaccount", "rbac"],
     "supported_claim_ids": ["serviceaccount-rbac"]

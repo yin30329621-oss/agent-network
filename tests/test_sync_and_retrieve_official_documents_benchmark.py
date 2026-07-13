@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 import json
 from pathlib import Path
 import sys
+from urllib.parse import urlparse
 
 import pytest
 
@@ -161,6 +162,28 @@ def test_plan_selects_three_or_four_controlled_documents_and_rejects_unsafe_inpu
             min_documents_in_results=1,
             live_sync_enabled=False,
         )
+
+
+def test_controlled_catalog_has_valid_rbac_url_domain_components_and_order() -> None:
+    repository = load_sync_retrieve_catalog()
+    documents = repository.query()
+    rbac = next(item for item in documents if item.document_id == "rancher-rbac-reference")
+
+    assert [item.document_id for item in documents] == [
+        "rancher-tls-settings",
+        "rancher-rbac-reference",
+        "fleet-overview",
+        "rancher-downstream-cluster-communication",
+    ]
+    parsed = urlparse(rbac.canonical_url)
+    assert parsed.scheme == "https"
+    assert parsed.netloc == rbac.official_domain == "ranchermanager.docs.rancher.com"
+    assert parsed.path.endswith(
+        "/v2.14/how-to-guides/new-user-guides/authentication-permissions-and-global-configuration/"
+        "manage-role-based-access-control-rbac"
+    )
+    assert rbac.product == "Rancher Manager"
+    assert rbac.components == ["RBAC", "Global Role", "Cluster Role", "Project Role"]
 
 
 def test_missing_confirmation_rejects_before_network(tmp_path: Path) -> None:
