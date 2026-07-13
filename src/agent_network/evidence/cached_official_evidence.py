@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from datetime import UTC, datetime
 from hashlib import sha256
 import json
@@ -34,6 +34,9 @@ class CachedEvidenceRetrievalRequest:
     max_documents: int = 1
     query_text: str = ""
     top_chunks: int = 5
+    min_score: float = 0.0
+    min_matched_terms: int = 1
+    exclude_navigation_like: bool = False
 
 
 @dataclass(slots=True)
@@ -59,7 +62,10 @@ class CachedEvidenceRetrievalResult:
     loaded_document_count: int
     failed_document_count: int
     total_chunk_count: int
+    candidate_evidence_count: int
     returned_evidence_count: int
+    filtered_evidence_count: int
+    filtered_reasons_summary: dict[str, int]
     network_request_count: int
     evidences: list[RetrievedOfficialEvidence]
     cache_failures: list[CachedDocumentFailure]
@@ -69,7 +75,10 @@ class CachedEvidenceRetrievalResult:
             "loaded_document_count": self.loaded_document_count,
             "failed_document_count": self.failed_document_count,
             "total_chunk_count": self.total_chunk_count,
+            "candidate_evidence_count": self.candidate_evidence_count,
             "returned_evidence_count": self.returned_evidence_count,
+            "filtered_evidence_count": self.filtered_evidence_count,
+            "filtered_reasons_summary": self.filtered_reasons_summary,
             "network_request_count": self.network_request_count,
             "evidences": [item.to_dict() for item in self.evidences],
             "cache_failures": [item.to_dict() for item in self.cache_failures],
@@ -136,27 +145,39 @@ class CachedEvidenceIndexBuilder:
                 )
         if not chunks:
             return CachedEvidenceRetrievalResult(
-                len(loaded.documents), len(failures), 0, 0, 0, [], failures
+                loaded_document_count=len(loaded.documents),
+                failed_document_count=len(failures),
+                total_chunk_count=0,
+                candidate_evidence_count=0,
+                returned_evidence_count=0,
+                filtered_evidence_count=0,
+                filtered_reasons_summary={},
+                network_request_count=0,
+                evidences=[],
+                cache_failures=failures,
             )
         results = OfficialDocumentBm25Index(chunks).search(
             Bm25SearchQuery(
                 query_text=request.query_text,
-                top_k=request.top_chunks,
+                top_k=len(chunks),
                 product=request.product,
                 component=request.component,
                 document_type=request.document_type,
                 document_id=request.document_id,
             )
         )
-        evidences = [_evidence(result) for result in results]
+        evidences, filtered_reasons = _filter_evidences(results, request)
         return CachedEvidenceRetrievalResult(
-            len(loaded.documents),
-            len(failures),
-            len(chunks),
-            len(evidences),
-            0,
-            evidences,
-            failures,
+            loaded_document_count=len(loaded.documents),
+            failed_document_count=len(failures),
+            total_chunk_count=len(chunks),
+            candidate_evidence_count=len(results),
+            returned_evidence_count=len(evidences),
+            filtered_evidence_count=sum(filtered_reasons.values()),
+            filtered_reasons_summary=filtered_reasons,
+            network_request_count=0,
+            evidences=evidences,
+            cache_failures=failures,
         )
 
 
@@ -273,9 +294,14 @@ def _cache_directory(cache_root: Path, value: str | None) -> Path:
 
 
 def _validate_request(request: CachedEvidenceRetrievalRequest) -> None:
-    if request.max_documents <= 0 or request.top_chunks <= 0:
+    if (
+        request.max_documents <= 0
+        or request.top_chunks <= 0
+        or request.min_score < 0
+        or request.min_matched_terms <= 0
+    ):
         raise CachedDocumentLoadError(
-            "invalid_request", "Document and chunk limits must be positive"
+            "invalid_request", "Document limits and quality thresholds are invalid"
         )
 
 
@@ -313,3 +339,44 @@ def _evidence(result) -> RetrievedOfficialEvidence:
         text=chunk.text,
         source_fetched_at=chunk.source_fetched_at.astimezone(UTC),
     )
+
+
+def _filter_evidences(
+    results: list, request: CachedEvidenceRetrievalRequest
+) -> tuple[list[RetrievedOfficialEvidence], dict[str, int]]:
+    reasons: dict[str, int] = {}
+    selected: list[RetrievedOfficialEvidence] = []
+    seen_chunk_ids: set[str] = set()
+    for result in results:
+        reason = _filtered_reason(result, request)
+        if reason is not None:
+            reasons[reason] = reasons.get(reason, 0) + 1
+            continue
+        if result.chunk.chunk_id in seen_chunk_ids:
+            continue
+        seen_chunk_ids.add(result.chunk.chunk_id)
+        selected.append(_evidence(result))
+    selected = selected[: request.top_chunks]
+    return [
+        replace(evidence, rank=rank) for rank, evidence in enumerate(selected, start=1)
+    ], reasons
+
+
+def _filtered_reason(result, request: CachedEvidenceRetrievalRequest) -> str | None:
+    if result.score < request.min_score:
+        return "below_min_score"
+    if len(result.matched_terms) < request.min_matched_terms:
+        return "below_min_matched_terms"
+    if request.exclude_navigation_like and _is_navigation_like_chunk(result.chunk):
+        return "navigation_like"
+    return None
+
+
+def _is_navigation_like_chunk(chunk: DocumentChunk) -> bool:
+    marker_text = f"{chunk.section_heading}\n{chunk.text}".lower()
+    markers = ("on this page", "table of contents", "本页目录")
+    if not any(marker in marker_text for marker in markers):
+        return False
+    lines = [line.strip() for line in chunk.text.splitlines() if line.strip()]
+    list_lines = [line for line in lines if line.startswith(("- ", "* ", "+ "))]
+    return len(list_lines) >= 2 and len(list_lines) * 2 >= len(lines)

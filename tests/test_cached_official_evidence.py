@@ -12,7 +12,7 @@ from agent_network.evidence.cached_official_evidence import (
     CachedEvidenceIndexBuilder,
     CachedEvidenceRetrievalRequest,
 )
-from retrieve_from_official_cache import build_plan
+from retrieve_from_official_cache import _parser, build_plan
 
 
 FETCHED_AT = "2026-07-13T00:00:00+00:00"
@@ -174,6 +174,39 @@ def test_filters_ranks_and_no_match_are_deterministic(tmp_path: Path) -> None:
     assert no_match.returned_evidence_count == 0
 
 
+def test_quality_thresholds_filter_candidates_and_rerank_stably(tmp_path: Path) -> None:
+    write_cached_document(tmp_path, "first")
+    write_cached_document(tmp_path, "second")
+    subject = CachedEvidenceIndexBuilder(cache_root=tmp_path)
+
+    strict = subject.retrieve(request(min_score=1_000.0))
+    selected = subject.retrieve(request(min_matched_terms=2, top_chunks=2))
+
+    assert strict.candidate_evidence_count == 2
+    assert strict.returned_evidence_count == 0
+    assert strict.filtered_reasons_summary == {"below_min_score": 2}
+    assert [item.rank for item in selected.evidences] == [1, 2]
+    assert len({item.chunk_id for item in selected.evidences}) == 2
+
+
+def test_navigation_like_cached_chunks_are_optionally_excluded(tmp_path: Path) -> None:
+    text = "On this page\n\n- Cluster Agent\n\n- Rancher Server\n\n- Downstream Connection\n" * 4
+    write_cached_document(tmp_path, "toc", text=text)
+    subject = CachedEvidenceIndexBuilder(cache_root=tmp_path)
+
+    result = subject.retrieve(
+        request(
+            document_id="toc",
+            query_text="Cluster Agent Rancher Server",
+            exclude_navigation_like=True,
+            min_matched_terms=2,
+        )
+    )
+
+    assert result.returned_evidence_count == 0
+    assert result.filtered_reasons_summary == {"navigation_like": 1}
+
+
 def test_cache_path_escape_is_rejected_and_plan_is_read_only(tmp_path: Path) -> None:
     subject = CachedEvidenceIndexBuilder(cache_root=tmp_path)
     with pytest.raises(CachedDocumentLoadError, match="stay below"):
@@ -184,3 +217,16 @@ def test_cache_path_escape_is_rejected_and_plan_is_read_only(tmp_path: Path) -> 
     assert plan.selected_document_ids == ["planned"]
     assert plan.network_request_count == 0
     assert plan.run_enabled is False
+
+
+def test_benchmark_uses_explicit_quality_defaults_without_changing_library_defaults() -> None:
+    defaults = CachedEvidenceRetrievalRequest()
+    args = _parser().parse_args([])
+
+    assert (defaults.min_score, defaults.min_matched_terms, defaults.exclude_navigation_like) == (
+        0.0,
+        1,
+        False,
+    )
+    assert (args.min_score, args.min_matched_terms, args.exclude_navigation_like) == (1.0, 2, True)
+    assert args.include_filtered_summary is False

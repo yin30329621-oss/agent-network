@@ -85,6 +85,26 @@ def test_sections_lists_code_and_normalization_are_preserved() -> None:
     assert result.to_dict()["source_fetched_at"] == FETCHED_AT.isoformat()
 
 
+def test_in_content_table_of_contents_is_removed_but_technical_list_is_kept() -> None:
+    response = fetched("empty-page.html")
+    response.html = """
+    <html><body><main>
+      <div class="table-of-contents"><p>On this page</p><ul>
+        <li>Install</li><li>Configure</li><li>Verify</li>
+      </ul></div>
+      <h1>Cluster Agent</h1><p>Use the following steps.</p>
+      <ul><li>Install the agent.</li><li>Configure RBAC.</li></ul>
+    </main></body></html>
+    """
+
+    result = OfficialDocumentCleaner().clean(response, document())
+
+    assert "On this page" not in result.plain_text
+    assert "Configure</li>" not in result.plain_text
+    assert "- Install the agent." in result.plain_text
+    assert "- Configure RBAC." in result.plain_text
+
+
 def test_repeated_headings_and_fallback_section_are_kept() -> None:
     body_result = OfficialDocumentCleaner().clean(fetched("body-page.html"), document())
     article_result = OfficialDocumentCleaner().clean(fetched("article-page.html"), document())

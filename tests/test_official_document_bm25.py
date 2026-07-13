@@ -159,6 +159,25 @@ def test_stopwords_do_not_produce_results_or_matched_terms() -> None:
     assert error.value.code == "empty_query"
 
 
+def test_extended_generic_stopwords_do_not_dominate_matched_terms() -> None:
+    index = OfficialDocumentBm25Index(corpus())
+
+    results = index.search(
+        Bm25SearchQuery("Cluster Agent communicates with Rancher Server through this tunnel")
+    )
+
+    assert "with" not in results[0].matched_terms
+    assert "through" not in results[0].matched_terms
+    assert {"cluster", "agent", "rancher", "server", "tunnel"}.intersection(
+        results[0].matched_terms
+    )
+    assert tokenize("CVE-2025-1234 ServiceAccount cattle-cluster-agent") == [
+        "cve-2025-1234",
+        "serviceaccount",
+        "cattle-cluster-agent",
+    ]
+
+
 def test_equal_scores_and_input_order_use_stable_tiebreakers() -> None:
     first = chunk("b", "unique", document_id="alpha", section_order=1, chunk_order=1)
     second = chunk("a", "unique", document_id="alpha", section_order=1, chunk_order=0)

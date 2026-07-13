@@ -20,6 +20,9 @@ class CacheRetrievalPlan:
     selected_document_count: int
     query_text: str
     top_chunks: int
+    min_score: float
+    min_matched_terms: int
+    exclude_navigation_like: bool
     network_request_count: int
     run_enabled: bool
 
@@ -38,6 +41,9 @@ def build_plan(
         selected_document_count=len(loaded.selected_document_ids),
         query_text=request.query_text,
         top_chunks=request.top_chunks,
+        min_score=request.min_score,
+        min_matched_terms=request.min_matched_terms,
+        exclude_navigation_like=request.exclude_navigation_like,
         network_request_count=0,
         run_enabled=run,
     )
@@ -57,6 +63,19 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--query", default="")
     parser.add_argument("--top-chunks", type=int, default=5)
     parser.add_argument("--max-documents", type=int, default=1)
+    parser.add_argument("--min-score", type=float, default=1.0)
+    parser.add_argument("--min-matched-terms", type=int, default=2)
+    parser.add_argument(
+        "--exclude-navigation-like",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Exclude clearly marked table-of-contents chunks (default: enabled).",
+    )
+    parser.add_argument(
+        "--include-filtered-summary",
+        action="store_true",
+        help="Include aggregate quality-filter reasons in run output.",
+    )
     return parser
 
 
@@ -71,13 +90,20 @@ def main(argv: list[str] | None = None) -> int:
         max_documents=args.max_documents,
         query_text=args.query,
         top_chunks=args.top_chunks,
+        min_score=args.min_score,
+        min_matched_terms=args.min_matched_terms,
+        exclude_navigation_like=args.exclude_navigation_like,
     )
     builder = CachedEvidenceIndexBuilder()
     plan = build_plan(builder, request, run=args.run)
     print(json.dumps(plan.to_dict(), ensure_ascii=False, indent=2))
     if not args.run:
         return 0
-    print(json.dumps(builder.retrieve(request).to_dict(), ensure_ascii=False, indent=2))
+    result = builder.retrieve(request).to_dict()
+    if not args.include_filtered_summary:
+        result.pop("filtered_evidence_count", None)
+        result.pop("filtered_reasons_summary", None)
+    print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
 
 

@@ -12,7 +12,30 @@ from agent_network.evidence.document_chunker import DocumentChunk
 from agent_network.evidence.vocabulary import components_match, products_match
 
 
-_STOPWORDS = frozenset({"the", "a", "an", "is", "are", "of", "to", "and", "in", "for"})
+_STOPWORDS = frozenset(
+    {
+        "the",
+        "a",
+        "an",
+        "is",
+        "are",
+        "of",
+        "to",
+        "and",
+        "in",
+        "for",
+        "with",
+        "through",
+        "used",
+        "this",
+        "that",
+        "from",
+        "into",
+        "about",
+        "by",
+        "as",
+    }
+)
 _ZERO_WIDTH = re.compile(r"[\u200b\u200c\u200d\ufeff]")
 _TOKEN_PATTERN = re.compile(
     r"cve-\d{4}-\d+|v?\d+(?:\.\d+){1,3}|[a-z][a-z0-9]*(?:-[a-z0-9]+)*|\d+|[\u4e00-\u9fff]+"

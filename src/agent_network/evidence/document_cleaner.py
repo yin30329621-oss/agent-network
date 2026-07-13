@@ -48,6 +48,10 @@ _HEADING_LEVELS = {f"h{level}": level for level in range(1, 7)}
 _BLOCK_TAGS = frozenset({"p", "li", "pre", "table", "tr", "td", "th"})
 _CONTROL_CHARACTERS = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
 _ZERO_WIDTH = re.compile(r"[\u200b\u200c\u200d\ufeff]")
+_NAVIGATION_MARKERS = ("on this page", "table of contents", "本页目录")
+_NAVIGATION_ATTRIBUTE_TOKENS = frozenset(
+    {"toc", "table-of-contents", "table_of_contents", "on-this-page", "on_this_page"}
+)
 
 
 class DocumentCleaningError(RuntimeError):
@@ -229,6 +233,8 @@ def _extract_blocks(node: _Node):
     def visit(current: _Node):
         if current.tag in _NOISE_TAGS:
             return
+        if _is_navigation_like_node(current):
+            return
         if current.tag in _HEADING_LEVELS:
             if text := _inline_text(current):
                 yield ("heading", text, _HEADING_LEVELS[current.tag])
@@ -263,6 +269,42 @@ def _extract_blocks(node: _Node):
                 yield ("text", text, 0)
 
     yield from visit(node)
+
+
+def _is_navigation_like_node(node: _Node) -> bool:
+    """Reject explicit in-content tables of contents without treating ordinary lists as noise."""
+
+    attribute_values = " ".join(
+        node.attrs.get(name, "") for name in ("id", "class", "aria-label", "data-testid")
+    ).lower()
+    attribute_tokens = set(re.split(r"[^a-z0-9_]+", attribute_values))
+    has_navigation_attribute = _NAVIGATION_ATTRIBUTE_TOKENS.intersection(attribute_tokens) or any(
+        marker in attribute_values for marker in _NAVIGATION_ATTRIBUTE_TOKENS
+    )
+    if has_navigation_attribute and _list_item_count(node) >= 2:
+        return True
+
+    text = _inline_text(node).lower()
+    return (
+        any(marker in text for marker in _NAVIGATION_MARKERS)
+        and _list_item_count(node) >= 2
+        and _looks_like_heading_list(node)
+    )
+
+
+def _list_item_count(node: _Node) -> int:
+    return sum(1 for child in _nodes(node, include_noise=False) if child.tag == "li")
+
+
+def _looks_like_heading_list(node: _Node) -> bool:
+    items = [
+        _inline_text(child)
+        for child in _nodes(node, include_noise=False)
+        if child.tag == "li" and _inline_text(child)
+    ]
+    if len(items) < 2:
+        return False
+    return all(len(item) <= 120 and not re.search(r"[.!?。！？;；]$", item) for item in items)
 
 
 def _sections_from_blocks(blocks: list[tuple[str, str, int]], title: str) -> list[DocumentSection]:
