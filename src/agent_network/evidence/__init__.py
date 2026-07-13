@@ -13,6 +13,12 @@ from agent_network.evidence.document_cleaner import (
     DocumentSection,
     OfficialDocumentCleaner,
 )
+from agent_network.evidence.document_chunker import (
+    DocumentChunk,
+    DocumentChunkingConfig,
+    DocumentChunkingError,
+    OfficialDocumentChunker,
+)
 from agent_network.evidence.github_advisory import GitHubAdvisoryEvidenceSource
 from agent_network.evidence.http import EvidenceHttpClient
 from agent_network.evidence.nvd import NvdEvidenceSource
@@ -44,6 +50,9 @@ __all__ = [
     "DocumentCatalogFixture",
     "DocumentCatalogQuery",
     "DocumentCatalogRepository",
+    "DocumentChunk",
+    "DocumentChunkingConfig",
+    "DocumentChunkingError",
     "DocumentCleaningError",
     "DocumentSection",
     "DocumentType",
@@ -61,6 +70,7 @@ __all__ = [
     "OfficialDocumentFetchError",
     "OfficialDocumentFetchResult",
     "OfficialDocumentCleaner",
+    "OfficialDocumentChunker",
     "OfficialDocumentEvidenceSource",
     "VerificationReport",
     "VerificationResult",
