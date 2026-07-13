@@ -163,11 +163,14 @@ def test_extended_generic_stopwords_do_not_dominate_matched_terms() -> None:
     index = OfficialDocumentBm25Index(corpus())
 
     results = index.search(
-        Bm25SearchQuery("Cluster Agent communicates with Rancher Server through this tunnel")
+        Bm25SearchQuery(
+            "How does do did Cluster Agent communicate with Rancher Server through this tunnel"
+        )
     )
 
     assert "with" not in results[0].matched_terms
     assert "through" not in results[0].matched_terms
+    assert not {"how", "does", "do", "did"}.intersection(results[0].matched_terms)
     assert {"cluster", "agent", "rancher", "server", "tunnel"}.intersection(
         results[0].matched_terms
     )

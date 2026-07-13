@@ -92,6 +92,7 @@ def test_in_content_table_of_contents_is_removed_but_technical_list_is_kept() ->
       <div class="table-of-contents"><p>On this page</p><ul>
         <li>Install</li><li>Configure</li><li>Verify</li>
       </ul></div>
+      <p>Version: vX.Y</p><p>Table of contents</p><p>On this page</p>
       <h1>Cluster Agent</h1><p>Use the following steps.</p>
       <ul><li>Install the agent.</li><li>Configure RBAC.</li></ul>
     </main></body></html>
@@ -100,6 +101,9 @@ def test_in_content_table_of_contents_is_removed_but_technical_list_is_kept() ->
     result = OfficialDocumentCleaner().clean(response, document())
 
     assert "On this page" not in result.plain_text
+    assert "Table of contents" not in result.plain_text
+    assert "Version: vX.Y" not in result.plain_text
+    assert "Use the following steps." in result.plain_text
     assert "Configure</li>" not in result.plain_text
     assert "- Install the agent." in result.plain_text
     assert "- Configure RBAC." in result.plain_text

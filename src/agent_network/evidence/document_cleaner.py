@@ -52,6 +52,7 @@ _NAVIGATION_MARKERS = ("on this page", "table of contents", "本页目录")
 _NAVIGATION_ATTRIBUTE_TOKENS = frozenset(
     {"toc", "table-of-contents", "table_of_contents", "on-this-page", "on_this_page"}
 )
+_UI_VERSION_LABEL = re.compile(r"^version\s*:\s*v?(?:\d+(?:\.\d+){1,3}|x(?:\.[a-z]){1,2})$", re.I)
 
 
 class DocumentCleaningError(RuntimeError):
@@ -236,7 +237,7 @@ def _extract_blocks(node: _Node):
         if _is_navigation_like_node(current):
             return
         if current.tag in _HEADING_LEVELS:
-            if text := _inline_text(current):
+            if (text := _inline_text(current)) and not _is_ui_label(text):
                 yield ("heading", text, _HEADING_LEVELS[current.tag])
             return
         if current.tag == "pre":
@@ -259,13 +260,17 @@ def _extract_blocks(node: _Node):
                         yield ("text", " | ".join(cells), 0)
             return
         if current.tag == "p":
-            if text := _inline_text(current):
+            if (text := _inline_text(current)) and not _is_ui_label(text):
                 yield ("text", text, 0)
             return
         for child in current.children:
             if isinstance(child, _Node):
                 yield from visit(child)
-            elif current.tag not in _BLOCK_TAGS and (text := _normalize_text(child)):
+            elif (
+                current.tag not in _BLOCK_TAGS
+                and (text := _normalize_text(child))
+                and not _is_ui_label(text)
+            ):
                 yield ("text", text, 0)
 
     yield from visit(node)
@@ -289,6 +294,13 @@ def _is_navigation_like_node(node: _Node) -> bool:
         any(marker in text for marker in _NAVIGATION_MARKERS)
         and _list_item_count(node) >= 2
         and _looks_like_heading_list(node)
+    )
+
+
+def _is_ui_label(text: str) -> bool:
+    normalized = _normalize_text(text).casefold()
+    return normalized in {"on this page", "table of contents", "本页目录"} or bool(
+        _UI_VERSION_LABEL.fullmatch(normalized)
     )
 
 

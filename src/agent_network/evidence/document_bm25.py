@@ -34,6 +34,10 @@ _STOPWORDS = frozenset(
         "about",
         "by",
         "as",
+        "how",
+        "does",
+        "do",
+        "did",
     }
 )
 _ZERO_WIDTH = re.compile(r"[\u200b\u200c\u200d\ufeff]")
