@@ -66,6 +66,14 @@ class EvidenceCoverage(StrEnum):
     PARTIAL = "partial"
 
 
+class DocumentType(StrEnum):
+    ARCHITECTURE = "architecture"
+    FEATURE_OVERVIEW = "feature_overview"
+    REFERENCE = "reference"
+    RELEASE_NOTES = "release_notes"
+    SECURITY_ADVISORY = "security_advisory"
+
+
 class DocumentCatalog(BaseModel):
     """Metadata for an official document before fetching or chunking it."""
 
@@ -74,6 +82,7 @@ class DocumentCatalog(BaseModel):
     title: str
     canonical_url: str
     official_domain: str
+    document_type: DocumentType = DocumentType.REFERENCE
     product: str
     components: list[str] = Field(default_factory=list)
     product_version: str | None = None

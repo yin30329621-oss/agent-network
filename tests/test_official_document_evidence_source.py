@@ -33,6 +33,7 @@ def test_document_catalog_validates_official_url_and_timezone() -> None:
         title="Test document",
         canonical_url="https://ranchermanager.docs.rancher.com/test",
         official_domain="ranchermanager.docs.rancher.com",
+        document_type="reference",
         product="Rancher Manager",
         updated_at=datetime(2026, 7, 13, tzinfo=UTC),
     )

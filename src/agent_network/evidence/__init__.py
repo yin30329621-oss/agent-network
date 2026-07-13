@@ -1,6 +1,7 @@
 """Offline evidence verification primitives."""
 
 from agent_network.evidence.matcher import DeterministicEvidenceMatcher, EvidenceMatch
+from agent_network.evidence.catalog import DocumentCatalogQuery, DocumentCatalogRepository
 from agent_network.evidence.github_advisory import GitHubAdvisoryEvidenceSource
 from agent_network.evidence.http import EvidenceHttpClient
 from agent_network.evidence.nvd import NvdEvidenceSource
@@ -8,6 +9,7 @@ from agent_network.evidence.schemas import (
     Claim,
     ClaimType,
     DocumentCatalog,
+    DocumentType,
     Evidence,
     EvidenceStrength,
     VerificationResult,
@@ -28,6 +30,9 @@ __all__ = [
     "DeterministicEvidenceMatcher",
     "DocumentCatalog",
     "DocumentCatalogFixture",
+    "DocumentCatalogQuery",
+    "DocumentCatalogRepository",
+    "DocumentType",
     "Evidence",
     "EvidenceFixture",
     "EvidenceHttpClient",
