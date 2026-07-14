@@ -84,12 +84,15 @@ class DocumentCatalog(BaseModel):
     official_domain: str
     document_type: DocumentType = DocumentType.REFERENCE
     product: str
+    component: str | None = None
     components: list[str] = Field(default_factory=list)
     product_version: str | None = None
     documentation_version: str | None = None
     language: str = "en"
     published_at: datetime | None = None
     updated_at: datetime | None = None
+    fetched_at: datetime | None = None
+    content_hash: str | None = None
     tags: list[str] = Field(default_factory=list)
     supported_claim_ids: list[str] = Field(default_factory=list)
     fixture_excerpt: str | None = None
@@ -101,7 +104,7 @@ class DocumentCatalog(BaseModel):
     def validate_document_domain(cls, value: Any) -> str:
         return normalize_official_domain(str(value))
 
-    @field_validator("published_at", "updated_at", mode="after")
+    @field_validator("published_at", "updated_at", "fetched_at", mode="after")
     @classmethod
     def require_document_timezone(cls, value: datetime | None) -> datetime | None:
         if value is not None and value.tzinfo is None:
@@ -113,10 +116,16 @@ class DocumentCatalog(BaseModel):
         from urllib.parse import urlparse
 
         parsed = urlparse(self.canonical_url)
-        if parsed.scheme != "https" or parsed.hostname != self.official_domain:
+        fixture_url = parsed.hostname == f"{self.source_name}-fixtures.invalid"
+        fixture_url = self.fixture_only and fixture_url
+        if parsed.scheme != "https" or (
+            parsed.hostname != self.official_domain and not fixture_url
+        ):
             raise ValueError("canonical_url must use the configured official domain over HTTPS")
         if self.fixture_only and not self.fixture_excerpt:
             raise ValueError("fixture catalogs require fixture_excerpt")
+        if self.component is None and self.components:
+            self.component = self.components[0]
         return self
 
 

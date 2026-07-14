@@ -1,0 +1,46 @@
+domain_id: rancher
+products:
+  rancher_manager: ["Rancher Manager"]
+  fleet: ["Fleet"]
+  rke: ["RKE"]
+  rke2: ["RKE2"]
+aliases:
+  rancher_manager: ["rancher", "rancher manager"]
+  fleet: ["rancher fleet"]
+  rke: ["rancher kubernetes engine"]
+  rke2: ["rke 2", "rancher kubernetes engine 2"]
+components:
+  rancher_manager: ["Rancher Server", "Cluster Agent", "WebSocket", "ServiceAccount", "Registration Token", "Cloud Credential", "RBAC"]
+  fleet: ["Fleet Agent", "Bundle"]
+  rke: ["RKE"]
+  rke2: ["RKE2"]
+official_domains:
+  rancher_manager: ["ranchermanager.docs.rancher.com"]
+  fleet: ["fleet.rancher.io"]
+  rke: ["rancher.com"]
+  rke2: ["rancher.com"]
+documentation_roots:
+  rancher_manager: ["https://ranchermanager.docs.rancher.com/"]
+  fleet: ["https://fleet.rancher.io/"]
+  rke: ["https://rancher.com/docs/rke/"]
+  rke2: ["https://rancher.com/docs/rke2/"]
+repository_roots:
+  rancher_manager: ["https://github.com/rancher/rancher"]
+  fleet: ["https://github.com/rancher/fleet"]
+  rke: ["https://github.com/rancher/rke"]
+  rke2: ["https://github.com/rancher/rke2"]
+release_note_patterns:
+  rancher_manager: ["/release-notes/"]
+  fleet: ["/release-notes/"]
+  rke: ["/release-notes/"]
+  rke2: ["/release-notes/"]
+advisory_patterns:
+  rancher_manager: ["/security/"]
+  fleet: ["/security/"]
+  rke: ["/security/"]
+  rke2: ["/security/"]
+version_patterns:
+  rancher_manager: ["v[0-9]+\\.[0-9]+(?:\\.[0-9]+)?"]
+  fleet: ["v[0-9]+\\.[0-9]+(?:\\.[0-9]+)?"]
+  rke: ["v[0-9]+\\.[0-9]+(?:\\.[0-9]+)?"]
+  rke2: ["v[0-9]+\\.[0-9]+(?:\\.[0-9]+)?"]

@@ -183,6 +183,12 @@ def validate_fact_evidence_citations(
     )
     if relation_warning:
         warnings.append(relation_warning)
+    if context.get("claim_verification_mode") == "candidate_only" and relation in {
+        EvidenceRelation.DIRECT_SUPPORT.value,
+        EvidenceRelation.DIRECT_CONTRADICTION.value,
+    }:
+        relation = EvidenceRelation.INDIRECT_EVIDENCE.value
+        warnings.append("candidate_only_relation_downgraded")
     model_limitations = (
         [str(value).strip() for value in requested_limitations if str(value).strip()]
         if isinstance(requested_limitations, list)

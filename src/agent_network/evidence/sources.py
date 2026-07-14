@@ -9,6 +9,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Protocol
 
+from pydantic import BaseModel, ConfigDict, Field
+
 from agent_network.evidence.schemas import Claim, DocumentCatalog, Evidence
 from agent_network.evidence.vocabulary import components_match, products_match
 
@@ -16,6 +18,34 @@ from agent_network.evidence.vocabulary import components_match, products_match
 class EvidenceSource(Protocol):
     def search(self, claim: Claim) -> list[Evidence]:
         """Return deterministic evidence candidates for a claim."""
+
+
+class OfficialDocumentDomainConfig(BaseModel):
+    """Static, per-product official-document domain configuration."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    domain_id: str = Field(min_length=1)
+    products: dict[str, list[str]]
+    aliases: dict[str, list[str]]
+    components: dict[str, list[str]]
+    official_domains: dict[str, list[str]]
+    documentation_roots: dict[str, list[str]]
+    repository_roots: dict[str, list[str]]
+    release_note_patterns: dict[str, list[str]]
+    advisory_patterns: dict[str, list[str]]
+    version_patterns: dict[str, list[str]]
+
+
+def load_official_document_domain_config(path: str | Path) -> OfficialDocumentDomainConfig:
+    """Load one static official-document domain config without network access."""
+
+    try:
+        import yaml
+    except ImportError as exc:  # pragma: no cover - dependency guard
+        raise RuntimeError("PyYAML is required to load document domain config.") from exc
+    with Path(path).open("r", encoding="utf-8") as file:
+        return OfficialDocumentDomainConfig.model_validate(yaml.safe_load(file) or {})
 
 
 class OfficialDocumentEvidenceSource(EvidenceSource, ABC):

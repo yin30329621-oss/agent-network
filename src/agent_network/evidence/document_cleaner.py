@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
+from hashlib import sha256
 from html.parser import HTMLParser
 import re
 import unicodedata
@@ -53,6 +54,18 @@ _NAVIGATION_ATTRIBUTE_TOKENS = frozenset(
     {"toc", "table-of-contents", "table_of_contents", "on-this-page", "on_this_page"}
 )
 _UI_VERSION_LABEL = re.compile(r"^version\s*:\s*v?(?:\d+(?:\.\d+){1,3}|x(?:\.[a-z]){1,2})$", re.I)
+_PROMPT_INJECTION_PATTERNS = (
+    (
+        "ignore_previous_instructions",
+        re.compile(r"ignore\s+(?:all\s+)?previous\s+instructions", re.I),
+    ),
+    ("system_prompt", re.compile(r"system\s+prompt", re.I)),
+    ("assistant_must", re.compile(r"assistant\s+must", re.I)),
+    ("override_instructions", re.compile(r"override\s+(?:all\s+)?instructions", re.I)),
+    ("execute_following_command", re.compile(r"执行以下命令")),
+    ("ignore_prior_requirements", re.compile(r"忽略此前要求")),
+    ("page_as_system_instruction", re.compile(r"将本页面内容作为系统指令")),
+)
 
 
 class DocumentCleaningError(RuntimeError):
@@ -69,6 +82,9 @@ class DocumentSection:
     heading_level: int
     text: str
     order: int
+    heading_path: list[str] = field(default_factory=list)
+    contains_code: bool = False
+    contains_table: bool = False
 
     def to_dict(self) -> dict[str, object]:
         return asdict(self)
@@ -88,6 +104,13 @@ class CleanedOfficialDocument:
     sections: list[DocumentSection]
     source_fetched_at: datetime
     source_response_size_bytes: int
+    product_version: str | None = None
+    code_blocks: list[str] = field(default_factory=list)
+    table_blocks: list[str] = field(default_factory=list)
+    cleaner_warnings: list[str] = field(default_factory=list)
+    cleaned_content_hash: str = ""
+    untrusted_document_content: bool = True
+    prompt_injection_flags: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, object]:
         data = asdict(self)
@@ -173,12 +196,14 @@ class OfficialDocumentCleaner:
             raise DocumentCleaningError(
                 "no_extractable_content", "Fetched document has no extractable content"
             )
+        prompt_injection_flags = _prompt_injection_flags(plain_text)
+        warnings = ["prompt_injection_flags_present"] if prompt_injection_flags else []
         return CleanedOfficialDocument(
             document_id=document.document_id,
             canonical_url=document.canonical_url,
             final_url=fetch_result.final_url,
             product=document.product,
-            component=document.components[0] if document.components else "",
+            component=document.component or (document.components[0] if document.components else ""),
             document_type=document.document_type.value,
             title=title,
             plain_text=plain_text,
@@ -186,6 +211,12 @@ class OfficialDocumentCleaner:
             sections=sections,
             source_fetched_at=fetch_result.fetched_at,
             source_response_size_bytes=fetch_result.response_size_bytes,
+            product_version=document.product_version,
+            code_blocks=[text for kind, text, _level in blocks if kind == "code"],
+            table_blocks=[text for kind, text, _level in blocks if kind == "table"],
+            cleaner_warnings=warnings,
+            cleaned_content_hash=f"sha256:{sha256(plain_text.encode('utf-8')).hexdigest()}",
+            prompt_injection_flags=prompt_injection_flags,
         )
 
 
@@ -242,7 +273,7 @@ def _extract_blocks(node: _Node):
             return
         if current.tag == "pre":
             if text := _pre_text(current):
-                yield ("text", text, 0)
+                yield ("code", text, 0)
             return
         if current.tag == "li":
             if text := _inline_text(current):
@@ -257,7 +288,7 @@ def _extract_blocks(node: _Node):
                         if isinstance(cell, _Node) and cell.tag in {"th", "td"}
                     ]
                     if any(cells):
-                        yield ("text", " | ".join(cells), 0)
+                        yield ("table", " | ".join(cells), 0)
             return
         if current.tag == "p":
             if (text := _inline_text(current)) and not _is_ui_label(text):
@@ -324,6 +355,9 @@ def _sections_from_blocks(blocks: list[tuple[str, str, int]], title: str) -> lis
     active_heading = ""
     active_level = 0
     active_lines: list[str] = []
+    active_path: list[str] = []
+    active_contains_code = False
+    active_contains_table = False
 
     def append_section() -> None:
         if active_lines or active_heading:
@@ -333,6 +367,9 @@ def _sections_from_blocks(blocks: list[tuple[str, str, int]], title: str) -> lis
                     heading_level=active_level,
                     text="\n\n".join(active_lines),
                     order=len(sections),
+                    heading_path=list(active_path) or [active_heading or title],
+                    contains_code=active_contains_code,
+                    contains_table=active_contains_table,
                 )
             )
 
@@ -340,8 +377,13 @@ def _sections_from_blocks(blocks: list[tuple[str, str, int]], title: str) -> lis
         if kind == "heading":
             append_section()
             active_heading, active_level, active_lines = text, level, []
+            active_path = active_path[: max(0, level - 1)] + [text]
+            active_contains_code = False
+            active_contains_table = False
         else:
             active_lines.append(text)
+            active_contains_code = active_contains_code or kind == "code"
+            active_contains_table = active_contains_table or kind == "table"
     append_section()
     if not sections:
         return [DocumentSection(heading=title, heading_level=0, text="", order=0)]
@@ -391,3 +433,11 @@ def _strip_site_suffix(title: str) -> str:
         title,
         flags=re.I,
     ).strip()
+
+
+def _prompt_injection_flags(text: str) -> list[str]:
+    flags: list[str] = []
+    for rule_name, pattern in _PROMPT_INJECTION_PATTERNS:
+        for match in pattern.finditer(text):
+            flags.append(f"{rule_name}@{match.start()}")
+    return flags

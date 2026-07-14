@@ -66,10 +66,17 @@ def document(document_id: str, *, product: str = "Rancher Manager") -> DocumentC
     )
 
 
-def response(document_id: str, text: str = "Cluster Agent content") -> FakeResponse:
+def response(
+    document_id: str,
+    text: str = "Cluster Agent content",
+    headers: dict[str, str] | None = None,
+) -> FakeResponse:
+    response_headers = {"Content-Type": "text/html"}
+    response_headers.update(headers or {})
     return FakeResponse(
         f"https://{RANCHER_DOMAIN}/fixture/{document_id}",
         f"<html><main><h1>{document_id}</h1><p>{text}</p></main></html>".encode(),
+        headers=response_headers,
     )
 
 
@@ -103,6 +110,24 @@ def test_first_sync_writes_complete_cache_and_stable_hashes(tmp_path: Path) -> N
     assert (cache / "raw.html").is_file() and (cache / "cleaned.json").is_file()
     assert len(metadata["raw_content_sha256"]) == len(metadata["cleaned_content_sha256"]) == 64
     assert metadata["etag"] is None and metadata["last_modified"] is None
+
+
+def test_sync_persists_component_and_validator_headers(tmp_path: Path) -> None:
+    subject, _transport = synchronizer(
+        tmp_path,
+        [document("cluster")],
+        [response("cluster", headers={"ETag": '"fixture-etag"', "Last-Modified": "today"})],
+    )
+
+    subject.sync(OfficialDocumentSyncRequest(allow_network=True))
+
+    cache = tmp_path / "cache-root" / "documents" / "cluster"
+    metadata = __import__("json").loads((cache / "metadata.json").read_text(encoding="utf-8"))
+    cleaned = __import__("json").loads((cache / "cleaned.json").read_text(encoding="utf-8"))
+    assert metadata["component"] == "Cluster Agent"
+    assert metadata["etag"] == '"fixture-etag"'
+    assert metadata["last_modified"] == "today"
+    assert cleaned["component"] == "Cluster Agent"
 
 
 def test_cached_sync_skips_without_network_and_force_refresh_detects_unchanged(

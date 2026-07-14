@@ -1,0 +1,5 @@
+{
+  "fixture_version": "official-doc-html-v1",
+  "fixture_only": true,
+  "notice": "FIXTURE ONLY. Artificial HTML for offline fetch, clean, and chunk tests."
+}

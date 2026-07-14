@@ -10,9 +10,10 @@ PRODUCT_ALIASES = {
         "rancher",
         "rancher manager",
         "rancher management server",
+        "rancher 管理器",
     },
     "kubernetes": {"kubernetes", "k8s"},
-    "fleet": {"fleet", "rancher fleet"},
+    "fleet": {"fleet", "rancher fleet", "舰队"},
     "rke": {"rke", "rancher kubernetes engine"},
     "rke2": {"rke2", "rke 2", "rancher kubernetes engine 2"},
     "eks": {"eks", "amazon eks", "elastic kubernetes service"},
@@ -27,22 +28,30 @@ COMPONENT_ALIASES = {
         "cluster-agent",
         "cattle cluster agent",
         "cattle-cluster-agent",
+        "集群代理",
     },
     "fleet_agent": {"fleet agent", "fleet-agent"},
     "cattle_node_agent": {"cattle node agent", "cattle-node-agent", "node agent"},
     "api_server": {"api server", "api-server", "kube apiserver", "kube-apiserver"},
-    "service_account": {"serviceaccount", "service account", "service-account"},
-    "registration_token": {"registration token", "registration-token"},
+    "service_account": {"serviceaccount", "service account", "service-account", "服务账户"},
+    "registration_token": {"registration token", "registration-token", "注册令牌"},
     "cloud_credential": {"cloud credential", "cloud-credential"},
     "secret": {"secret", "kubernetes secret"},
-    "rbac": {"rbac", "role based access control", "role-based access control"},
+    "rbac": {
+        "rbac",
+        "role based access control",
+        "role-based access control",
+        "基于角色的访问控制",
+    },
     "websocket": {"websocket", "web socket"},
-    "reverse_tunnel": {"reverse tunnel", "reverse-tunnel"},
+    "reverse_tunnel": {"reverse tunnel", "reverse-tunnel", "反向隧道"},
     "cattle_impersonation_system": {
         "cattle impersonation system",
         "cattle-impersonation-system",
     },
     "bundle": {"bundle", "fleet bundle"},
+    "rke": {"rke", "rancher kubernetes engine"},
+    "rke2": {"rke2", "rke 2", "rancher kubernetes engine 2"},
     "cve": {"cve", "common vulnerabilities and exposures"},
 }
 
@@ -70,7 +79,7 @@ NETWORK_EVIDENCE_DOMAINS = {
 
 
 def _normalize(value: str) -> str:
-    return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
+    return re.sub(r"[^a-z0-9\u4e00-\u9fff]+", " ", value.lower()).strip()
 
 
 def _lookup(value: str, aliases: dict[str, set[str]]) -> str:

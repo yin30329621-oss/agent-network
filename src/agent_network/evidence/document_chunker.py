@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from datetime import datetime
 from hashlib import sha256
 import re
@@ -26,6 +26,7 @@ class DocumentChunkingConfig:
     max_characters: int = 1200
     overlap_characters: int = 0
     min_chunk_characters: int = 200
+    max_code_block_characters: int = 4000
 
     def __post_init__(self) -> None:
         if (
@@ -34,6 +35,7 @@ class DocumentChunkingConfig:
             or self.overlap_characters >= self.max_characters
             or self.min_chunk_characters < 0
             or self.min_chunk_characters > self.max_characters
+            or self.max_code_block_characters < self.max_characters
         ):
             raise DocumentChunkingError(
                 "invalid_config", "Document chunking configuration is invalid"
@@ -57,6 +59,24 @@ class DocumentChunk:
     text: str
     character_count: int
     source_fetched_at: datetime
+    heading_path: list[str] = field(default_factory=list)
+    start_offset: int = 0
+    end_offset: int = 0
+    chunk_index: int = 0
+    chunk_hash: str = ""
+    token_estimate: int = 0
+    product_version: str | None = None
+    contains_code: bool = False
+    contains_table: bool = False
+    untrusted_document_content: bool = True
+    prompt_injection_flags: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        if not self.chunk_hash:
+            self.chunk_hash = f"sha256:{sha256(self.text.encode('utf-8')).hexdigest()}"
+        if not self.token_estimate:
+            self.token_estimate = _token_estimate(self.text)
 
     def to_dict(self) -> dict[str, object]:
         data = asdict(self)
@@ -87,16 +107,36 @@ class OfficialDocumentChunker:
             ]
 
         chunks: list[DocumentChunk] = []
+        document_cursor = 0
         for section_index, section in enumerate(sections):
             text = section.text.strip()
             if not text:
                 continue
-            parts = _split_section(text, self.config)
+            section_start = document.plain_text.find(text, document_cursor)
+            if section_start < 0:
+                section_start = document_cursor
+            document_cursor = section_start + len(text)
+            parts, warnings = _split_section_with_warnings(text, section, self.config)
+            part_cursor = 0
             for part_index, part in enumerate(parts):
                 chunk_order = len(chunks)
+                local_start = text.find(part, part_cursor)
+                if local_start < 0:
+                    local_start = part_cursor
+                part_cursor = max(
+                    local_start + 1, local_start + len(part) - self.config.overlap_characters
+                )
+                start_offset = section_start + local_start
+                end_offset = start_offset + len(part)
                 chunks.append(
                     DocumentChunk(
-                        chunk_id=_chunk_id(document.document_id, section.order, part_index, part),
+                        chunk_id=_chunk_id(
+                            document.document_id,
+                            document.product_version,
+                            section.order,
+                            part_index,
+                            part,
+                        ),
                         document_id=document.document_id,
                         canonical_url=document.canonical_url,
                         final_url=document.final_url,
@@ -111,6 +151,18 @@ class OfficialDocumentChunker:
                         text=part,
                         character_count=len(part),
                         source_fetched_at=document.source_fetched_at,
+                        heading_path=list(section.heading_path) or [section.heading],
+                        start_offset=start_offset,
+                        end_offset=end_offset,
+                        chunk_index=chunk_order,
+                        product_version=document.product_version,
+                        contains_code=section.contains_code,
+                        contains_table=section.contains_table,
+                        untrusted_document_content=document.untrusted_document_content,
+                        prompt_injection_flags=_flags_for_range(
+                            document.prompt_injection_flags, start_offset, end_offset
+                        ),
+                        warnings=list(warnings),
                     )
                 )
         if not chunks:
@@ -125,6 +177,19 @@ def _usable_sections(document: CleanedOfficialDocument) -> list[DocumentSection]
 
 
 def _split_section(text: str, config: DocumentChunkingConfig) -> list[str]:
+    return _split_section_with_warnings(text, None, config)[0]
+
+
+def _split_section_with_warnings(
+    text: str, section: DocumentSection | None, config: DocumentChunkingConfig
+) -> tuple[list[str], list[str]]:
+    if (
+        section is not None
+        and section.contains_code
+        and len(text) > config.max_characters
+        and len(text) <= config.max_code_block_characters
+    ):
+        return [text], ["code_block_exceeds_max_chunk_chars"]
     parts: list[str] = []
     cursor = 0
     while cursor < len(text):
@@ -144,7 +209,7 @@ def _split_section(text: str, config: DocumentChunkingConfig) -> list[str]:
         merged = f"{parts[-2]}\n\n{parts[-1]}"
         if len(merged) <= config.max_characters:
             parts[-2:] = [merged]
-    return parts
+    return parts, []
 
 
 def _boundary_before(text: str, start: int, limit: int) -> int:
@@ -174,6 +239,30 @@ def _next_cursor(text: str, start: int, end: int, overlap: int) -> int:
     return boundary + 1 if boundary >= candidate else candidate
 
 
-def _chunk_id(document_id: str, section_order: int, chunk_order: int, text: str) -> str:
-    digest = sha256(text.encode("utf-8")).hexdigest()[:12]
+def _chunk_id(
+    document_id: str,
+    product_version: str | None,
+    section_order: int,
+    chunk_order: int,
+    text: str,
+) -> str:
+    digest = sha256(
+        f"{document_id}\x1f{product_version or ''}\x1f{section_order}\x1f{chunk_order}\x1f{text}".encode(
+            "utf-8"
+        )
+    ).hexdigest()[:12]
     return f"{document_id}:{section_order}:{chunk_order}:{digest}"
+
+
+def _token_estimate(text: str) -> int:
+    words = re.findall(r"[A-Za-z0-9][A-Za-z0-9._/-]*|[\u4e00-\u9fff]", text)
+    return max(1, len(words)) if text else 0
+
+
+def _flags_for_range(flags: list[str], start_offset: int, end_offset: int) -> list[str]:
+    selected: list[str] = []
+    for flag in flags:
+        _name, separator, offset_value = flag.rpartition("@")
+        if separator and offset_value.isdigit() and start_offset <= int(offset_value) < end_offset:
+            selected.append(flag)
+    return selected

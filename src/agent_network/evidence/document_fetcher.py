@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import ipaddress
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
+from hashlib import sha256
+from time import monotonic
 from typing import Protocol
 from urllib.error import HTTPError, URLError
 from urllib.parse import urljoin, urlparse
@@ -38,6 +40,21 @@ class OfficialDocumentHttpTransport(Protocol):
 
 
 @dataclass(slots=True)
+class FetchAudit:
+    """Safe, serializable accounting for one catalog-bound fetch attempt."""
+
+    network_request_count: int = 0
+    cache_hit: bool = False
+    cache_miss: bool = True
+    rejected_url: bool = False
+    rejected_redirect: bool = False
+    response_too_large: bool = False
+    invalid_content_type: bool = False
+    timeout: bool = False
+    elapsed_seconds: float = 0.0
+
+
+@dataclass(slots=True)
 class OfficialDocumentFetchResult:
     requested_url: str
     final_url: str
@@ -47,6 +64,25 @@ class OfficialDocumentFetchResult:
     fetched_at: datetime
     response_size_bytes: int
     redirect_count: int
+    document_id: str = ""
+    content_length: int | None = None
+    raw_content_hash: str | None = None
+    cache_status: str = "miss"
+    etag: str | None = None
+    last_modified: str | None = None
+    body: str | None = None
+    success: bool = True
+    error_type: str | None = None
+    error_message: str | None = None
+    audit: FetchAudit = field(default_factory=FetchAudit)
+
+    def __post_init__(self) -> None:
+        if self.content_length is None:
+            self.content_length = self.response_size_bytes
+        if self.body is None:
+            self.body = self.html
+        if self.raw_content_hash is None:
+            self.raw_content_hash = f"sha256:{sha256(self.body.encode('utf-8')).hexdigest()}"
 
     def to_dict(self) -> dict[str, object]:
         data = asdict(self)
@@ -123,59 +159,94 @@ class HttpOfficialDocumentFetcher:
         self.transport = transport or UrllibOfficialDocumentTransport()
         self.network_request_count = 0
         self.model_call_count = 0
+        self.last_fetch_audit = FetchAudit()
 
     def fetch(self, document: DocumentCatalog) -> OfficialDocumentFetchResult:
+        started_at = monotonic()
+        audit = FetchAudit()
         requested_url = document.canonical_url
-        self._validate_document(document)
+        try:
+            self._validate_document(document)
+            self._validate_url(requested_url)
+        except OfficialDocumentFetchError:
+            audit.rejected_url = True
+            audit.elapsed_seconds = monotonic() - started_at
+            self.last_fetch_audit = audit
+            raise
         current_url = requested_url
         redirect_count = 0
-        while True:
-            self._validate_url(current_url)
-            response = self._open(current_url)
-            try:
-                self._validate_url(response.url)
-                if 300 <= response.status_code < 400:
-                    location = _header(response.headers, "location")
-                    if not location:
-                        raise OfficialDocumentFetchError(
-                            "http_error", "Redirect response has no location"
-                        )
-                    if redirect_count >= self.maximum_redirects:
-                        raise OfficialDocumentFetchError(
-                            "too_many_redirects", "Document redirect limit exceeded"
-                        )
-                    redirect_count += 1
-                    current_url = urljoin(response.url, location)
-                    continue
-                if response.status_code < 200 or response.status_code >= 300:
-                    raise OfficialDocumentFetchError(
-                        "http_error", "Document request returned an error status"
-                    )
-                content_type = _header(response.headers, "content-type") or ""
-                mime_type, charset = _parse_content_type(content_type)
-                if mime_type not in {"text/html", "application/xhtml+xml"}:
-                    raise OfficialDocumentFetchError(
-                        "unsupported_content_type", "Document response is not HTML"
-                    )
-                body = _read_limited(response, self.maximum_response_bytes)
+        try:
+            while True:
+                self._validate_url(current_url)
+                audit.network_request_count += 1
+                response = self._open(current_url)
                 try:
-                    html = body.decode(charset)
-                except (LookupError, UnicodeDecodeError) as exc:
-                    raise OfficialDocumentFetchError(
-                        "decode_error", "Document response could not be decoded"
-                    ) from exc
-                return OfficialDocumentFetchResult(
-                    requested_url=requested_url,
-                    final_url=response.url,
-                    status_code=response.status_code,
-                    content_type=content_type,
-                    html=html,
-                    fetched_at=datetime.now(UTC),
-                    response_size_bytes=len(body),
-                    redirect_count=redirect_count,
-                )
-            finally:
-                response.close()
+                    try:
+                        self._validate_url(response.url)
+                    except OfficialDocumentFetchError:
+                        audit.rejected_redirect = True
+                        raise
+                    if 300 <= response.status_code < 400:
+                        location = _header(response.headers, "location")
+                        if not location:
+                            raise OfficialDocumentFetchError(
+                                "http_error", "Redirect response has no location"
+                            )
+                        if redirect_count >= self.maximum_redirects:
+                            raise OfficialDocumentFetchError(
+                                "too_many_redirects", "Document redirect limit exceeded"
+                            )
+                        redirect_count += 1
+                        current_url = urljoin(response.url, location)
+                        try:
+                            self._validate_url(current_url)
+                        except OfficialDocumentFetchError:
+                            audit.rejected_redirect = True
+                            raise
+                        continue
+                    if response.status_code < 200 or response.status_code >= 300:
+                        raise OfficialDocumentFetchError(
+                            "http_error", "Document request returned an error status"
+                        )
+                    content_type = _header(response.headers, "content-type") or ""
+                    mime_type, charset = _parse_content_type(content_type)
+                    if mime_type not in {"text/html", "application/xhtml+xml"}:
+                        audit.invalid_content_type = True
+                        raise OfficialDocumentFetchError(
+                            "unsupported_content_type", "Document response is not HTML"
+                        )
+                    body = _read_limited(response, self.maximum_response_bytes)
+                    try:
+                        html = body.decode(charset)
+                    except (LookupError, UnicodeDecodeError) as exc:
+                        raise OfficialDocumentFetchError(
+                            "decode_error", "Document response could not be decoded"
+                        ) from exc
+                    audit.elapsed_seconds = monotonic() - started_at
+                    self.last_fetch_audit = audit
+                    return OfficialDocumentFetchResult(
+                        requested_url=requested_url,
+                        final_url=response.url,
+                        status_code=response.status_code,
+                        content_type=content_type,
+                        html=html,
+                        fetched_at=datetime.now(UTC),
+                        response_size_bytes=len(body),
+                        redirect_count=redirect_count,
+                        document_id=document.document_id,
+                        raw_content_hash=f"sha256:{sha256(body).hexdigest()}",
+                        etag=_header(response.headers, "etag"),
+                        last_modified=_header(response.headers, "last-modified"),
+                        audit=audit,
+                    )
+                finally:
+                    response.close()
+        except OfficialDocumentFetchError as exc:
+            audit.response_too_large = exc.code == "response_too_large"
+            audit.timeout = exc.code == "timeout"
+            audit.elapsed_seconds = monotonic() - started_at
+            self.last_fetch_audit = audit
+            raise
 
     def _validate_document(self, document: DocumentCatalog) -> None:
         if document.official_domain not in self.allowed_domains:
