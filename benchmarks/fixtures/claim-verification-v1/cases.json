@@ -1,0 +1,12 @@
+[
+  {"claim_id":"cluster-agent","claim_text":"Cluster Agent connects to Rancher Server through a tunnel.","product":"Rancher Manager","component":"Cluster Agent"},
+  {"claim_id":"rbac","claim_text":"Rancher RBAC uses Kubernetes RBAC.","product":"Rancher Manager","component":"RBAC"},
+  {"claim_id":"fleet","claim_text":"Fleet Bundle deploys GitOps resources.","product":"Fleet","component":"Fleet Agent"},
+  {"claim_id":"absolute","claim_text":"Cluster Agent always connects without interruption.","product":"Rancher Manager","component":"Cluster Agent"},
+  {"claim_id":"missing","claim_text":"An unrelated product provides a proprietary protocol."},
+  {"claim_id":"cve","claim_text":"CVE-2026-1234 is fixed in the latest release.","product":"Rancher Manager"},
+  {"claim_id":"version","claim_text":"Version v2.10.3 is the current supported release.","product":"Rancher Manager"},
+  {"claim_id":"partial-cache","claim_text":"Cluster Agent uses a tunnel for downstream clusters.","product":"Rancher Manager","component":"Cluster Agent","fixture_condition":"one_cache_entry_invalid"},
+  {"claim_id":"all-cache-failed","claim_text":"Fleet Bundle manages deployment resources.","product":"Fleet","component":"Fleet Agent","fixture_condition":"all_cache_entries_invalid"},
+  {"claim_id":"mixed-language","claim_text":"Cluster Agent 通过 tunnel 连接 Rancher Server。","product":"Rancher Manager","component":"Cluster Agent"}
+]

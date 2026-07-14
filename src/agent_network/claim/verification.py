@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import UTC, datetime
 from enum import StrEnum
 from typing import Any
 
@@ -40,10 +41,12 @@ class EvidenceLink(BaseModel):
     chunk_id: str = Field(min_length=1)
     document_id: str = Field(min_length=1)
     canonical_url: str = Field(min_length=1)
+    rank: int | None = Field(default=None, ge=1)
     relation: EvidenceRelation
     matched_terms: list[str] = Field(default_factory=list)
     score: float | None = Field(default=None, ge=0.0)
     limitation: str | None = None
+    limitations: list[str] = Field(default_factory=list)
 
     @field_validator(
         "evidence_id", "claim_id", "chunk_id", "document_id", "canonical_url", mode="before"
@@ -74,6 +77,13 @@ class EvidenceLink(BaseModel):
         normalized = str(value).strip()
         return normalized or None
 
+    @field_validator("limitations", mode="before")
+    @classmethod
+    def normalize_limitations(cls, value: Any) -> list[str]:
+        if value is None:
+            return []
+        return list(dict.fromkeys(str(item).strip() for item in value if str(item).strip()))
+
     def to_dict(self) -> dict[str, Any]:
         return self.model_dump(mode="json", exclude_none=True)
 
@@ -87,6 +97,21 @@ class VerificationResult(BaseModel):
     verification_status: VerificationStatus
     evidence_links: list[EvidenceLink] = Field(default_factory=list)
     evidence_limitations: list[str] = Field(default_factory=list)
+    claim_text: str | None = None
+    evidence_relation: EvidenceRelation = EvidenceRelation.UNAVAILABLE
+    query_text: str | None = None
+    applied_filters: dict[str, str | list[str] | None] = Field(default_factory=dict)
+    candidate_evidence_count: int = Field(default=0, ge=0)
+    returned_document_count: int = Field(default=0, ge=0)
+    loaded_document_count: int = Field(default=0, ge=0)
+    failed_document_count: int = Field(default=0, ge=0)
+    cache_failures: list[dict[str, str]] = Field(default_factory=list)
+    limitations: list[str] = Field(default_factory=list)
+    verification_mode: str = "candidate_only"
+    model_call_count: int = Field(default=0, ge=0)
+    network_request_count: int = Field(default=0, ge=0)
+    started_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    completed_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     explanation: str = Field(min_length=1)
     requires_human_review: bool = True
     confidence: float | None = Field(default=None, ge=0.0, le=1.0)
@@ -109,6 +134,13 @@ class VerificationResult(BaseModel):
             if normalized and normalized not in limitations:
                 limitations.append(normalized)
         return limitations
+
+    @field_validator("limitations", mode="before")
+    @classmethod
+    def normalize_result_limitations(cls, value: Any) -> list[str]:
+        if value is None:
+            return []
+        return list(dict.fromkeys(str(item).strip() for item in value if str(item).strip()))
 
     @model_validator(mode="after")
     def validate_evidence_links(self) -> "VerificationResult":
