@@ -13,4 +13,5 @@ build/
 .env
 outputs/
 reports/private/
+artifacts/
 *.log
