@@ -8,6 +8,15 @@ from collections.abc import Callable
 from typing import TypedDict
 
 from agent_network.agents import FactAgent, LogicAgent, MergeAgent, ReviewerAgent, SecurityAgent
+from agent_network.claim import (
+    ClaimExtractionRequest,
+    ClaimRegistry,
+    ClaimVerificationBatchRequest,
+    ClaimVerificationEngine,
+    DeterministicClaimExtractor,
+    VerificationMode,
+)
+from agent_network.claim.fact_integration import build_claim_verification_fact_context
 from agent_network.llm import LLMClient
 from agent_network.evidence.fact_evidence import (
     FactEvidenceLimits,
@@ -262,6 +271,9 @@ class ReviewWorkflow:
 
     def _fact_request(self, request: ReviewRequest) -> ReviewRequest:
         config = self.fact_evidence_config
+        claim_config = config.get("claim_verification")
+        if isinstance(claim_config, dict) and claim_config.get("enabled"):
+            return self._claim_aware_fact_request(request, config, claim_config)
         query_data = request.fact_evidence_query
         if not config.get("enabled") or not query_data:
             return request
@@ -316,6 +328,95 @@ class ReviewWorkflow:
                 getattr(exc, "code", type(exc).__name__), language=request.language
             )
             context["evidence_provider"] = str(config.get("provider", "fixture"))
+        return replace(request, fact_evidence_context=context)
+
+    def _claim_aware_fact_request(
+        self,
+        request: ReviewRequest,
+        config: dict[str, object],
+        claim_config: dict[str, object],
+    ) -> ReviewRequest:
+        """Prepare one bounded local Claim Verification bundle for the single Fact call."""
+
+        try:
+            if not config.get("enabled"):
+                raise ValueError("claim_verification requires fact evidence to be enabled")
+            if str(config.get("provider", "fixture")).strip().lower() != "local_cache":
+                raise ValueError("claim_verification requires provider=local_cache")
+            if bool(config.get("allow_network", False)):
+                raise ValueError("claim_verification requires allow_network=false")
+            local_config = config.get("local_cache")
+            if not isinstance(local_config, dict) or not local_config.get("cache_directory"):
+                raise ValueError("claim_verification requires local_cache.cache_directory")
+            limits = FactEvidenceLimits(
+                top_k=int(config.get("top_k", 5)),
+                max_chars_per_evidence=int(config.get("max_chars_per_evidence", 1600)),
+                max_total_evidence_chars=int(config.get("max_total_evidence_chars", 6000)),
+            )
+            extraction = DeterministicClaimExtractor().extract(
+                ClaimExtractionRequest(
+                    document_text=request.markdown,
+                    source_name=request.source_name,
+                    source_type="markdown",
+                    product=_optional_string(claim_config.get("product")),
+                    default_component=_optional_string(claim_config.get("default_component")),
+                    minimum_claim_characters=int(claim_config.get("minimum_claim_characters", 20)),
+                    maximum_claim_characters=int(
+                        claim_config.get("maximum_claim_characters", 1000)
+                    ),
+                    include_headings=bool(claim_config.get("include_headings", False)),
+                    include_list_items=bool(claim_config.get("include_list_items", True)),
+                    include_table_rows=bool(claim_config.get("include_table_rows", True)),
+                )
+            )
+            max_claims = int(claim_config.get("max_claims", 8))
+            if max_claims <= 0:
+                raise ValueError("claim_verification.max_claims must be positive")
+            registry = ClaimRegistry(extraction.claims[:max_claims])
+            builder = self.fact_local_cache_builder or CachedEvidenceIndexBuilder()
+            batch = ClaimVerificationEngine(builder).verify_batch(
+                ClaimVerificationBatchRequest(
+                    registry=registry,
+                    cache_directory=str(local_config["cache_directory"]),
+                    document_ids=_tuple_of_strings(local_config.get("document_ids")),
+                    document_type=_optional_string(local_config.get("document_type")),
+                    max_documents=int(local_config.get("max_documents", 1)),
+                    top_k=limits.top_k,
+                    max_chunks_per_document=int(local_config.get("max_chunks_per_document", 0)),
+                    min_documents_in_results=int(local_config.get("min_documents_in_results", 1)),
+                    min_score=float(local_config.get("min_score", 0.0)),
+                    min_matched_terms=int(local_config.get("min_matched_terms", 1)),
+                    exclude_navigation_like=bool(
+                        local_config.get("exclude_navigation_like", False)
+                    ),
+                    verification_mode=VerificationMode(
+                        str(claim_config.get("verification_mode", "candidate_only"))
+                    ),
+                )
+            )
+            context = build_claim_verification_fact_context(
+                batch,
+                limits,
+                cache_directory=str(local_config["cache_directory"]),
+                language=request.language,
+            )
+            context["claim_extraction_candidate_count"] = extraction.candidate_count
+            context["claim_extraction_duplicate_count"] = extraction.duplicate_count
+            context["claim_extraction_failures"] = [
+                failure.model_dump() for failure in extraction.failures
+            ]
+        except Exception as exc:
+            context = unavailable_fact_evidence_context(
+                getattr(exc, "code", type(exc).__name__), language=request.language
+            )
+            context["evidence_provider"] = "local_cache"
+            context["claim_verification_bundle"] = []
+            context["claim_verification_claim_count"] = 0
+            context["claim_verification_completed_count"] = 0
+            context["claim_verification_failed_count"] = 1
+            context["claim_verification_status_distribution"] = {"unavailable": 1}
+            context["claim_verification_model_call_count"] = 0
+            context["claim_verification_network_request_count"] = 0
         return replace(request, fact_evidence_context=context)
 
     def _skip_merge(self, language: str) -> AgentReview:
@@ -614,3 +715,10 @@ def _tuple_of_strings(value: object) -> tuple[str, ...] | None:
     if not isinstance(value, (list, tuple)) or not all(isinstance(item, str) for item in value):
         raise ValueError("document_ids must be a list of strings")
     return tuple(value)
+
+
+def _optional_string(value: object) -> str | None:
+    if value is None:
+        return None
+    normalized = str(value).strip()
+    return normalized or None

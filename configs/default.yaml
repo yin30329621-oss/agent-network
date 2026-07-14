@@ -13,6 +13,7 @@ llm:
   providers:
     siliconflow:
       api_key_env: SILICONFLOW_API_KEY
+      base_url_env: SILICONFLOW_BASE_URL
       api_base: https://api.siliconflow.cn/v1
       litellm_provider: openai
       models:
@@ -21,6 +22,16 @@ llm:
         flash: deepseek-ai/DeepSeek-V4-Flash
         glm: zai-org/GLM-5.2
         qwen_security: Qwen/Qwen3.6-35B-A3B
+    deepseek_official:
+      api_key_env: DEEPSEEK_API_KEY
+      base_url_env: DEEPSEEK_BASE_URL
+      base_url_required: true
+      litellm_provider: openai
+    dashscope_official:
+      api_key_env: DASHSCOPE_API_KEY
+      base_url_env: DASHSCOPE_BASE_URL
+      base_url_required: true
+      litellm_provider: openai
     openai:
       api_key_env: OPENAI_API_KEY
       api_base: null
@@ -116,6 +127,28 @@ review:
     - markdown
     - json
 
+# This independent configuration is used only by the dual Fact public-pilot adapter.
+# It does not change the four-agent workflow's providers or call count.
+fact_review:
+  reviewers:
+    fact_a:
+      provider: deepseek_official
+      model: deepseek-v4-pro
+      timeout_seconds: 90
+      max_tokens: 2400
+      retry_attempts: 0
+      request_options:
+        response_format:
+          type: json_object
+    fact_b:
+      provider: dashscope_official
+      model: qwen3.7-plus
+      timeout_seconds: 180
+      max_tokens: 2200
+      retry_attempts: 0
+      request_options:
+        enable_thinking: null
+
 evidence:
   fact_agent:
     enabled: false
@@ -136,6 +169,15 @@ evidence:
       min_score: 0.0
       min_matched_terms: 1
       exclude_navigation_like: false
+    claim_verification:
+      enabled: false
+      max_claims: 8
+      minimum_claim_characters: 20
+      maximum_claim_characters: 1000
+      include_headings: false
+      include_list_items: true
+      include_table_rows: true
+      verification_mode: candidate_only
   document_sources:
     rancher:
       mode: catalog_only

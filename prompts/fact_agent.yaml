@@ -31,6 +31,12 @@ template: |
   related but non-proving evidence, and unavailable when retrieval cannot provide
   usable official evidence. Include concise evidence_limitations when applicable.
 
+  When a <claim_verification_bundle> is included, review each Claim together with
+  its deterministic verification status and limitations. In candidate_only mode,
+  indirect_evidence and insufficient_evidence are not semantic proof. Do not
+  upgrade them to direct_support or direct_contradiction. Keep time-sensitive
+  Claim limitations visible and cite only supplied chunk IDs.
+
   The input document may be written in Simplified Chinese. If it is, return all
   human-readable review content in Simplified Chinese; otherwise use the input
   document language. Keep JSON field names, severity enum values, CVE identifiers,

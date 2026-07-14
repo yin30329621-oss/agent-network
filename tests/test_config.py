@@ -70,3 +70,44 @@ def test_fact_evidence_provider_defaults_to_fixture_and_rejects_unknown_values()
     assert config.fact_evidence_config()["provider"] == "fixture"
     with pytest.raises(ValueError, match="Unknown Fact evidence provider"):
         AppConfig(raw={"evidence": {"fact_agent": {"provider": "other"}}}).fact_evidence_config()
+
+
+def test_official_provider_config_uses_env_for_keys_and_base_urls(monkeypatch) -> None:
+    config = load_config("configs/default.yaml")
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-deepseek-key")
+    monkeypatch.setenv("DEEPSEEK_BASE_URL", "https://api.deepseek.example/v1")
+    monkeypatch.setenv("DASHSCOPE_API_KEY", "test-dashscope-key")
+    monkeypatch.setenv("DASHSCOPE_BASE_URL", "https://dashscope.example/v1")
+
+    deepseek = config.provider_runtime_config("deepseek_official")
+    dashscope = config.provider_runtime_config("dashscope_official")
+
+    assert deepseek["api_key_env"] == "DEEPSEEK_API_KEY"
+    assert deepseek["base_url_env"] == "DEEPSEEK_BASE_URL"
+    assert deepseek["base_url_host"] == "api.deepseek.example"
+    assert deepseek["configured"] is True
+    assert dashscope["api_key_env"] == "DASHSCOPE_API_KEY"
+    assert dashscope["base_url_host"] == "dashscope.example"
+
+
+def test_provider_configuration_reports_missing_key_or_base_url(monkeypatch) -> None:
+    config = load_config("configs/default.yaml")
+    monkeypatch.delenv("DEEPSEEK_API_KEY", raising=False)
+    monkeypatch.delenv("DEEPSEEK_BASE_URL", raising=False)
+
+    runtime = config.provider_runtime_config("deepseek_official")
+
+    assert runtime["configured"] is False
+    assert runtime["configuration_error_type"] == "missing_api_key"
+    assert runtime["base_url_host"] is None
+
+
+def test_siliconflow_remains_a_configurable_fallback(monkeypatch) -> None:
+    config = load_config("configs/default.yaml")
+    monkeypatch.setenv("SILICONFLOW_API_KEY", "test-siliconflow-key")
+    monkeypatch.setenv("SILICONFLOW_BASE_URL", "https://fallback.example/v1")
+
+    runtime = config.provider_runtime_config("siliconflow")
+
+    assert runtime["configured"] is True
+    assert runtime["base_url_host"] == "fallback.example"

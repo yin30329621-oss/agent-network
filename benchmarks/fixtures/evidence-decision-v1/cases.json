@@ -1,0 +1,6 @@
+[
+  {"case_id":"verified","expected_status":"verified_candidate"},
+  {"case_id":"candidate","expected_status":"candidate_only"},
+  {"case_id":"version","expected_status":"version_mismatch"},
+  {"case_id":"manual","expected_status":"manual_review_required"}
+]

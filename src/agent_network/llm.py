@@ -8,6 +8,11 @@ import os
 import re
 import time
 from typing import Any, Protocol
+from urllib.parse import urlparse
+
+
+class ProviderConfigurationError(RuntimeError):
+    """Raised before a request when configured provider credentials are incomplete."""
 
 
 class LLMClient(Protocol):
@@ -21,6 +26,8 @@ class LLMClient(Protocol):
         model: str | None = None,
         timeout_seconds: int | None = None,
         max_tokens: int | None = None,
+        extra_body: dict[str, object] | None = None,
+        response_format: dict[str, object] | None = None,
     ) -> str:
         """Return a text completion."""
 
@@ -54,6 +61,8 @@ class LiteLLMClient:
         model: str | None = None,
         timeout_seconds: int | None = None,
         max_tokens: int | None = None,
+        extra_body: dict[str, object] | None = None,
+        response_format: dict[str, object] | None = None,
     ) -> str:
         load_dotenv_if_available()
 
@@ -64,6 +73,20 @@ class LiteLLMClient:
 
         selected_model = model or self.default_model
         options = self.model_options.get(selected_model, {})
+        provider_audit = _provider_audit(selected_model, options)
+        configuration_error = _configuration_error(options)
+        if configuration_error:
+            self.last_response_audit = {
+                **_empty_provider_response_audit(),
+                **provider_audit,
+                "model": selected_model,
+                "model_call_count": 0,
+                "request_attempt_count": 0,
+                "retry_count": 0,
+                "timeout_count": 0,
+                "configuration_error_type": configuration_error,
+            }
+            raise ProviderConfigurationError(configuration_error)
         litellm_model = selected_model
         if options.get("litellm_provider"):
             litellm_model = f"{options['litellm_provider']}/{selected_model}"
@@ -73,6 +96,10 @@ class LiteLLMClient:
             request_options["api_key"] = os.getenv(api_key_env)
         if options.get("api_base"):
             request_options["api_base"] = options["api_base"]
+        if extra_body:
+            request_options["extra_body"] = dict(extra_body)
+        if response_format:
+            request_options["response_format"] = dict(response_format)
 
         configured_timeout = timeout_seconds or self.timeout_seconds
         configured_max_tokens = max_tokens or self.max_tokens
@@ -99,6 +126,7 @@ class LiteLLMClient:
                 )
                 text, audit = extract_response_text(response)
                 audit["model"] = selected_model
+                audit.update(provider_audit)
                 audit.update(
                     _request_audit(
                         model_call_count=model_call_count,
@@ -118,6 +146,7 @@ class LiteLLMClient:
                     timeout_count += 1
                 self.last_response_audit = {
                     **_empty_provider_response_audit(),
+                    **provider_audit,
                     "model": selected_model,
                     **_request_audit(
                         model_call_count=model_call_count,
@@ -147,6 +176,8 @@ class MockLLMClient:
         model: str | None = None,
         timeout_seconds: int | None = None,
         max_tokens: int | None = None,
+        extra_body: dict[str, object] | None = None,
+        response_format: dict[str, object] | None = None,
     ) -> str:
         lowered = system_prompt.lower()
         chinese = any("\u4e00" <= char <= "\u9fff" for char in user_prompt)
@@ -300,6 +331,8 @@ class StaticLLMClient:
         model: str | None = None,
         timeout_seconds: int | None = None,
         max_tokens: int | None = None,
+        extra_body: dict[str, object] | None = None,
+        response_format: dict[str, object] | None = None,
     ) -> str:
         return self.response
 
@@ -433,6 +466,35 @@ def _empty_provider_response_audit() -> dict[str, Any]:
     }
 
 
+def _provider_audit(selected_model: str, options: dict[str, str]) -> dict[str, Any]:
+    api_base = options.get("api_base")
+    parsed_base = urlparse(api_base) if api_base else None
+    return {
+        "provider": options.get("provider"),
+        "model": selected_model,
+        "base_url_host": parsed_base.hostname if parsed_base else None,
+        "provider_configured": _option_bool(options.get("provider_configured"), True),
+        "configuration_error_type": None,
+    }
+
+
+def _configuration_error(options: dict[str, str]) -> str | None:
+    if not options:
+        return None
+    api_key_env = options.get("api_key_env")
+    if api_key_env and not os.getenv(api_key_env):
+        return "missing_api_key"
+    if _option_bool(options.get("base_url_required"), False) and not options.get("api_base"):
+        return "missing_base_url"
+    return None
+
+
+def _option_bool(value: object, default: bool) -> bool:
+    if value is None:
+        return default
+    return str(value).strip().lower() in {"1", "true", "yes"}
+
+
 def _is_timeout_error(exc: Exception) -> bool:
     name = type(exc).__name__.lower()
     message = str(exc).lower()
@@ -443,13 +505,9 @@ def _sanitize_error_message(exc: Exception | None) -> str | None:
     if exc is None:
         return None
     message = str(exc)
-    for env_name in (
-        "SILICONFLOW_API_KEY",
-        "OPENAI_API_KEY",
-        "DEEPSEEK_API_KEY",
-        "ZAI_API_KEY",
-    ):
-        value = os.getenv(env_name)
+    for env_name, value in os.environ.items():
+        if not env_name.endswith("_API_KEY"):
+            continue
         if value:
             message = message.replace(value, "[REDACTED]")
     message = re.sub(r"(?i)bearer\s+[a-z0-9._~+\-/]+=*", "Bearer [REDACTED]", message)

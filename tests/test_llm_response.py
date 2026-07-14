@@ -4,7 +4,7 @@ from types import SimpleNamespace
 import pytest
 
 from agent_network.agents.base import parse_agent_review
-from agent_network.llm import LiteLLMClient, extract_response_text
+from agent_network.llm import LiteLLMClient, ProviderConfigurationError, extract_response_text
 
 
 def response(choice, usage=None):
@@ -161,3 +161,107 @@ def test_final_timeout_keeps_complete_request_audit(monkeypatch) -> None:
     ):
         assert key in audit
         assert audit[key] is None
+
+
+def test_provider_configuration_fails_before_network_and_audits_safely(monkeypatch) -> None:
+    monkeypatch.setattr("agent_network.llm.load_dotenv_if_available", lambda: None)
+    monkeypatch.delenv("TEST_OFFICIAL_KEY", raising=False)
+    completion_calls: list[dict[str, object]] = []
+    monkeypatch.setitem(
+        sys.modules,
+        "litellm",
+        SimpleNamespace(completion=lambda **kwargs: completion_calls.append(kwargs)),
+    )
+    client = LiteLLMClient(
+        default_model="official/model",
+        model_options={
+            "official/model": {
+                "provider": "deepseek_official",
+                "api_key_env": "TEST_OFFICIAL_KEY",
+                "api_base": "https://api.example/v1",
+                "base_url_required": "true",
+                "provider_configured": "false",
+            }
+        },
+    )
+
+    with pytest.raises(ProviderConfigurationError, match="missing_api_key"):
+        client.complete(system_prompt="system", user_prompt="user")
+
+    assert completion_calls == []
+    assert client.last_response_audit["provider"] == "deepseek_official"
+    assert client.last_response_audit["base_url_host"] == "api.example"
+    assert client.last_response_audit["provider_configured"] is False
+    assert client.last_response_audit["configuration_error_type"] == "missing_api_key"
+    assert client.last_response_audit["model_call_count"] == 0
+
+
+def test_provider_base_url_is_passed_from_model_options(monkeypatch) -> None:
+    monkeypatch.setattr("agent_network.llm.load_dotenv_if_available", lambda: None)
+    monkeypatch.setenv("TEST_OFFICIAL_KEY", "test-secret-value")
+    calls: list[dict[str, object]] = []
+    monkeypatch.setitem(
+        sys.modules,
+        "litellm",
+        SimpleNamespace(
+            completion=lambda **kwargs: (
+                calls.append(kwargs)
+                or response(SimpleNamespace(finish_reason="stop", message={"content": "ok"}))
+            )
+        ),
+    )
+    client = LiteLLMClient(
+        default_model="official/model",
+        model_options={
+            "official/model": {
+                "provider": "dashscope_official",
+                "api_key_env": "TEST_OFFICIAL_KEY",
+                "api_base": "https://dashscope.example/v1",
+                "base_url_required": "true",
+                "provider_configured": "true",
+                "litellm_provider": "openai",
+            }
+        },
+    )
+
+    assert client.complete(system_prompt="system", user_prompt="user") == "ok"
+
+    assert calls[0]["api_base"] == "https://dashscope.example/v1"
+    assert calls[0]["api_key"] == "test-secret-value"
+    assert client.last_response_audit["base_url_host"] == "dashscope.example"
+
+
+def test_extra_body_is_forwarded_only_when_configured(monkeypatch) -> None:
+    monkeypatch.setattr("agent_network.llm.load_dotenv_if_available", lambda: None)
+    monkeypatch.setenv("TEST_OFFICIAL_KEY", "test-secret-value")
+    calls: list[dict[str, object]] = []
+    monkeypatch.setitem(
+        sys.modules,
+        "litellm",
+        SimpleNamespace(
+            completion=lambda **kwargs: (
+                calls.append(kwargs)
+                or response(SimpleNamespace(finish_reason="stop", message={"content": "ok"}))
+            )
+        ),
+    )
+    client = LiteLLMClient(
+        default_model="official/model",
+        model_options={
+            "official/model": {
+                "provider": "dashscope_official",
+                "api_key_env": "TEST_OFFICIAL_KEY",
+                "api_base": "https://dashscope.example/v1",
+                "base_url_required": "true",
+                "provider_configured": "true",
+            }
+        },
+    )
+
+    client.complete(
+        system_prompt="system",
+        user_prompt="user",
+        extra_body={"enable_thinking": False},
+    )
+
+    assert calls[0]["extra_body"] == {"enable_thinking": False}

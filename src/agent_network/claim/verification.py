@@ -98,6 +98,8 @@ class VerificationResult(BaseModel):
     evidence_links: list[EvidenceLink] = Field(default_factory=list)
     evidence_limitations: list[str] = Field(default_factory=list)
     claim_text: str | None = None
+    normalized_text: str | None = None
+    claim_type: str | None = None
     evidence_relation: EvidenceRelation = EvidenceRelation.UNAVAILABLE
     query_text: str | None = None
     applied_filters: dict[str, str | list[str] | None] = Field(default_factory=dict)

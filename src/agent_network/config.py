@@ -7,6 +7,7 @@ from copy import deepcopy
 import os
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 
 @dataclass(slots=True)
@@ -140,6 +141,7 @@ class AppConfig:
             "max_total_evidence_chars": 6000,
             "allow_network": False,
             "local_cache": {},
+            "claim_verification": {},
         }
         defaults.update(config)
         provider = str(defaults["provider"]).strip().lower()
@@ -148,6 +150,8 @@ class AppConfig:
         defaults["provider"] = provider
         if not isinstance(defaults["local_cache"], dict):
             raise ValueError("Fact local_cache configuration must be a mapping")
+        if not isinstance(defaults["claim_verification"], dict):
+            raise ValueError("Fact claim_verification configuration must be a mapping")
         return defaults
 
     def role_for_agent(self, agent: str) -> str:
@@ -179,9 +183,103 @@ class AppConfig:
         return str(provider_config.get("api_key_env") or fallback.get(provider, "OPENAI_API_KEY"))
 
     def api_base_for_provider(self, provider: str) -> str | None:
+        """Resolve a provider base URL without exposing any API-key value."""
+
         providers = self.raw.get("llm", {}).get("providers", {})
-        value = providers.get(provider, {}).get("api_base")
+        provider_config = providers.get(provider, {})
+        base_url_env = provider_config.get("base_url_env")
+        if base_url_env:
+            configured = os.getenv(str(base_url_env))
+            if configured:
+                return configured
+        value = provider_config.get("api_base")
         return str(value) if value else None
+
+    def base_url_env_for_provider(self, provider: str) -> str | None:
+        providers = self.raw.get("llm", {}).get("providers", {})
+        value = providers.get(provider, {}).get("base_url_env")
+        return str(value) if value else None
+
+    def provider_runtime_config(self, provider: str) -> dict[str, Any]:
+        """Return safe provider configuration for a request audit and LiteLLM.
+
+        Keys themselves are intentionally not returned.  A configured API key is
+        represented only by a boolean, while a base URL is reduced to its host in
+        audit-facing fields.
+        """
+
+        providers = self.raw.get("llm", {}).get("providers", {})
+        provider_config = providers.get(provider)
+        if not isinstance(provider_config, dict):
+            raise ValueError(f"Unknown LLM provider: {provider}")
+        api_key_env = self.api_key_env_for_provider(provider)
+        base_url_env = self.base_url_env_for_provider(provider)
+        api_base = self.api_base_for_provider(provider)
+        base_url_required = bool(provider_config.get("base_url_required", bool(base_url_env)))
+        missing: list[str] = []
+        if not os.getenv(api_key_env):
+            missing.append("missing_api_key")
+        if base_url_required and not api_base:
+            missing.append("missing_base_url")
+        return {
+            "provider": provider,
+            "api_key_env": api_key_env,
+            "base_url_env": base_url_env,
+            "api_base": api_base,
+            "base_url_host": _base_url_host(api_base),
+            "base_url_required": base_url_required,
+            "configured": not missing,
+            "configuration_error_type": missing[0] if missing else None,
+            "litellm_provider": self.litellm_provider_for_provider(provider),
+        }
+
+    def dual_fact_reviewer_config(self, reviewer: str) -> dict[str, Any]:
+        """Load a dual-Fact reviewer configuration without changing workflow agents."""
+
+        reviewers = self.raw.get("fact_review", {}).get("reviewers", {})
+        config = reviewers.get(reviewer)
+        if not isinstance(config, dict):
+            raise ValueError(f"Unknown Fact reviewer: {reviewer}")
+        provider = str(config.get("provider") or "").strip()
+        model = str(config.get("model") or "").strip()
+        if not provider or not model:
+            raise ValueError(f"Fact reviewer {reviewer} must define provider and model")
+        self.provider_runtime_config(provider)
+        request_options = config.get("request_options")
+        if request_options is None:
+            request_options = {}
+        if not isinstance(request_options, dict):
+            raise ValueError(f"Fact reviewer {reviewer} request_options must be a mapping")
+        if provider == "dashscope_official":
+            if "enable_thinking" in request_options and (
+                request_options["enable_thinking"] is not None
+                and not isinstance(request_options["enable_thinking"], bool)
+            ):
+                raise ValueError("DashScope enable_thinking must be true, false, or null")
+            request_options = {
+                key: request_options[key] for key in ("enable_thinking",) if key in request_options
+            }
+        elif provider == "deepseek_official":
+            response_format = request_options.get("response_format")
+            request_options = (
+                {"response_format": {"type": "json_object"}}
+                if isinstance(response_format, dict)
+                and response_format.get("type") == "json_object"
+                else {}
+            )
+        else:
+            request_options = {}
+        if "enable_thinking" in request_options and request_options["enable_thinking"] is None:
+            request_options = {}
+        return {
+            "reviewer_id": reviewer.replace("_", "-"),
+            "provider": provider,
+            "model": model,
+            "timeout_seconds": int(config.get("timeout_seconds") or self.timeout_seconds),
+            "max_tokens": int(config.get("max_tokens") or self.max_tokens),
+            "retry_attempts": int(config.get("retry_attempts", 0)),
+            "request_options": dict(request_options),
+        }
 
     def litellm_provider_for_provider(self, provider: str) -> str | None:
         providers = self.raw.get("llm", {}).get("providers", {})
@@ -197,17 +295,25 @@ class AppConfig:
         for agent in ("fact", "security", "logic", "merge"):
             provider = self.provider_for_agent(agent)
             model = self.model_for_agent(agent)
-            model_options: dict[str, str] = {
-                "provider": provider,
-                "api_key_env": self.api_key_env_for_provider(provider),
-            }
-            api_base = self.api_base_for_provider(provider)
-            if api_base:
-                model_options["api_base"] = api_base
-            litellm_provider = self.litellm_provider_for_provider(provider)
-            if litellm_provider:
-                model_options["litellm_provider"] = litellm_provider
-            options[model] = model_options
+            options[model] = self.llm_options_for(provider, model)
+        return options
+
+    def llm_options_for(self, provider: str, model: str) -> dict[str, str]:
+        """Build one model's provider-neutral LiteLLM options from configuration."""
+
+        runtime = self.provider_runtime_config(provider)
+        options: dict[str, str] = {
+            "provider": str(runtime["provider"]),
+            "api_key_env": str(runtime["api_key_env"]),
+            "base_url_required": str(runtime["base_url_required"]),
+            "provider_configured": str(runtime["configured"]),
+        }
+        if runtime["base_url_env"]:
+            options["base_url_env"] = str(runtime["base_url_env"])
+        if runtime["api_base"]:
+            options["api_base"] = str(runtime["api_base"])
+        if runtime["litellm_provider"]:
+            options["litellm_provider"] = str(runtime["litellm_provider"])
         return options
 
 
@@ -223,3 +329,10 @@ def load_config(path: str | Path = "configs/default.yaml") -> AppConfig:
     with config_path.open("r", encoding="utf-8") as file:
         data = yaml.safe_load(file) or {}
     return AppConfig(raw=data)
+
+
+def _base_url_host(value: str | None) -> str | None:
+    if not value:
+        return None
+    parsed = urlparse(value)
+    return parsed.hostname

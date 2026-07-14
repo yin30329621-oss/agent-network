@@ -1,0 +1,23 @@
+[
+  {
+    "claim_id": "bundle-supported",
+    "verification_status": "verified_supported",
+    "evidence_relation": "direct_support",
+    "notes": "Forward-compatible Bundle serialization fixture; candidate_only Engine does not emit this status."
+  },
+  {
+    "claim_id": "bundle-insufficient",
+    "verification_status": "insufficient_evidence",
+    "evidence_relation": "indirect_evidence"
+  },
+  {
+    "claim_id": "bundle-unavailable",
+    "verification_status": "unavailable",
+    "evidence_relation": "unavailable"
+  },
+  {
+    "claim_id": "bundle-time-sensitive",
+    "verification_status": "needs_external_verification",
+    "evidence_relation": "indirect_evidence"
+  }
+]

@@ -210,6 +210,18 @@ class AgentReview:
     evidence_returned_document_count: int = 0
     evidence_returned_evidence_count: int = 0
     evidence_cache_failures: list[dict[str, Any]] = field(default_factory=list)
+    claim_verification_claim_count: int = 0
+    claim_verification_completed_count: int = 0
+    claim_verification_failed_count: int = 0
+    claim_verification_status_distribution: dict[str, int] = field(default_factory=dict)
+    claim_verification_relation_distribution: dict[str, int] = field(default_factory=dict)
+    claim_verification_evidence_coverage_count: int = 0
+    claim_verification_unavailable_count: int = 0
+    claim_verification_insufficient_evidence_count: int = 0
+    claim_verification_extraction_failed_count: int = 0
+    claim_verification_bundle: list[dict[str, Any]] = field(default_factory=list)
+    claim_verification_model_call_count: int = 0
+    claim_verification_network_request_count: int = 0
 
     def to_dict(self) -> dict[str, Any]:
         data = {
@@ -267,6 +279,30 @@ class AgentReview:
             data["evidence_returned_document_count"] = self.evidence_returned_document_count
             data["evidence_returned_evidence_count"] = self.evidence_returned_evidence_count
             data["evidence_cache_failures"] = self.evidence_cache_failures
+            data["claim_verification_claim_count"] = self.claim_verification_claim_count
+            data["claim_verification_completed_count"] = self.claim_verification_completed_count
+            data["claim_verification_failed_count"] = self.claim_verification_failed_count
+            data["claim_verification_status_distribution"] = (
+                self.claim_verification_status_distribution
+            )
+            data["claim_verification_relation_distribution"] = (
+                self.claim_verification_relation_distribution
+            )
+            data["claim_verification_evidence_coverage_count"] = (
+                self.claim_verification_evidence_coverage_count
+            )
+            data["claim_verification_unavailable_count"] = self.claim_verification_unavailable_count
+            data["claim_verification_insufficient_evidence_count"] = (
+                self.claim_verification_insufficient_evidence_count
+            )
+            data["claim_verification_extraction_failed_count"] = (
+                self.claim_verification_extraction_failed_count
+            )
+            data["claim_verification_bundle"] = self.claim_verification_bundle
+            data["claim_verification_model_call_count"] = self.claim_verification_model_call_count
+            data["claim_verification_network_request_count"] = (
+                self.claim_verification_network_request_count
+            )
         return data
 
     def apply_request_audit(self, audit: dict[str, Any] | None = None) -> None:

@@ -67,6 +67,7 @@ class ClaimVerificationBatchRequest(BaseModel):
 
 class ClaimVerificationEngineResult(BaseModel):
     verification: VerificationResult
+    candidate_evidences: list[dict[str, Any]] = Field(default_factory=list)
     failure: ClaimVerificationFailure | None = None
 
     @property
@@ -154,6 +155,8 @@ class ClaimVerificationEngine:
             verification = VerificationResult(
                 claim_id=request.claim.claim_id,
                 claim_text=request.claim.text,
+                normalized_text=request.claim.normalized_text,
+                claim_type=request.claim.claim_type.value,
                 verification_status=status,
                 evidence_relation=relation,
                 evidence_links=links,
@@ -181,7 +184,13 @@ class ClaimVerificationEngine:
                     code="all_cache_failed",
                     safe_message="All selected local official-document cache entries failed to load.",
                 )
-            return ClaimVerificationEngineResult(verification=verification, failure=failure)
+            return ClaimVerificationEngineResult(
+                verification=verification,
+                candidate_evidences=[
+                    _candidate_evidence(evidence) for evidence in retrieved.evidences
+                ],
+                failure=failure,
+            )
         except CachedDocumentLoadError as exc:
             code = "invalid_cache_directory" if exc.code == "cache_read_error" else exc.code
             return self._unavailable(request, query.to_dict(), started_at, code, str(exc))
@@ -252,6 +261,8 @@ class ClaimVerificationEngine:
         verification = VerificationResult(
             claim_id=request.claim.claim_id,
             claim_text=request.claim.text,
+            normalized_text=request.claim.normalized_text,
+            claim_type=request.claim.claim_type.value,
             verification_status="unavailable",
             evidence_relation="unavailable",
             evidence_limitations=[safe_message],
@@ -283,6 +294,26 @@ def _evidence_link(claim_id: str, evidence, relation, limitations: list[str]) ->
         score=evidence.score,
         limitations=limitations,
     )
+
+
+def _candidate_evidence(evidence: Any) -> dict[str, Any]:
+    """Keep only retrieved Chunk fields that may be safely bounded for Fact context."""
+
+    return {
+        "rank": evidence.rank,
+        "score": evidence.score,
+        "matched_terms": list(evidence.matched_terms),
+        "chunk_id": evidence.chunk_id,
+        "document_id": evidence.document_id,
+        "canonical_url": evidence.canonical_url,
+        "product": evidence.product,
+        "component": evidence.component,
+        "document_type": evidence.document_type,
+        "document_title": evidence.document_title,
+        "section_heading": evidence.section_heading,
+        "text": evidence.text,
+        "source_fetched_at": evidence.source_fetched_at.isoformat(),
+    }
 
 
 def _cache_limitations(failures: list[Any]) -> list[str]:
