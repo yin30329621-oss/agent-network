@@ -20,6 +20,14 @@ from agent_network.evidence.github_advisory import GitHubAdvisoryEvidenceSource
 from agent_network.evidence.http import EvidenceHttpClient
 from agent_network.evidence.nvd import NvdEvidenceSource
 from agent_network.evidence.pilot import public_cve_claim, write_pilot_output
+from agent_network.evidence.pipeline_benchmark import (
+    run_evidence_pipeline_benchmark,
+    write_evidence_pipeline_benchmark,
+)
+from agent_network.evidence.retrieval_benchmark import (
+    run_retrieval_benchmark,
+    write_retrieval_benchmark,
+)
 from agent_network.evidence.sources import EvidenceFixture, FakeEvidenceSource
 from agent_network.evidence.verifier import OfflineEvidenceVerifier
 from agent_network.input_analysis import analyze_input
@@ -230,6 +238,45 @@ def verify_evidence(
     typer.echo("Model calls: 0; Network requests: 0")
     for path in paths.values():
         typer.echo(f"Wrote {path}")
+
+
+@app.command("benchmark-evidence-pipeline")
+def benchmark_evidence_pipeline(
+    fixture: Path = typer.Argument(..., exists=True, file_okay=False, readable=True),
+    output: Path = typer.Option(Path("outputs/benchmark-evidence-v1"), "--output", "-o"),
+    domain_config: Path = typer.Option(
+        Path("configs/evidence_domains/rancher.yaml"), "--domain-config"
+    ),
+) -> None:
+    """Run the offline catalog Evidence Pipeline benchmark without network or models."""
+
+    result = run_evidence_pipeline_benchmark(fixture, domain_config_path=domain_config)
+    json_path, markdown_path, run_path = write_evidence_pipeline_benchmark(result, output)
+    typer.echo(f"Benchmark JSON: {json_path}")
+    typer.echo(f"Benchmark Markdown: {markdown_path}")
+    typer.echo(f"Run metadata: {run_path}")
+    typer.echo(
+        f"Cases: {result.metrics.passed_cases}/{result.metrics.total_cases}; "
+        f"Model calls: {result.model_call_count}; Network requests: {result.network_request_count}"
+    )
+
+
+@app.command("benchmark-retrieval")
+def benchmark_retrieval(
+    fixture: Path = typer.Argument(..., exists=True, file_okay=False, readable=True),
+    output: Path = typer.Option(Path("outputs/benchmark-retrieval-v1"), "--output", "-o"),
+) -> None:
+    """Run the offline DocumentChunk BM25 retrieval benchmark without network or models."""
+
+    result = run_retrieval_benchmark(fixture)
+    json_path, markdown_path, run_path = write_retrieval_benchmark(result, output)
+    typer.echo(f"Benchmark JSON: {json_path}")
+    typer.echo(f"Benchmark Markdown: {markdown_path}")
+    typer.echo(f"Run metadata: {run_path}")
+    typer.echo(
+        f"Cases: {result.metrics.passed_cases}/{result.metrics.total_cases}; "
+        f"Model calls: {result.model_call_count}; Network requests: {result.network_request_count}"
+    )
 
 
 @app.command("fetch-evidence")

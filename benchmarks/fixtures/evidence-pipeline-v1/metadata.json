@@ -1,0 +1,5 @@
+{
+  "fixture_id": "evidence-pipeline-v1",
+  "benchmark_version": "v1",
+  "fixture_notice": "FIXTURE ONLY. Synthetic catalog documents use .invalid URLs and are never fetched."
+}

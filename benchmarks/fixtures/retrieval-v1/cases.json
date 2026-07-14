@@ -1,0 +1,22 @@
+[
+  {"case_id":"cluster","claim":"cattle-cluster-agent connects Rancher Server","product":"Rancher Manager","component":"Cluster Agent","expected_document_ids":["cluster-agent"],"forbidden_document_ids":["fleet-agent"]},
+  {"case_id":"websocket","claim":"WebSocket reverse tunnel","product":"Rancher Manager","component":"Cluster Agent","expected_document_ids":["cluster-agent"],"forbidden_document_ids":["fleet-agent"]},
+  {"case_id":"tunnel","claim":"reverse tunnel","product":"Rancher Manager","component":"Cluster Agent","expected_document_ids":["cluster-agent"],"forbidden_document_ids":["fleet-bundle"]},
+  {"case_id":"serviceaccount","claim":"ServiceAccount RoleBinding","product":"Rancher Manager","component":"ServiceAccount","expected_document_ids":["serviceaccount"],"forbidden_document_ids":["fleet-bundle"]},
+  {"case_id":"token","claim":"registration token","product":"Rancher Manager","component":"Registration Token","expected_document_ids":["registration-token"],"forbidden_document_ids":[]},
+  {"case_id":"rbac","claim":"RBAC permissions","product":"Rancher Manager","component":"ServiceAccount","expected_document_ids":["serviceaccount"],"forbidden_document_ids":[]},
+  {"case_id":"impersonation","claim":"cattle-impersonation-system","product":"Rancher Manager","component":"cattle-impersonation-system","expected_document_ids":["impersonation"],"forbidden_document_ids":[]},
+  {"case_id":"fleet-agent","claim":"Fleet Agent targets","product":"Fleet","component":"Fleet Agent","expected_document_ids":["fleet-agent"],"forbidden_document_ids":["cluster-agent"]},
+  {"case_id":"bundle","claim":"Fleet Bundle GitOps resources","product":"Fleet","component":"Bundle","expected_document_ids":["fleet-bundle"],"forbidden_document_ids":["cluster-agent"]},
+  {"case_id":"credential","claim":"Cloud Credential","product":"Rancher Manager","component":"Cloud Credential","expected_document_ids":["cloud-credential"],"forbidden_document_ids":[]},
+  {"case_id":"release","claim":"release notes changes","product":"Rancher Manager","component":"RKE","expected_document_ids":["release-notes"],"forbidden_document_ids":[]},
+  {"case_id":"wrong-product","claim":"Fleet Bundle","product":"Rancher Manager","component":"Bundle","expected_document_ids":[],"forbidden_document_ids":["fleet-bundle"]},
+  {"case_id":"wrong-component","claim":"reverse tunnel","product":"Rancher Manager","component":"Bundle","expected_document_ids":[],"forbidden_document_ids":["cluster-agent"]},
+  {"case_id":"wrong-version","claim":"reverse tunnel","product":"Rancher Manager","component":"Cluster Agent","version":"v2.9","expected_document_ids":["cluster-agent"],"forbidden_document_ids":[]},
+  {"case_id":"none","claim":"quantum toaster","product":"Rancher Manager","component":"Cluster Agent","expected_document_ids":[],"forbidden_document_ids":[]},
+  {"case_id":"zh-alias","claim":"反向隧道","product":"Rancher Manager","component":"反向隧道","expected_document_ids":[],"forbidden_document_ids":[]},
+  {"case_id":"english-alias","claim":"cattle-cluster-agent","product":"Rancher Manager","component":"Cluster Agent","expected_document_ids":["cluster-agent"],"forbidden_document_ids":[]},
+  {"case_id":"cve-version","claim":"CVE-2025-1234 v2.10.3","product":"Rancher Manager","component":"CVE","version":"v2.10.3","expected_document_ids":["cve-note"],"forbidden_document_ids":[]},
+  {"case_id":"budget","claim":"Rancher Server reverse tunnel WebSocket","product":"Rancher Manager","component":"Cluster Agent","expected_document_ids":["cluster-agent"],"forbidden_document_ids":[]},
+  {"case_id":"duplicate","claim":"cattle-cluster-agent connects Rancher Server","product":"Rancher Manager","component":"Cluster Agent","expected_document_ids":["cluster-agent"],"forbidden_document_ids":[]}
+]

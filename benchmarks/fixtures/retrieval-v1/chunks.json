@@ -1,0 +1,11 @@
+[
+  {"chunk_id":"cluster","document_id":"cluster-agent","canonical_url":"https://rancher-fixtures.invalid/cluster","product":"Rancher Manager","component":"Cluster Agent","version":"v2.14","text":"The cattle-cluster-agent opens a WebSocket reverse tunnel to Rancher Server."},
+  {"chunk_id":"service","document_id":"serviceaccount","canonical_url":"https://rancher-fixtures.invalid/service","product":"Rancher Manager","component":"ServiceAccount","version":"v2.14","text":"ServiceAccount RBAC permissions use Role and RoleBinding."},
+  {"chunk_id":"token","document_id":"registration-token","canonical_url":"https://rancher-fixtures.invalid/token","product":"Rancher Manager","component":"Registration Token","version":"v2.14","text":"A registration token registers a downstream cluster."},
+  {"chunk_id":"impersonation","document_id":"impersonation","canonical_url":"https://rancher-fixtures.invalid/impersonation","product":"Rancher Manager","component":"cattle-impersonation-system","version":"v2.14","text":"cattle-impersonation-system supports impersonation requests."},
+  {"chunk_id":"fleet-agent","document_id":"fleet-agent","canonical_url":"https://fleet-fixtures.invalid/agent","product":"Fleet","component":"Fleet Agent","version":"v0.11","text":"Fleet Agent manages GitOps deployment targets."},
+  {"chunk_id":"bundle","document_id":"fleet-bundle","canonical_url":"https://fleet-fixtures.invalid/bundle","product":"Fleet","component":"Bundle","version":"v0.11","text":"A Fleet Bundle distributes GitOps resources to target clusters."},
+  {"chunk_id":"credential","document_id":"cloud-credential","canonical_url":"https://rancher-fixtures.invalid/cloud","product":"Rancher Manager","component":"Cloud Credential","version":"v2.14","text":"Cloud Credential stores cloud provider access configuration."},
+  {"chunk_id":"release","document_id":"release-notes","canonical_url":"https://rancher-fixtures.invalid/release","product":"Rancher Manager","component":"RKE","document_type":"release_notes","version":"v2.14","text":"Release notes for v2.14 list changes."},
+  {"chunk_id":"cve","document_id":"cve-note","canonical_url":"https://rancher-fixtures.invalid/cve","product":"Rancher Manager","component":"CVE","version":"v2.10.3","text":"CVE-2025-1234 affects v2.10.3."}
+]

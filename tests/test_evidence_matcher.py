@@ -52,6 +52,7 @@ def test_product_and_component_aliases_normalize_without_collapsing_products() -
     assert normalize_product("Rancher") == "rancher_manager"
     assert normalize_component("cluster-agent") == "cluster_agent"
     assert normalize_component("cattle-cluster-agent") == "cluster_agent"
+    assert normalize_component("RKE2") == "rke2"
     assert products_match("Rancher Manager", "Rancher")
     assert not products_match("Rancher", "Fleet")
     assert not products_match("RKE", "RKE2")

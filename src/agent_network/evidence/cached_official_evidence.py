@@ -247,6 +247,11 @@ def _load_document(documents_root: Path, document_id: str) -> CleanedOfficialDoc
             sections=sections,
             source_fetched_at=fetched_at,
             source_response_size_bytes=int(cleaned["source_response_size_bytes"]),
+            product_version=(
+                str(cleaned["product_version"])
+                if cleaned.get("product_version") is not None
+                else None
+            ),
         )
     except (KeyError, TypeError, ValueError) as exc:
         raise CachedDocumentLoadError(
