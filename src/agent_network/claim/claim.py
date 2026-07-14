@@ -39,9 +39,11 @@ class Claim(BaseModel):
     claim_id: str = Field(min_length=1)
     text: str = Field(min_length=1)
     normalized_text: str | None = None
+    source_excerpt: str | None = None
     source_file: str | None = None
     source_location: str | None = None
     section: str | None = None
+    heading_path: list[str] = Field(default_factory=list)
     line_start: int | None = Field(default=None, ge=1)
     line_end: int | None = Field(default=None, ge=1)
     product: str | None = None
@@ -49,6 +51,7 @@ class Claim(BaseModel):
     claim_type: ClaimType = ClaimType.OTHER
     priority: str = "medium"
     extraction_confidence: float | None = Field(default=None, ge=0.0, le=1.0)
+    extraction_method: str = "deterministic"
     requires_external_evidence: bool = True
     status: ClaimStatus = ClaimStatus.PENDING
 
@@ -62,13 +65,27 @@ class Claim(BaseModel):
             raise ValueError("value must not be empty")
         return normalized
 
-    @field_validator("normalized_text", "source_file", "source_location", "section", mode="before")
+    @field_validator(
+        "normalized_text",
+        "source_excerpt",
+        "source_file",
+        "source_location",
+        "section",
+        mode="before",
+    )
     @classmethod
     def normalize_optional_text(cls, value: Any) -> str | None:
         if value is None:
             return None
         normalized = str(value).strip()
         return normalized or None
+
+    @field_validator("heading_path", mode="before")
+    @classmethod
+    def normalize_heading_path(cls, value: Any) -> list[str]:
+        if value is None:
+            return []
+        return [str(item).strip() for item in value if str(item).strip()]
 
     @field_validator("priority", mode="before")
     @classmethod
