@@ -1,61 +1,106 @@
-# v0.3.0 Release Candidate Baseline
+# Agent Network v0.3 Baseline
 
-## Scope
+**Baseline date:** 2026-07-15
+**Scope:** v0.2/v0.3 evidence verification milestone
+**Repository:** `/home/yin/agent-network`
 
-This baseline covers the v0.3 official-evidence foundation and its compatibility
-with the existing four-agent review workflow. It is intentionally local and
-deterministic.
+## 1. Development environment
 
-## Required Verification
+- WSL Ubuntu
+- Python 3.12.3
+- `uv` 0.11.28 for environment and dependency management
+- Test and lint commands:
+  - `uv run pytest`
+  - `uv run ruff check .`
+- GitHub remote uses SSH.
+- API credentials are loaded from local environment variables or `.env`; secrets are not recorded in this baseline.
 
-Run from the repository root:
+## 2. Architecture and workflow
 
-```powershell
-uv run pytest -q
-uv run ruff check .
-uv run ruff format --check .
-git diff --check
-uv run agent-network --version
+The standard review workflow remains unchanged:
+
+```text
+Fact -> Security -> Logic -> Merge
 ```
 
-The release candidate expects package and CLI version `0.3.0`.
+- Fact reviews factual claims, evidence needs, citations, and technical accuracy.
+- Security reviews cloud-native security risks and unsafe defaults.
+- Logic reviews assumptions, contradictions, reasoning flow, and conclusion strength.
+- Merge deduplicates and synthesizes completed specialist results.
 
-## RC Verification Result
+Evidence verification is an optional Fact-stage capability. It does not add agents,
+change the four-agent workflow, or add model calls to ordinary reviews.
 
-Verified locally for this release-candidate preparation:
+## 3. Dual Fact verification design
 
-- `uv run pytest -q`: `268 passed`
+Dual Fact is an independent fact-verification module, separate from the standard
+four-agent workflow.
+
+- Fact A and Fact B run independently.
+- Both receive the same Claim, selected Evidence, and Verification Engine input.
+- Neither reviewer sees the other reviewers output.
+- Reconciliation is performed locally after both results are available.
+- Calls are batch-oriented rather than one model call per claim.
+- The current Rancher benchmark uses 19 claims in four batches: 5, 5, 5, and 4.
+- The stable live checkpoint completed 8 model calls: 4 Fact A and 4 Fact B.
+- Citations are accepted only when their `chunk_id` belongs to the supplied evidence.
+
+## 4. Evidence verification pipeline
+
+```text
+Document Catalog
+  -> Fetcher
+  -> Cleaner
+  -> Deterministic Chunker
+  -> Offline BM25 Retriever
+  -> Evidence Injection
+  -> Fact verification
+```
+
+- **Document Catalog:** validates official document records, domains, versions,
+  canonical URLs, and stable ordering.
+- **Fetcher:** accepts catalog-registered HTTPS official domains, revalidates
+  redirects, applies size/redirect/time limits, and records safe fetch metadata.
+- **Cleaner:** selects the main document content, removes navigation and irrelevant
+  HTML, preserves headings, paragraphs, lists, tables, code, and link text, and
+  flags prompt-injection patterns as untrusted data.
+- **Chunker:** creates deterministic section-aware chunks with stable chunk IDs,
+  hashes, document/version metadata, heading paths, and offsets.
+- **BM25 Retriever:** performs deterministic lexical retrieval with product,
+  component, version, quality, Top-K, excerpt-size, and total-evidence bounds.
+- **Evidence Injection:** passes only selected bounded chunks and validated metadata
+  to Fact. Raw HTML and full documents are never injected. Unknown citations are
+  rejected programmatically.
+
+The `local_cache` provider is offline-only. Evidence is disabled by default and
+must be explicitly enabled.
+
+## 5. Benchmark verification results
+
+Stable Dual Fact live checkpoint:
+
+- Benchmark: Rancher Report Dual Fact v1
+- Claims: 19
+- Batches: 4 (`[5, 5, 5, 4]`)
+- Model calls: 8 total
+  - Fact A: 4
+  - Fact B: 4
+- Evidence/retrieval network calls: 0
+- Fact A results: 19/19 parsed
+- Fact B results: 19/19 parsed
+- Reconciliation: completed without unresolved parse failures
+- `uv run pytest`: 356 passed
 - `uv run ruff check .`: passed
-- `uv run ruff format --check .`: passed (`88 files already formatted`)
-- `git diff --check`: passed
-- `uv run agent-network --version`: `agent-network 0.3.0`
 
-## Test Guarantees
+The zero network count refers to the offline fixture/evidence path; the eight
+provider model calls are the explicitly confirmed live requests.
 
-The relevant suites cover catalog validation and ordering, URL/domain checks,
-mocked HTTP behavior, cleaner determinism, chunk boundaries, BM25 filters,
-cached multi-document retrieval, synchronizer atomic writes, Fact Evidence
-injection, citation validation, relation/limitation validation, and A/B harness
-safety gates.
+## 6. Git checkpoint
 
-Ordinary test execution must satisfy:
+- Commit: `1217d65`
+- Message: `feat: stabilize dual fact benchmark verification pipeline`
+- Branch: `main`
+- Remote: GitHub over SSH
 
-- real network requests: `0`
-- real model calls: `0`
-- automatic live A/B execution: disabled
-- read access to private reports and generated review outputs: not required
-
-## Runtime Invariants
-
-- Evidence default configuration is disabled.
-- `local_cache` has no network fallback.
-- Fact Evidence injects bounded chunks only, never full HTML or full documents.
-- Citation IDs must come from the provided evidence set.
-- A normal full review with valid specialist results uses Fact, Security, Logic,
-  and Merge for four business model calls.
-
-## Result Recording
-
-Record the actual release-candidate command results in the release review or
-change record. Do not place live-model responses, API keys, local cache content,
-or private reports in this baseline document.
+This document is a concise engineering baseline. It does not contain API keys,
+raw model responses, private reports, or local evidence-cache contents.
