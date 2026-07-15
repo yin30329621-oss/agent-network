@@ -39,6 +39,7 @@ class FactReviewResult:
     parse_status: str = "parsed"
     audit_warnings: list[str] = field(default_factory=list)
     claim_id: str | None = None
+    response_metadata: dict[str, object] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, object]:
         result = asdict(self)

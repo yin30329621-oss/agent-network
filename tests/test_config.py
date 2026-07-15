@@ -1,3 +1,5 @@
+import os
+
 import pytest
 
 from agent_network.config import AppConfig, load_config
@@ -90,8 +92,29 @@ def test_official_provider_config_uses_env_for_keys_and_base_urls(monkeypatch) -
     assert dashscope["base_url_host"] == "dashscope.example"
 
 
+def test_provider_runtime_config_loads_dotenv_before_preflight(monkeypatch) -> None:
+    config = load_config("configs/default.yaml")
+    monkeypatch.delenv("DEEPSEEK_API_KEY", raising=False)
+    monkeypatch.delenv("DEEPSEEK_BASE_URL", raising=False)
+
+    def load_test_dotenv() -> None:
+        os.environ["DEEPSEEK_API_KEY"] = "dotenv-key"
+        os.environ["DEEPSEEK_BASE_URL"] = "https://dotenv.example/v1"
+
+    import agent_network.llm as llm
+
+    monkeypatch.setattr(llm, "load_dotenv_if_available", load_test_dotenv)
+    runtime = config.provider_runtime_config("deepseek_official")
+
+    assert runtime["configured"] is True
+    assert runtime["base_url_host"] == "dotenv.example"
+
+
 def test_provider_configuration_reports_missing_key_or_base_url(monkeypatch) -> None:
     config = load_config("configs/default.yaml")
+    import agent_network.llm as llm
+
+    monkeypatch.setattr(llm, "load_dotenv_if_available", lambda: None)
     monkeypatch.delenv("DEEPSEEK_API_KEY", raising=False)
     monkeypatch.delenv("DEEPSEEK_BASE_URL", raising=False)
 

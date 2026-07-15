@@ -135,7 +135,7 @@ fact_review:
       provider: deepseek_official
       model: deepseek-v4-pro
       timeout_seconds: 90
-      max_tokens: 2400
+      max_tokens: 4000
       retry_attempts: 0
       request_options:
         response_format:

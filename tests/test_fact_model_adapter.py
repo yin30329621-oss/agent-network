@@ -174,6 +174,70 @@ def test_limitations_normalize_string_null_and_list_without_character_splitting(
     assert adapter.review_batch([input_value])[0].limitations == ["one", "two"]
 
 
+def _valid_fact_response() -> str:
+    return json.dumps(
+        {
+            "reviews": [
+                {
+                    "claim_id": "c1",
+                    "decision": "verified_candidate",
+                    "recommended_status": "verified_candidate",
+                    "cited_chunk_ids": ["chunk-1"],
+                    "reasoning_summary": "fixture",
+                    "limitations": [],
+                }
+            ]
+        }
+    )
+
+
+@pytest.mark.parametrize(
+    "response",
+    [
+        (chr(96) * 3 + "json\n" + _valid_fact_response() + "\n" + chr(96) * 3),
+        ("Here is the JSON response:\n" + _valid_fact_response() + "\nDone."),
+    ],
+)
+def test_parser_extracts_one_json_object_from_wrapped_response(response: str) -> None:
+    provider = RecordingMockProvider()
+    provider.complete = lambda **_: response
+    adapter = FactModelAdapter.fact_a(
+        provider,
+        fact_a_adapter_config(load_config("configs/default.yaml")),
+    )
+
+    result = adapter.review_batch([_input().to_dict()])[0]
+
+    assert result.parse_status == "parsed"
+    assert result.response_metadata["content_length"] == len(response)
+    assert result.response_metadata["starts_with_json"] is False
+
+
+@pytest.mark.parametrize(
+    "response",
+    [
+        ("{invalid json}"),
+        (_valid_fact_response() + _valid_fact_response()),
+    ],
+)
+def test_parser_rejects_invalid_or_multiple_json_objects(response: str) -> None:
+    provider = RecordingMockProvider()
+    provider.complete = lambda **_: response
+    adapter = FactModelAdapter.fact_a(
+        provider,
+        fact_a_adapter_config(load_config("configs/default.yaml")),
+    )
+
+    result = adapter.review_batch([_input().to_dict()])[0]
+
+    assert result.parse_status == "parse_failed"
+    assert result.response_metadata["content_length"] == len(response)
+    assert result.response_metadata["json_extraction_error"] in {
+        "json_object_not_found",
+        "multiple_json_objects",
+    }
+
+
 def test_fact_b_prompt_is_compact_and_budget_is_bounded() -> None:
     provider = RecordingMockProvider()
     from agent_network.claim.fact_model_adapter import fact_b_adapter_config
@@ -202,6 +266,8 @@ def test_official_fact_reviewers_are_configured_independently() -> None:
     assert (fact_a.provider, fact_b.provider) == ("deepseek_official", "dashscope_official")
     assert fact_a.model == "deepseek-v4-pro"
     assert fact_b.model == "qwen3.7-plus"
+    assert fact_a.max_tokens == 4000
+    assert fact_b.max_tokens == 2200
     assert fact_a.provider != fact_b.provider
 
     adapter_a = fact_model_adapter_from_config(config, "fact_a")

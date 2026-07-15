@@ -140,28 +140,45 @@ class FactModelAdapter:
             return [
                 self._failed_result(item, "provider_error", type(exc).__name__) for item in inputs
             ]
-        return self._parse_results(content, inputs)
+        response_audit = getattr(self.llm, "last_response_audit", {})
+        metadata = _response_metadata(content, response_audit)
+        return self._parse_results(content, inputs, metadata)
 
     def _parse_results(
-        self, content: str, inputs: list[dict[str, object]]
+        self,
+        content: str,
+        inputs: list[dict[str, object]],
+        response_metadata: dict[str, object] | None = None,
     ) -> list[FactReviewResult]:
+        metadata = dict(response_metadata or {})
         try:
-            payload = json.loads(content)
+            payload = json.loads(_extract_json_object(content))
             reviews = payload.get("reviews") if isinstance(payload, dict) else None
             if not isinstance(reviews, list) or len(reviews) != len(inputs):
                 raise ValueError("review_count_mismatch")
         except (json.JSONDecodeError, ValueError):
             return [
-                self._failed_result(item, "parse_failed", "invalid_response") for item in inputs
+                self._failed_result(
+                    item,
+                    "parse_failed",
+                    _response_failure_warning(content),
+                    metadata,
+                )
+                for item in inputs
             ]
         return [
-            self._parse_one(raw, item)
+            self._parse_one(raw, item, metadata)
             if isinstance(raw, dict)
-            else self._failed_result(item, "parse_failed", "invalid_review")
+            else self._failed_result(item, "parse_failed", "invalid_review", metadata)
             for raw, item in zip(reviews, inputs, strict=True)
         ]
 
-    def _parse_one(self, raw: dict[str, Any], item: dict[str, object]) -> FactReviewResult:
+    def _parse_one(
+        self,
+        raw: dict[str, Any],
+        item: dict[str, object],
+        response_metadata: dict[str, object] | None = None,
+    ) -> FactReviewResult:
         claim_id = _claim_id(item)
         cited = raw.get("cited_chunk_ids", [])
         citations = (
@@ -190,10 +207,15 @@ class FactModelAdapter:
             parse_status="parsed",
             audit_warnings=warnings,
             claim_id=claim_id,
+            response_metadata=dict(response_metadata or {}),
         )
 
     def _failed_result(
-        self, item: dict[str, object], parse_status: str, warning: str
+        self,
+        item: dict[str, object],
+        parse_status: str,
+        warning: str,
+        response_metadata: dict[str, object] | None = None,
     ) -> FactReviewResult:
         return FactReviewResult(
             reviewer_id=self.reviewer_id,
@@ -206,7 +228,61 @@ class FactModelAdapter:
             parse_status=parse_status,
             audit_warnings=[warning],
             claim_id=_claim_id(item),
+            response_metadata=dict(response_metadata or {}),
         )
+
+
+def _extract_json_object(content: str) -> str:
+    """Extract exactly one outer JSON object without repairing its content."""
+
+    decoder = json.JSONDecoder()
+    candidates: list[tuple[int, int]] = []
+    for start, character in enumerate(content):
+        if character != "{":
+            continue
+        try:
+            payload, end = decoder.raw_decode(content, start)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(payload, dict):
+            candidates.append((start, end))
+    if not candidates:
+        raise ValueError("json_object_not_found")
+    outer_start, outer_end = min(candidates)
+    if any(start >= outer_end for start, _ in candidates):
+        raise ValueError("multiple_json_objects")
+    return content[outer_start:outer_end]
+
+
+def _response_metadata(content: str, response_audit: object) -> dict[str, object]:
+    audit = response_audit if isinstance(response_audit, dict) else {}
+    metadata: dict[str, object] = {
+        "content_length": len(content),
+        "starts_with_json": content.lstrip().startswith("{"),
+        "finish_reason": audit.get("finish_reason"),
+    }
+    try:
+        _extract_json_object(content)
+    except ValueError as exc:
+        metadata["json_extraction_error"] = str(exc)
+    return metadata
+
+
+def _response_failure_warning(content: str) -> str:
+    """Classify malformed provider output without retaining response content."""
+
+    stripped = content.strip()
+    if stripped.startswith(chr(96) * 3):
+        return "invalid_response:markdown_fence"
+    if not stripped.startswith(("{", "[")):
+        return "invalid_response:extra_text_or_non_json"
+    try:
+        payload = json.loads(content)
+    except json.JSONDecodeError:
+        return "invalid_response:invalid_json"
+    if not isinstance(payload, dict) or not isinstance(payload.get("reviews"), list):
+        return "invalid_response:schema_mismatch"
+    return "invalid_response:review_count_mismatch"
 
 
 def _claim_id(item: dict[str, object]) -> str | None:

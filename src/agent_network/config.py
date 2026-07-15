@@ -208,6 +208,11 @@ class AppConfig:
         audit-facing fields.
         """
 
+        # Provider validation runs while adapters are constructed, before
+        # LiteLLMClient.complete() loads dotenv values.
+        from agent_network.llm import load_dotenv_if_available
+
+        load_dotenv_if_available()
         providers = self.raw.get("llm", {}).get("providers", {})
         provider_config = providers.get(provider)
         if not isinstance(provider_config, dict):
