@@ -4,6 +4,8 @@ from agent_network.claim.fact_review import (
     DualFactReviewCoordinator,
     DualReviewBudget,
     FactReviewResult,
+    FactReconciliation,
+    normalize_fact_status,
     FakeFactReviewer,
     ReconciliationStatus,
 )
@@ -132,3 +134,81 @@ def test_token_aware_planner_rejects_a_claim_that_cannot_fit_one_batch() -> None
         assert "budget" in str(exc)
     else:
         raise AssertionError("Expected an over-budget batch to be rejected")
+
+
+def test_equivalent_reviewer_statuses_use_canonical_comparison() -> None:
+    result = DualFactReviewCoordinator(
+        _reviewer("fact-a", "active"),
+        _reviewer("fact-b", "verified_candidate"),
+    ).review_batch([_input()])[0]
+
+    assert result.status == ReconciliationStatus.CONSENSUS
+    assert result.fact_a is not None and result.fact_a.normalized_status == "supported"
+    assert result.fact_b is not None and result.fact_b.normalized_status == "supported"
+    assert normalize_fact_status("Needs Review").value == "manual_review"
+
+
+def test_evidence_insufficiency_blocks_unsupported_upgrade() -> None:
+    input_value = _input()
+    input_value.decision["status"] = "insufficient_evidence"
+    result = DualFactReviewCoordinator(
+        _reviewer("fact-a", "verified_candidate"),
+        _reviewer("fact-b", "active"),
+    ).review_batch([input_value])[0]
+
+    assert result.status == ReconciliationStatus.MANUAL_REVIEW_REQUIRED
+    assert result.needs_manual_review is True
+    assert result.manual_review_reasons == ["evidence_gate_blocked_upgrade"]
+    assert result.review_priority == "high"
+
+
+def test_invalid_citation_escalates_to_manual_review() -> None:
+    result = DualFactReviewCoordinator(
+        _reviewer("fact-a", "verified_candidate", ["unknown"]),
+        _reviewer("fact-b", "verified_candidate"),
+    ).review_batch([_input()])[0]
+
+    assert result.status == ReconciliationStatus.INVALID_CITATION
+    assert result.needs_manual_review is True
+    assert result.manual_review_reasons == ["invalid_citation"]
+    assert result.review_priority == "high"
+
+
+def test_reviewer_disagreement_escalates_to_manual_review() -> None:
+    result = DualFactReviewCoordinator(
+        _reviewer("fact-a", "active"),
+        _reviewer("fact-b", "unsupported"),
+    ).review_batch([_input()])[0]
+
+    assert result.status == ReconciliationStatus.REVIEWER_DISAGREEMENT
+    assert result.needs_manual_review is True
+    assert result.manual_review_reasons == ["reviewer_status_disagreement"]
+
+
+def test_legacy_reconciliation_json_defaults_new_fields() -> None:
+    legacy = {
+        "claim_id": "c1",
+        "status": "consensus",
+        "fact_a": {
+            "reviewer_id": "fact-a",
+            "decision": "verified_candidate",
+            "recommended_status": "verified_candidate",
+            "cited_chunk_ids": ["chunk-1"],
+            "reasoning_summary": "legacy",
+        },
+        "fact_b": None,
+        "warnings": [],
+    }
+
+    result = FactReconciliation.from_dict(legacy)
+
+    assert result.needs_manual_review is False
+    assert result.manual_review_reasons == []
+    assert result.review_priority == "normal"
+    assert result.fact_a is not None
+    assert result.fact_a.normalized_status == ""
+    serialized = result.to_dict()
+    assert serialized["status"] == "consensus"
+    assert serialized["needs_manual_review"] is False
+    assert serialized["manual_review_reasons"] == []
+    assert serialized["review_priority"] == "normal"

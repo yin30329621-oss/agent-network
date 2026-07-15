@@ -184,16 +184,7 @@ def run_live(inputs: list[Any], *, batch_size: int) -> list[dict[str, Any]]:
             output_safety_ratio=1.0,
         ),
     )
-    return [
-        {
-            "claim_id": item.claim_id,
-            "status": item.status.value,
-            "fact_a": item.fact_a.to_dict() if item.fact_a else None,
-            "fact_b": item.fact_b.to_dict() if item.fact_b else None,
-            "warnings": item.warnings,
-        }
-        for item in coordinator.review_batch(inputs)
-    ]
+    return [item.to_dict() for item in coordinator.review_batch(inputs)]
 
 
 def _claim_adapter(data: dict[str, Any]) -> _BenchmarkClaim:

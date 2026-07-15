@@ -27,6 +27,36 @@ class ReconciliationStatus(StrEnum):
     MANUAL_REVIEW_REQUIRED = "manual_review_required"
 
 
+class CanonicalFactStatus(StrEnum):
+    SUPPORTED = "supported"
+    PARTIALLY_SUPPORTED = "partially_supported"
+    UNSUPPORTED = "unsupported"
+    INSUFFICIENT_EVIDENCE = "insufficient_evidence"
+    MANUAL_REVIEW = "manual_review"
+    UNKNOWN = "unknown"
+
+
+def normalize_fact_status(status: object) -> CanonicalFactStatus:
+    value = str(status or "").strip().casefold().replace("-", "_").replace(" ", "_")
+    aliases = {
+        "active": CanonicalFactStatus.SUPPORTED,
+        "supported": CanonicalFactStatus.SUPPORTED,
+        "verified": CanonicalFactStatus.SUPPORTED,
+        "verified_candidate": CanonicalFactStatus.SUPPORTED,
+        "partially_supported": CanonicalFactStatus.PARTIALLY_SUPPORTED,
+        "candidate_only": CanonicalFactStatus.PARTIALLY_SUPPORTED,
+        "unsupported": CanonicalFactStatus.UNSUPPORTED,
+        "not_supported": CanonicalFactStatus.UNSUPPORTED,
+        "withdrawn": CanonicalFactStatus.UNSUPPORTED,
+        "insufficient_evidence": CanonicalFactStatus.INSUFFICIENT_EVIDENCE,
+        "unverifiable": CanonicalFactStatus.INSUFFICIENT_EVIDENCE,
+        "manual_review": CanonicalFactStatus.MANUAL_REVIEW,
+        "manual_review_required": CanonicalFactStatus.MANUAL_REVIEW,
+        "needs_review": CanonicalFactStatus.MANUAL_REVIEW,
+    }
+    return aliases.get(value, CanonicalFactStatus.UNKNOWN)
+
+
 @dataclass(slots=True)
 class FactReviewResult:
     reviewer_id: str
@@ -40,6 +70,7 @@ class FactReviewResult:
     audit_warnings: list[str] = field(default_factory=list)
     claim_id: str | None = None
     response_metadata: dict[str, object] = field(default_factory=dict)
+    normalized_status: str = ""
 
     def to_dict(self) -> dict[str, object]:
         result = asdict(self)
@@ -115,6 +146,64 @@ class FactReconciliation:
     fact_a: FactReviewResult | None
     fact_b: FactReviewResult | None
     warnings: list[str] = field(default_factory=list)
+    needs_manual_review: bool = False
+    manual_review_reasons: list[str] = field(default_factory=list)
+    review_priority: str = "normal"
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "claim_id": self.claim_id,
+            "status": self.status.value,
+            "fact_a": self.fact_a.to_dict() if self.fact_a else None,
+            "fact_b": self.fact_b.to_dict() if self.fact_b else None,
+            "warnings": list(self.warnings),
+            "needs_manual_review": self.needs_manual_review,
+            "manual_review_reasons": list(self.manual_review_reasons),
+            "review_priority": self.review_priority,
+        }
+
+    @classmethod
+    def from_dict(cls, value: dict[str, object]) -> "FactReconciliation":
+        def result_from_dict(raw: object) -> FactReviewResult | None:
+            if not isinstance(raw, dict):
+                return None
+            audit_value = raw.get("audit_status", ReviewAuditStatus.COMPLETED)
+            try:
+                audit_status = ReviewAuditStatus(str(audit_value))
+            except ValueError:
+                audit_status = ReviewAuditStatus.COMPLETED
+            def strings(name: str) -> list[str]:
+                values = raw.get(name, [])
+                return [item for item in values if isinstance(item, str)] if isinstance(values, list) else []
+            metadata = raw.get("response_metadata", {})
+            return FactReviewResult(
+                reviewer_id=str(raw.get("reviewer_id", "")),
+                decision=str(raw.get("decision", "")),
+                recommended_status=str(raw.get("recommended_status", "")),
+                cited_chunk_ids=strings("cited_chunk_ids"),
+                reasoning_summary=str(raw.get("reasoning_summary", "")),
+                limitations=strings("limitations"),
+                audit_status=audit_status,
+                parse_status=str(raw.get("parse_status", "parsed")),
+                audit_warnings=strings("audit_warnings"),
+                claim_id=str(raw["claim_id"]) if raw.get("claim_id") is not None else None,
+                response_metadata=dict(metadata) if isinstance(metadata, dict) else {},
+                normalized_status=str(raw.get("normalized_status", "")),
+            )
+        return cls(
+            claim_id=str(value.get("claim_id", "")),
+            status=ReconciliationStatus(str(value.get("status", ReconciliationStatus.MANUAL_REVIEW_REQUIRED))),
+            fact_a=result_from_dict(value.get("fact_a")),
+            fact_b=result_from_dict(value.get("fact_b")),
+            warnings=[
+                item for item in value.get("warnings", []) if isinstance(item, str)
+            ] if isinstance(value.get("warnings", []), list) else [],
+            needs_manual_review=bool(value.get("needs_manual_review", False)),
+            manual_review_reasons=[
+                item for item in value.get("manual_review_reasons", []) if isinstance(item, str)
+            ] if isinstance(value.get("manual_review_reasons", []), list) else [],
+            review_priority=str(value.get("review_priority", "normal")),
+        )
 
 
 class DualFactReviewCoordinator:
@@ -279,6 +368,7 @@ class DualFactReviewCoordinator:
     def _reconcile(
         self, item: FactReviewInput, a: FactReviewResult | None, b: FactReviewResult | None
     ) -> FactReconciliation:
+        claim_id = item.claim["claim_id"]
         allowed = {entry["chunk_id"] for entry in item.decision.get("evidence", [])}
         invalid = [
             result
@@ -297,26 +387,79 @@ class DualFactReviewCoordinator:
                     value for value in result.cited_chunk_ids if value in allowed
                 ]
             return FactReconciliation(
-                item.claim["claim_id"], ReconciliationStatus.INVALID_CITATION, a, b
+                claim_id,
+                ReconciliationStatus.INVALID_CITATION,
+                a,
+                b,
+                needs_manual_review=True,
+                manual_review_reasons=["invalid_citation"],
+                review_priority="high",
             )
         available_a = a if a and a.audit_status != ReviewAuditStatus.FAILED else None
         available_b = b if b and b.audit_status != ReviewAuditStatus.FAILED else None
         if available_a is None and available_b is None:
             return FactReconciliation(
-                item.claim["claim_id"], ReconciliationStatus.MANUAL_REVIEW_REQUIRED, a, b
+                claim_id,
+                ReconciliationStatus.MANUAL_REVIEW_REQUIRED,
+                a,
+                b,
+                needs_manual_review=True,
+                manual_review_reasons=["both_reviewers_unavailable"],
+                review_priority="high",
             )
         if available_a is None or available_b is None:
             return FactReconciliation(
-                item.claim["claim_id"], ReconciliationStatus.SINGLE_REVIEWER_AVAILABLE, a, b
+                claim_id,
+                ReconciliationStatus.SINGLE_REVIEWER_AVAILABLE,
+                a,
+                b,
+                needs_manual_review=True,
+                manual_review_reasons=["single_reviewer_available"],
+                review_priority="high",
             )
-        engine_status = str(item.decision["status"])
-        if available_a.recommended_status == available_b.recommended_status:
+        a_status = normalize_fact_status(available_a.recommended_status)
+        b_status = normalize_fact_status(available_b.recommended_status)
+        available_a.normalized_status = a_status.value
+        available_b.normalized_status = b_status.value
+        engine_status = normalize_fact_status(item.decision.get("status"))
+        blocked_engine_statuses = {
+            CanonicalFactStatus.UNSUPPORTED,
+            CanonicalFactStatus.INSUFFICIENT_EVIDENCE,
+            CanonicalFactStatus.MANUAL_REVIEW,
+        }
+        positive_reviewer_statuses = {
+            CanonicalFactStatus.SUPPORTED,
+            CanonicalFactStatus.PARTIALLY_SUPPORTED,
+        }
+        if (
+            engine_status in blocked_engine_statuses
+            and (a_status in positive_reviewer_statuses or b_status in positive_reviewer_statuses)
+        ) or (
+            engine_status == CanonicalFactStatus.PARTIALLY_SUPPORTED
+            and (a_status == CanonicalFactStatus.SUPPORTED or b_status == CanonicalFactStatus.SUPPORTED)
+        ):
+            return FactReconciliation(
+                claim_id,
+                ReconciliationStatus.MANUAL_REVIEW_REQUIRED,
+                a,
+                b,
+                needs_manual_review=True,
+                manual_review_reasons=["evidence_gate_blocked_upgrade"],
+                review_priority="high",
+            )
+        if a_status == b_status:
             status = (
                 ReconciliationStatus.ENGINE_CHALLENGED
-                if available_a.recommended_status != engine_status
+                if a_status != engine_status
                 else ReconciliationStatus.CONSENSUS
             )
-            return FactReconciliation(item.claim["claim_id"], status, a, b)
+            return FactReconciliation(claim_id, status, a, b)
         return FactReconciliation(
-            item.claim["claim_id"], ReconciliationStatus.REVIEWER_DISAGREEMENT, a, b
+            claim_id,
+            ReconciliationStatus.REVIEWER_DISAGREEMENT,
+            a,
+            b,
+            needs_manual_review=True,
+            manual_review_reasons=["reviewer_status_disagreement"],
+            review_priority="normal",
         )
