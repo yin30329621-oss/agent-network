@@ -150,3 +150,57 @@ def test_progress_prints_final_business_status(capsys) -> None:
     assert "Security Agent parse_failed in 40.8s" in output
     assert "Logic Agent failed in 729.8s" in output
     assert "Merge Agent skipped in 0.0s" in output
+
+
+def test_extract_claims_outputs_result_and_statistics(tmp_path) -> None:
+    report = tmp_path / "technical-report.md"
+    report.write_text(
+        "# Architecture\n\n"
+        "Cluster Agent connects to Rancher Server through a tunnel.\n\n"
+        "- ServiceAccount requires RBAC permissions.\n",
+        encoding="utf-8",
+    )
+
+    result = CliRunner().invoke(app, ["extract-claims", str(report)])
+
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.output)
+    assert payload["statistics"] == {
+        "candidate_count": 2,
+        "extracted_count": 2,
+        "duplicate_count": 0,
+        "failure_count": 0,
+        "selected_count": 2,
+        "truncated_count": 0,
+    }
+    assert payload["claims"][0]["claim_id"].startswith("claim-")
+    assert payload["claims"][0]["source_file"] == "technical-report.md"
+    assert payload["claims"][0]["heading_path"] == ["Architecture"]
+    assert payload["claims"][0]["line_start"] == 3
+    assert payload["claims"][0]["line_end"] == 3
+    assert payload["claims"][0]["extraction_confidence"] == 0.9
+    assert payload["claims"][0]["extraction_method"] == "deterministic"
+
+
+def test_extract_claims_supports_output_and_source_name_override(tmp_path) -> None:
+    report = tmp_path / "input.md"
+    report.write_text("The server manages downstream clusters.\n", encoding="utf-8")
+    output = tmp_path / "nested" / "claims.json"
+
+    result = CliRunner().invoke(
+        app,
+        [
+            "extract-claims",
+            str(report),
+            "--output",
+            str(output),
+            "--source-name",
+            "stable-report.md",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert output.exists()
+    payload = json.loads(output.read_text(encoding="utf-8"))
+    assert payload["claims"][0]["source_file"] == "stable-report.md"
+    assert "Wrote" in result.output

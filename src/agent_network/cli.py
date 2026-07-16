@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 import platform
 import subprocess
@@ -13,6 +14,7 @@ from typing import Annotated
 import typer
 
 from agent_network import __version__
+from agent_network.claim import ClaimExtractionRequest, DeterministicClaimExtractor
 from agent_network.config import load_config
 from agent_network.evidence.reporting import write_report as write_evidence_report
 from agent_network.evidence.cache import EvidenceCache
@@ -49,6 +51,40 @@ def root(version: bool = typer.Option(False, "--version", help="Show version and
     if version:
         typer.echo(f"agent-network {__version__}")
         raise typer.Exit
+
+
+@app.command("extract-claims")
+def extract_claims(
+    report: Path = typer.Argument(..., exists=True, readable=True),
+    output: Path | None = typer.Option(None, "--output", "-o"),
+    source_name: str | None = typer.Option(
+        None, "--source-name", help="Stable source identity; defaults to the report basename."
+    ),
+) -> None:
+    """Extract deterministic Claims from a Markdown report."""
+    source = source_name or report.name
+    extraction = DeterministicClaimExtractor().extract(
+        ClaimExtractionRequest(
+            document_text=report.read_text(encoding="utf-8"),
+            source_name=source,
+        )
+    )
+    payload = extraction.to_dict()
+    payload["statistics"] = {
+        "candidate_count": extraction.candidate_count,
+        "extracted_count": len(extraction.claims),
+        "duplicate_count": extraction.duplicate_count,
+        "failure_count": len(extraction.failures),
+        "selected_count": len(extraction.claims),
+        "truncated_count": 0,
+    }
+    rendered = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
+    if output is None:
+        typer.echo(rendered, nl=False)
+    else:
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(rendered, encoding="utf-8")
+        typer.echo(f"Wrote {output}")
 
 
 @app.command()

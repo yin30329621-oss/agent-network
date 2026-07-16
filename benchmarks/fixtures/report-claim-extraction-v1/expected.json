@@ -1,0 +1,19 @@
+{
+  "source_name": "report.md",
+  "expected_claim_ids": [
+    "claim-315ffbfa482a4620",
+    "claim-783cd8f677e70054",
+    "claim-6b5c1967669d2272"
+  ],
+  "expected_heading_paths": [
+    ["Architecture"],
+    ["Architecture"],
+    ["Architecture", "Transport Security"]
+  ],
+  "expected_statistics": {
+    "candidate_count": 10,
+    "extracted_count": 3,
+    "duplicate_count": 1,
+    "failure_count": 0
+  }
+}
