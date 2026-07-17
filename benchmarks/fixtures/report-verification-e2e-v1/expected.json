@@ -1,0 +1,15 @@
+{
+  "source_name": "report-verification-e2e-v1.md",
+  "failing_marker": "TLS",
+  "expected_claim_ids": ["claim-e1b569be6069c983", "claim-30cba3c4a833f057"],
+  "expected": {
+    "candidate_count": 3,
+    "extracted_count": 2,
+    "evidence_decision_count": 1,
+    "failure_slot_count": 1,
+    "artifact_complete": true,
+    "claim_id_aligned": true,
+    "model_call_count": 0,
+    "network_request_count": 0
+  }
+}

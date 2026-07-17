@@ -1,0 +1,213 @@
+{
+  "chunks": [
+    {
+      "chunk_id": "baseline-chunk-001",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "Cluster Agent establishes a reverse tunnel to Rancher Server for downstream cluster management.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-002",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "Rancher Server communicates with the downstream cluster through the Cluster Agent connection.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-003",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "Cluster Agent always uses WebSocket for every Rancher Server connection.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-004",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "Cluster Agent uses a ServiceAccount to access downstream Kubernetes resources.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-005",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "RBAC roles and bindings grant the Cluster Agent ServiceAccount permissions to access Kubernetes resources.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-006",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "A registration token authenticates a new downstream cluster during registration.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-007",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "HTTPS and TLS protect communication between Cluster Agent and Rancher Server.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-008",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "Fleet Agent applies Fleet Bundle resources to selected target clusters.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-009",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "A Fleet Bundle describes GitOps resources for delivery to target clusters.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-010",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "Rancher Manager Cluster Agent architecture is required for every Fleet Bundle workflow.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-011",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "Fleet Bundle resources are distributed by the Rancher Manager Cluster Agent.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-012",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "cattle-impersonation-system supports impersonation requests in Rancher Manager.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-013",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "Cloud Credential stores cloud provider access configuration.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-014",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "Rancher Manager v2.14 release notes list changes for that release.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-015",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "CVE-2025-1234 affects Rancher Manager v2.10.3.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-016",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "Rancher Manager v2.13 uses the same Cluster Agent tunnel behavior as the cached v2.14 page.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-017",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "Rancher Manager uses a Kubernetes ServiceAccount for RBAC access.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-018",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "The report extraction failed before this claim could be verified.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    },
+    {
+      "chunk_id": "baseline-chunk-019",
+      "document_id": "report-verification-v0.4-baseline-v1",
+      "canonical_url": "https://docs.example.test/rancher-baseline",
+      "text_excerpt": "The requested official document is unavailable in the local evidence cache.",
+      "heading_path": [
+        "Rancher Report Verification Baseline"
+      ],
+      "document_type": "official",
+      "source_priority": 1
+    }
+  ]
+}

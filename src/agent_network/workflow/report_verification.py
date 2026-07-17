@@ -32,6 +32,7 @@ class OfflineReportVerificationConfig:
     top_k: int = 5
     source_name: str | None = None
     enable_dual_fact: bool = False
+    reviewer_batch_size: int = 3
 
 
 @dataclass(slots=True)

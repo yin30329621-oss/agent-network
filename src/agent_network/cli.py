@@ -6,6 +6,7 @@ import json
 import os
 import platform
 import subprocess
+from types import SimpleNamespace
 import time
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
@@ -32,6 +33,17 @@ from agent_network.evidence.retrieval_benchmark import (
 )
 from agent_network.evidence.sources import EvidenceFixture, FakeEvidenceSource
 from agent_network.evidence.verifier import OfflineEvidenceVerifier
+from agent_network.evidence.offline_retrieval import OfflineBm25EvidenceRetriever
+from agent_network.claim.fact_model_adapter import fact_model_adapter_from_config
+from agent_network.claim.fact_review import (
+    DualFactReviewCoordinator,
+    DualReviewBudget,
+    FakeFactReviewer,
+)
+from agent_network.workflow.report_verification import (
+    OfflineReportVerificationConfig,
+    OfflineReportVerificationOrchestrator,
+)
 from agent_network.input_analysis import analyze_input
 from agent_network.llm import LiteLLMClient, MockLLMClient, load_dotenv_if_available
 from agent_network.outputs import write_outputs
@@ -86,6 +98,98 @@ def extract_claims(
         output.write_text(rendered, encoding="utf-8")
         typer.echo(f"Wrote {output}")
 
+
+
+@app.command("verify-report")
+def verify_report(
+    report: Path = typer.Argument(..., exists=True, readable=True),
+    output: Path = typer.Option(Path("report-verification.json"), "--output", "-o"),
+    offline: bool = typer.Option(True, "--offline/--online"),
+    dry_run: bool = typer.Option(False, "--dry-run"),
+    enable_dual_fact: bool = typer.Option(False, "--enable-dual-fact"),
+    batch_size: int = typer.Option(
+        3, "--batch-size", min=1, help="Claims per Dual Fact reviewer batch."
+    ),
+    confirm_live_model_calls: bool = typer.Option(
+        False, "--confirm-live-model-calls",
+        help="Explicitly allow the Dual Fact reviewer execution path.",
+    ),
+    confirm_planned_call_count: int | None = typer.Option(
+        None, "--confirm-planned-call-count", min=0,
+        help="Require the estimated Dual Fact call count to match N before execution.",
+    ),
+) -> None:
+    """Run the report-level verification workflow in offline mode."""
+    if not offline:
+        raise typer.BadParameter("M3.3a only supports --offline evidence retrieval")
+    dual_enabled = enable_dual_fact and not dry_run
+    live_dual_enabled = dual_enabled and confirm_live_model_calls
+    if live_dual_enabled and confirm_planned_call_count is None:
+        raise typer.BadParameter(
+            "--confirm-planned-call-count is required for live Dual Fact execution"
+        )
+    if dual_enabled and confirm_planned_call_count is not None:
+        estimated_calls = _estimate_dual_fact_calls(report, batch_size)
+        if confirm_planned_call_count != estimated_calls:
+            raise typer.BadParameter(
+                "planned Dual Fact calls do not match: "
+                f"estimated={estimated_calls}, confirmed={confirm_planned_call_count}"
+            )
+    retriever = OfflineBm25EvidenceRetriever([])
+    coordinator = None
+    if dual_enabled:
+        if live_dual_enabled:
+            app_config = load_config()
+            fact_a = fact_model_adapter_from_config(app_config, "fact_a")
+            fact_b = fact_model_adapter_from_config(app_config, "fact_b")
+            max_expected_output_tokens = 10_000
+        else:
+            fact_a = FakeFactReviewer("fact_a")
+            fact_b = FakeFactReviewer("fact_b")
+            fact_a.config = SimpleNamespace(max_tokens=2400, timeout_seconds=90)
+            fact_b.config = SimpleNamespace(max_tokens=2200, timeout_seconds=180)
+            max_expected_output_tokens = batch_size * 300
+        coordinator = DualFactReviewCoordinator(
+            fact_a,
+            fact_b,
+            budget=DualReviewBudget(
+                claims_per_batch=batch_size,
+                max_expected_output_tokens_per_batch=max_expected_output_tokens,
+            ),
+        )
+    orchestrator = OfflineReportVerificationOrchestrator(
+        retriever,
+        config=OfflineReportVerificationConfig(
+            source_name=report.name,
+            enable_dual_fact=dual_enabled,
+            reviewer_batch_size=batch_size,
+        ),
+        coordinator=coordinator,
+    )
+    result = orchestrator.run_file(report, output_path=output)
+    result.artifact["metadata"]["offline"] = True
+    result.artifact["metadata"]["dry_run"] = dry_run
+    result.artifact["metadata"]["dual_fact_requested"] = enable_dual_fact
+    result.artifact["metadata"]["live_model_calls_confirmed"] = confirm_live_model_calls
+    result.artifact["metadata"]["planned_call_count_confirmed"] = confirm_planned_call_count
+    result.artifact["metadata"]["reviewer_batch_size"] = batch_size
+    output.write_text(
+        json.dumps(result.artifact, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    typer.echo(f"Wrote {output}")
+
+
+def _estimate_dual_fact_calls(report: Path, batch_size: int = 3) -> int:
+    """Estimate two reviewer calls per default three-claim batch."""
+    extraction = DeterministicClaimExtractor().extract(
+        ClaimExtractionRequest(
+            document_text=report.read_text(encoding="utf-8"),
+            source_name=report.name,
+        )
+    )
+    claim_count = len(extraction.claims)
+    return ((claim_count + batch_size - 1) // batch_size) * 2 if claim_count else 0
 
 @app.command()
 def review(

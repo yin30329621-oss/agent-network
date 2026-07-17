@@ -1,0 +1,42 @@
+{
+  "source_name": "report-verification-v0.4-baseline-v1.md",
+  "enable_dual_fact": true,
+  "reviewer_batch_size": 5,
+  "expected_claim_count": 19,
+  "expected_candidate_count": 19,
+  "expected_claim_ids": [
+    "claim-de9a16b3ec2e918a",
+    "claim-17f8ae33dab865ef",
+    "claim-f905796d19fd902c",
+    "claim-6192c4fb1af91a67",
+    "claim-c12161c7e066ba59",
+    "claim-846fe2192130ef27",
+    "claim-fbd16395569f4d9a",
+    "claim-7ec8f222a28793b5",
+    "claim-f5cd26b86140d9bb",
+    "claim-bf6ac6a201808f45",
+    "claim-2c55149a003ac9d2",
+    "claim-03554fa391b9fd72",
+    "claim-ee95666393dba852",
+    "claim-0d7806b9a2c79778",
+    "claim-79e193fed36ded7e",
+    "claim-004cb5003f0e71a5",
+    "claim-adf3712469dc8309",
+    "claim-57cd18eb24ab990b",
+    "claim-2deee7e0322f2ed4"
+  ],
+  "expected_fact_a_calls": 4,
+  "expected_fact_b_calls": 4,
+  "expected_total_calls": 8,
+  "expected_network_requests": 0,
+  "expected": {
+    "candidate_count": 19,
+    "extracted_count": 19,
+    "evidence_decision_count": 19,
+    "failure_slot_count": 0,
+    "artifact_complete": true,
+    "claim_id_aligned": true,
+    "model_call_count": 8,
+    "network_request_count": 0
+  }
+}
