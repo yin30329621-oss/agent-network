@@ -1,0 +1,138 @@
+name: Sync dependencies
+
+on:
+  workflow_dispatch:
+    inputs:
+      rancher_ref:
+        description: "Version of rancher/rancher to compare"
+        required: true
+        default: "main"
+      rancher_repository:
+        description: "Repository for rancher/rancher"
+        required: true
+        default: "rancher/rancher"
+  workflow_call:
+    inputs:
+      webhook_ref:
+        description: "Webhook branch to sync"
+        required: true
+        type: string
+      rancher_ref:
+        description: "Version of rancher/rancher to compare"
+        required: true
+        type: string
+      rancher_repository:
+        description: "Repository for rancher/rancher"
+        required: false
+        type: string
+        default: "rancher/rancher"
+
+env:
+  RANCHER_REF: "${{ inputs.rancher_ref }}"
+  WEBHOOK_REF: "${{ inputs.webhook_ref || github.ref_name }}"
+
+concurrency:
+  group: sync-deps-${{ inputs.webhook_ref || github.ref_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  # Needed to access to vault
+  id-token: write
+
+jobs:
+  sync:
+    name: Sync dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rancher-eio/read-vault-secrets@0da85151ad1f19ed7986c41587e45aac1ace74b6 # v3
+        with:
+          secrets: |
+            secret/data/github/repo/${{ github.repository }}/github/app-credentials appId | APP_ID ;
+            secret/data/github/repo/${{ github.repository }}/github/app-credentials privateKey | PRIVATE_KEY
+
+      # Fetch github token just for the webhook repository
+      - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+        id: app-token
+        with:
+          app-id: ${{ env.APP_ID }}
+          private-key: ${{ env.PRIVATE_KEY }}
+          repositories: |
+            webhook
+
+      - name : Checkout webhook repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: "${{ env.WEBHOOK_REF }}"
+          path: webhook
+          token: ${{ steps.app-token.outputs.token }}
+          # Allow making git push request later on
+          persist-credentials: true
+
+      - name : Checkout rancher repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          repository: "${{ inputs.rancher_repository }}"
+          ref: "${{ env.RANCHER_REF }}"
+          path: rancher
+
+      - name: Install dependencies
+        run: sudo snap install yq --channel=v4/stable
+
+      - name: Configure the committer
+        run: |
+          cd webhook
+          user_id=$(gh api "/users/$APP_USER" --jq .id)
+          git config --global user.name "$APP_USER"
+          git config --global user.email "${user_id}+${APP_USER}@users.noreply.github.com"
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_USER: "${{ steps.app-token.outputs.app-slug }}[bot]"
+
+      - name: Run sync-deps script
+        run: |
+          cd webhook
+          safe_ref=$(echo "$WEBHOOK_REF" | tr '/' '-')
+          BRANCH="automation/sync-deps-${safe_ref}"
+          echo "BRANCH=${BRANCH}" >> $GITHUB_ENV
+          git checkout -B "$BRANCH" "origin/$WEBHOOK_REF"
+          ./.github/workflows/scripts/sync-deps.sh ../rancher "changes.md"
+          if [ -f changes.md ]; then
+            git add go.mod go.sum
+            git commit -m "Sync dependencies"
+            git push --force origin "$BRANCH"
+          fi
+
+      - name: Create PR
+        # Only create the PR if changes were detected
+        if: ${{ hashFiles('webhook/changes.md') != '' }}
+        run: |
+          cd webhook
+          changes=$(cat changes.md)
+          body=$(cat <<EOF
+          # Sync with Rancher
+
+          $changes
+
+          The workflow was triggered by $GITHUB_TRIGGERING_ACTOR.
+          EOF
+          )
+          existing=$(gh pr list \
+            --repo "${{ github.repository }}" \
+            --head "$BRANCH" \
+            --base "$WEBHOOK_REF" \
+            --state open \
+            --json number \
+            --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh pr edit "$existing" --body "$body"
+          else
+            gh pr create \
+              --title "[$WEBHOOK_REF] Sync webhook dependencies" \
+              --body "$body" \
+              --repo "${{ github.repository }}" \
+              --head "${{ github.repository_owner }}:$BRANCH" \
+              --base "$WEBHOOK_REF"
+          fi
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}

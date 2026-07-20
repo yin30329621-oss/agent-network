@@ -1,0 +1,56 @@
+{
+  "formatters": {
+    "enable": [
+      "gofmt",
+      "goimports"
+    ],
+    "exclusions": {
+      "generated": "lax",
+      "paths": [
+        "pkg/generated",
+        "third_party$",
+        "builtin$",
+        "examples$"
+      ]
+    }
+  },
+  "linters": {
+    "default": "none",
+    "enable": [
+      "govet",
+      "ineffassign",
+      "misspell",
+      "revive"
+    ],
+    "exclusions": {
+      "generated": "lax",
+      "paths": [
+        "pkg/generated",
+        "third_party$",
+        "builtin$",
+        "examples$"
+      ],
+      "presets": [
+        "comments",
+        "common-false-positives",
+        "legacy",
+        "std-error-handling"
+      ],
+      "rules": [
+        {
+          "linters": [
+            "revive"
+          ],
+          "text": "should have comment or be unexported"
+        },
+        {
+          "linters": [
+            "revive"
+          ],
+          "text": "avoid meaningless package names"
+        }
+      ]
+    }
+  },
+  "version": "2"
+}

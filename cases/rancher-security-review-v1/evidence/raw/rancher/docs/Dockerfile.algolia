@@ -1,0 +1,11 @@
+ARG RANCHER_DOCS_PACKAGE=rancher/docs
+FROM $RANCHER_DOCS_PACKAGE:latest as prod
+
+FROM $RANCHER_DOCS_PACKAGE:build
+
+COPY --from=prod /usr/share/nginx/html/docs/final.algolia.json /run
+WORKDIR /run
+COPY package.json package.json
+COPY scripts scripts
+
+ENTRYPOINT ["yarn","run","publish-algolia"]

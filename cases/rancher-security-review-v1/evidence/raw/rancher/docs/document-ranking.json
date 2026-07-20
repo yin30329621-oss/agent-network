@@ -1,0 +1,1392 @@
+[
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.3.x/rancher-v2.3.5/hardening-2.3.5/_index.md",
+    "score": 36,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.4/hardening-2.4/_index.md",
+    "score": 36,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/security/rancher-2.5/1.5-hardening-2.5/_index.md",
+    "score": 36,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/security/rancher-2.5/1.6-benchmark-2.5/_index.md",
+    "score": 36,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke-1.6-benchmark-2.6/_index.md",
+    "score": 36,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-benchmark-2.6/_index.md",
+    "score": 36,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/security/rancher-2.5/1.6-hardening-2.5/_index.md",
+    "score": 32,
+    "claim_types": [
+      "cluster_agent",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke-1.6-hardening-2.6/_index.md",
+    "score": 32,
+    "claim_types": [
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.1/hardening-2.1/_index.md",
+    "score": 30,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.2/hardening-2.2/_index.md",
+    "score": 30,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.3.x/rancher-v2.3.0/hardening-2.3/_index.md",
+    "score": 30,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.3.x/rancher-v2.3.3/hardening-2.3.3/_index.md",
+    "score": 30,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.3.x/rancher-v2.3.5/benchmark-2.3.5/_index.md",
+    "score": 30,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.4/benchmark-2.4/_index.md",
+    "score": 30,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/security/rancher-2.5/1.5-benchmark-2.5/_index.md",
+    "score": 30,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.2/benchmark-2.2/_index.md",
+    "score": 26,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.3.x/rancher-v2.3.0/benchmark-2.3/_index.md",
+    "score": 26,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.3.x/rancher-v2.3.3/benchmark-2.3.3/_index.md",
+    "score": 26,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-hardening-2.6/_index.md",
+    "score": 26,
+    "claim_types": [
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.1/benchmark-2.1/_index.md",
+    "score": 24,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount",
+      "content:token",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/cluster-admin/cluster-autoscaler/amazon/_index.md",
+    "score": 22,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/cluster-admin/cluster-autoscaler/amazon/_index.md",
+    "score": 22,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/cluster-admin/cluster-autoscaler/amazon/_index.md",
+    "score": 22,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+    "score": 21,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:cattle-cluster-agent",
+      "content:cluster agent",
+      "path:architecture"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+    "score": 21,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:cattle-cluster-agent",
+      "content:cluster agent",
+      "path:architecture"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+    "score": 21,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:cattle-cluster-agent",
+      "content:cluster agent",
+      "path:architecture"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/backups/restore/rke-restore/v2.0-v2.1/_index.md",
+    "score": 20,
+    "claim_types": [
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount",
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/installation/install-rancher-on-k8s/rollbacks/_index.md",
+    "score": 20,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount",
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/k8s-in-rancher/horitzontal-pod-autoscaler/manage-hpa-with-kubectl/_index.md",
+    "score": 18,
+    "claim_types": [
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/k8s-in-rancher/horitzontal-pod-autoscaler/manage-hpa-with-kubectl/_index.md",
+    "score": 18,
+    "claim_types": [
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/k8s-in-rancher/horitzontal-pod-autoscaler/manage-hpa-with-kubectl/_index.md",
+    "score": 18,
+    "claim_types": [
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/monitoring-alerting/prometheus-federator/_index.md",
+    "score": 18,
+    "claim_types": [
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount",
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/admin-settings/authentication/azure-ad/_index.md",
+    "score": 17,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token",
+      "path:authentication"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/admin-settings/authentication/azure-ad/_index.md",
+    "score": 17,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token",
+      "path:authentication"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/admin-settings/authentication/azure-ad/_index.md",
+    "score": 17,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token",
+      "path:authentication"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/admin-settings/authentication/keycloak-oidc/_index.md",
+    "score": 17,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token",
+      "path:authentication"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/cluster-admin/cleaning-cluster-nodes/_index.md",
+    "score": 16,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/cluster-admin/cleaning-cluster-nodes/_index.md",
+    "score": 16,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/cluster-admin/cleaning-cluster-nodes/_index.md",
+    "score": 16,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/cluster-admin/tools/cluster-monitoring/custom-metrics/_index.md",
+    "score": 14,
+    "claim_types": [
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/installation/resources/advanced/helm2/helm-init/_index.md",
+    "score": 14,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:rolebinding",
+      "content:serviceaccount"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/security/cve/_index.md",
+    "score": 14,
+    "claim_types": [
+      "cluster_agent",
+      "reverse_tunnel",
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "api_token",
+      "cloud_credential"
+    ],
+    "matched_keywords": [
+      "content:token",
+      "content:websocket",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/security/cve/_index.md",
+    "score": 14,
+    "claim_types": [
+      "cluster_agent",
+      "reverse_tunnel",
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "api_token",
+      "cloud_credential"
+    ],
+    "matched_keywords": [
+      "content:token",
+      "content:websocket",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+    "score": 12,
+    "claim_types": [
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "cloud_credential"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount",
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/admin-settings/authentication/ad/_index.md",
+    "score": 11,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount",
+      "path:authentication"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/admin-settings/authentication/microsoft-adfs/microsoft-adfs-setup/_index.md",
+    "score": 11,
+    "claim_types": [
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token",
+      "path:authentication"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/admin-settings/authentication/ad/_index.md",
+    "score": 11,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount",
+      "path:authentication"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/admin-settings/authentication/microsoft-adfs/microsoft-adfs-setup/_index.md",
+    "score": 11,
+    "claim_types": [
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token",
+      "path:authentication"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/admin-settings/authentication/ad/_index.md",
+    "score": 11,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount",
+      "path:authentication"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/admin-settings/authentication/microsoft-adfs/microsoft-adfs-setup/_index.md",
+    "score": 11,
+    "claim_types": [
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token",
+      "path:authentication"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/os/v1.x/en/about/running-rancher-on-rancherOS/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/api/api-tokens/_index.md",
+    "score": 10,
+    "claim_types": [
+      "serviceaccount_token",
+      "api_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/cli/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "api_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/cluster-admin/cluster-access/ace/_index.md",
+    "score": 10,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "api_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/cluster-admin/tools/cluster-logging/splunk/_index.md",
+    "score": 10,
+    "claim_types": [
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/cluster-admin/tools/istio/setup/deploy-workloads/_index.md",
+    "score": 10,
+    "claim_types": [
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+    "score": 10,
+    "claim_types": [
+      "serviceaccount_token",
+      "cloud_credential"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/rancher-agents/_index.md",
+    "score": 10,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication"
+    ],
+    "matched_keywords": [
+      "content:cattle-cluster-agent"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/helm-charts/catalog-config/_index.md",
+    "score": 10,
+    "claim_types": [
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/installation/other-installation-methods/air-gap/launch-kubernetes/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/quick-start-guide/cli/_index.md",
+    "score": 10,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "api_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/security/cve/_index.md",
+    "score": 10,
+    "claim_types": [
+      "reverse_tunnel",
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "cloud_credential"
+    ],
+    "matched_keywords": [
+      "content:websocket",
+      "path:security"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/troubleshooting/imported-clusters/_index.md",
+    "score": 10,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication"
+    ],
+    "matched_keywords": [
+      "content:cattle-cluster-agent"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/troubleshooting/kubernetes-resources/_index.md",
+    "score": 10,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication"
+    ],
+    "matched_keywords": [
+      "content:cattle-cluster-agent"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/user-settings/api-keys/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "api_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/api/api-tokens/_index.md",
+    "score": 10,
+    "claim_types": [
+      "serviceaccount_token",
+      "api_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/cli/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "api_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/cluster-admin/cluster-access/ace/_index.md",
+    "score": 10,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "api_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/cluster-provisioning/rke-clusters/rancher-agents/_index.md",
+    "score": 10,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication"
+    ],
+    "matched_keywords": [
+      "content:cattle-cluster-agent"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/air-gap/launch-kubernetes/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+    "score": 10,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "api_token"
+    ],
+    "matched_keywords": [
+      "content:cattle-cluster-agent",
+      "content:cluster agent",
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/istio/setup/deploy-workloads/_index.md",
+    "score": 10,
+    "claim_types": [
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/monitoring-alerting/rbac/_index.md",
+    "score": 10,
+    "claim_types": [
+      "kubernetes_rbac"
+    ],
+    "matched_keywords": [
+      "content:rolebinding"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/troubleshooting/imported-clusters/_index.md",
+    "score": 10,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication"
+    ],
+    "matched_keywords": [
+      "content:cattle-cluster-agent"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/troubleshooting/kubernetes-resources/_index.md",
+    "score": 10,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication"
+    ],
+    "matched_keywords": [
+      "content:cattle-cluster-agent"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/user-settings/api-keys/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "api_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/api/api-tokens/_index.md",
+    "score": 10,
+    "claim_types": [
+      "serviceaccount_token",
+      "api_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/cli/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "api_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/cluster-admin/cluster-access/ace/_index.md",
+    "score": 10,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "api_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/cluster-provisioning/rke-clusters/rancher-agents/_index.md",
+    "score": 10,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication"
+    ],
+    "matched_keywords": [
+      "content:cattle-cluster-agent"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/installation/cloud-marketplace/aws/adapter-install/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/installation/other-installation-methods/air-gap/launch-kubernetes/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/installation/resources/feature-flags/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+    "score": 10,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "api_token"
+    ],
+    "matched_keywords": [
+      "content:cattle-cluster-agent",
+      "content:cluster agent",
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/istio/setup/deploy-workloads/_index.md",
+    "score": 10,
+    "claim_types": [
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/monitoring-alerting/prometheus-federator/rbac/_index.md",
+    "score": 10,
+    "claim_types": [
+      "kubernetes_rbac"
+    ],
+    "matched_keywords": [
+      "content:rolebinding"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/monitoring-alerting/rbac/_index.md",
+    "score": 10,
+    "claim_types": [
+      "kubernetes_rbac"
+    ],
+    "matched_keywords": [
+      "content:rolebinding"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/troubleshooting/imported-clusters/_index.md",
+    "score": 10,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication"
+    ],
+    "matched_keywords": [
+      "content:cattle-cluster-agent"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/troubleshooting/kubernetes-resources/_index.md",
+    "score": 10,
+    "claim_types": [
+      "cluster_agent",
+      "rancher_server_communication"
+    ],
+    "matched_keywords": [
+      "content:cattle-cluster-agent"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/user-settings/api-keys/_index.md",
+    "score": 10,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "api_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rke/latest/en/installation/certs/_index.md",
+    "score": 10,
+    "claim_types": [
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/admin-settings/authentication/google/_index.md",
+    "score": 9,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount",
+      "path:authentication"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.5/en/admin-settings/authentication/google/_index.md",
+    "score": 9,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount",
+      "path:authentication"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.6/en/admin-settings/authentication/google/_index.md",
+    "score": 9,
+    "claim_types": [
+      "rancher_server_communication",
+      "kubernetes_rbac",
+      "serviceaccount_token"
+    ],
+    "matched_keywords": [
+      "content:serviceaccount",
+      "path:authentication"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rke/latest/en/config-options/authentication/_index.md",
+    "score": 9,
+    "claim_types": [
+      "rancher_server_communication",
+      "serviceaccount_token",
+      "webhook"
+    ],
+    "matched_keywords": [
+      "content:token",
+      "path:authentication"
+    ],
+    "priority": "P0"
+  },
+  {
+    "document_path": "content/rancher/v2.0-v2.4/en/api/_index.md",
+    "score": 8,
+    "claim_types": [
+      "kubernetes_rbac",
+      "serviceaccount_token",
+      "api_token"
+    ],
+    "matched_keywords": [
+      "content:token"
+    ],
+    "priority": "P0"
+  }
+]

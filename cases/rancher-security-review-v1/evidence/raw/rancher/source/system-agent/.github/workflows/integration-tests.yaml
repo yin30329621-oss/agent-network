@@ -1,0 +1,93 @@
+name: Integration Tests
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+jobs:
+  integration:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version-file: 'go.mod'
+          check-latest: true
+          cache: true
+      - name: Configure Docker for cgroupfs/insecure-registry
+        run: |
+          echo '{"exec-opts": ["native.cgroupdriver=cgroupfs"], "insecure-registries": ["172.17.0.2:5000"]}' | sudo tee /etc/docker/daemon.json
+          if [ -d /run/systemd/system ]; then
+            sudo systemctl restart docker
+          fi
+          sudo docker info
+          # Alias 172.17.0.2 onto docker0 so the registry-cache is reachable.
+          sudo ip addr add 172.17.0.2/32 dev docker0
+      - name: Set up k3s binaries and CNI plugins
+        env:
+          CATTLE_K3S_VERSION: v1.35.3-k3s1
+        run: |
+          container_id=$(sudo docker create rancher/k3s:${CATTLE_K3S_VERSION})
+          for bin in blkid bandwidth cni conntrack containerd containerd-shim-runc-v2 ethtool firewall ip ipset k3s losetup pigz runc; do
+            sudo docker cp "${container_id}:/bin/${bin}" /usr/bin/ || true
+          done
+          sudo docker cp "${container_id}:/bin/aux/xtables-legacy-multi" /usr/bin/ || true
+          sudo docker rm "${container_id}"
+          sudo ln -sf /usr/bin/cni /usr/bin/bridge
+          sudo ln -sf /usr/bin/cni /usr/bin/flannel
+          sudo ln -sf /usr/bin/cni /usr/bin/host-local
+          sudo ln -sf /usr/bin/cni /usr/bin/loopback
+          sudo ln -sf /usr/bin/cni /usr/bin/portmap
+          sudo ln -sf /usr/bin/k3s /usr/bin/crictl
+          sudo ln -sf /usr/bin/k3s /usr/bin/ctr
+          sudo ln -sf /usr/bin/k3s /usr/bin/k3s-agent
+          sudo ln -sf /usr/bin/k3s /usr/bin/k3s-etcd-snapshot
+          sudo ln -sf /usr/bin/k3s /usr/bin/k3s-server
+          sudo ln -sf /usr/bin/k3s /usr/bin/kubectl
+          sudo ln -sf /usr/bin/pigz /usr/bin/unpigz
+          sudo ln -sf /usr/bin/xtables-legacy-multi /usr/bin/iptables
+          sudo ln -sf /usr/bin/xtables-legacy-multi /usr/bin/iptables-save
+          sudo ln -sf /usr/bin/xtables-legacy-multi /usr/bin/iptables-restore
+          sudo ln -sf /usr/bin/xtables-legacy-multi /usr/bin/ip6tables
+          sudo ln -sf /usr/bin/xtables-legacy-multi /usr/bin/ip6tables-save
+          sudo ln -sf /usr/bin/xtables-legacy-multi /usr/bin/ip6tables-restore
+      - name: Pre-pull container images
+        env:
+          CATTLE_AGENT_IMAGE: rancher/rancher-agent:v2.15-0b6b24d9811ed8dbe02ab315847602f7facf2244-head
+          RANCHER_IMAGE: rancher/rancher:v2.15-0b6b24d9811ed8dbe02ab315847602f7facf2244-head
+        run: |
+          sudo docker pull "$RANCHER_IMAGE" &
+          sudo docker pull "$CATTLE_AGENT_IMAGE" &
+          wait
+      - name: Run integration tests
+        run: sudo -E env PATH="$PATH" make integration-tests
+      - name: Collect run artifacts
+        if: always()
+        run: |
+          mkdir -p _artifacts
+          sudo chown -R "$(id -u):$(id -g)" _artifacts 2>/dev/null || true
+          [ -f /tmp/rancher.log ] && cp /tmp/rancher.log _artifacts/rancher.log || true
+          K3S_LOG=""
+          if [ -n "$RANCHER_DIR" ] && [ -f "$RANCHER_DIR/build/testdata/k3s.log" ]; then
+            K3S_LOG="$RANCHER_DIR/build/testdata/k3s.log"
+          else
+            K3S_LOG=$(find /var/tmp -name k3s.log -path "*/testdata/k3s.log" 2>/dev/null | head -1)
+          fi
+          [ -n "$K3S_LOG" ] && cp "$K3S_LOG" _artifacts/k3s.log || true
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: integration-test-artifacts
+          path: _artifacts
+          if-no-files-found: ignore

@@ -1,0 +1,12 @@
+/.dapper
+/.cache
+/bin
+/build
+/dist
+*.swp
+.idea
+.vscode
+/webhook
+*~
+.opencode
+kubeconfig.yaml

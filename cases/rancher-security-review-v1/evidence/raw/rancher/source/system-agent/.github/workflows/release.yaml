@@ -1,0 +1,277 @@
+name: System Agent Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions: {}
+
+env:
+  TAG: ${{ github.ref_name }}
+
+jobs:
+  create-draft-release:
+    name: Create draft release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # needed for creating the GH release
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - name: Create draft GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "${{ env.TAG }}" --generate-notes --verify-tag --draft --title "${{ env.TAG }}"
+
+  # Build Docker images using multi-stage Dockerfile
+  release:
+    name: Build and push arch-specific images
+    needs:
+      - create-draft-release
+    permissions:
+      contents: read # to clone the repo
+      id-token: write # to read vault secrets
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - arch: amd64
+            tag-suffix: "linux-amd64"
+          - arch: arm64
+            tag-suffix: "linux-arm64"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          fetch-depth: 0
+
+      - name: Read Vault secrets
+        uses: rancher-eio/read-vault-secrets@0da85151ad1f19ed7986c41587e45aac1ace74b6 # main
+        with:
+          secrets: |
+            secret/data/github/repo/${{ github.repository }}/dockerhub/rancher/credentials username | DOCKER_USERNAME ;
+            secret/data/github/repo/${{ github.repository }}/dockerhub/rancher/credentials password | DOCKER_PASSWORD ;
+            secret/data/github/repo/${{ github.repository }}/rancher-prime-registry/credentials registry | PRIME_REGISTRY ;
+            secret/data/github/repo/${{ github.repository }}/rancher-prime-registry/credentials username | PRIME_REGISTRY_USERNAME ;
+            secret/data/github/repo/${{ github.repository }}/rancher-prime-registry/credentials password | PRIME_REGISTRY_PASSWORD ;
+            secret/data/github/repo/${{ github.repository }}/rancher-prime-stg-registry/credentials registry | PRIME_STG_REGISTRY ;
+            secret/data/github/repo/${{ github.repository }}/rancher-prime-stg-registry/credentials username | PRIME_STG_REGISTRY_USERNAME ;
+            secret/data/github/repo/${{ github.repository }}/rancher-prime-stg-registry/credentials password | PRIME_STG_REGISTRY_PASSWORD
+
+      - name: Publish main image to DockerHub and Prime Staging
+        uses: rancher/ecm-distro-tools/actions/publish-image@10ab39987d39be83da6a252c1c3b540e496e0287 # master
+        with:
+          image: "system-agent"
+          tag: ${{ github.ref_name }}-${{ matrix.tag-suffix }}
+          platforms: linux/${{ matrix.arch }}
+          make-target: push-image
+          prime-make-target: push-prime-image
+
+          public-registry: docker.io
+          public-repo: rancher
+          public-username: ${{ env.DOCKER_USERNAME }}
+          public-password: ${{ env.DOCKER_PASSWORD }}
+
+          push-to-prime: true
+          prime-registry: ${{ env.PRIME_STG_REGISTRY }}
+          prime-repo: rancher
+          prime-username: ${{ env.PRIME_STG_REGISTRY_USERNAME }}
+          prime-password: ${{ env.PRIME_STG_REGISTRY_PASSWORD }}
+
+      - name: Publish main image to Prime Prod
+        if: ${{ !contains(github.ref_name, '-rc') }}
+        uses: rancher/ecm-distro-tools/actions/publish-image@10ab39987d39be83da6a252c1c3b540e496e0287 # master
+        with:
+          image: "system-agent"
+          tag: ${{ github.ref_name }}-${{ matrix.tag-suffix }}
+          platforms: linux/${{ matrix.arch }}
+          make-target: push-image
+          prime-make-target: push-prime-image
+
+          push-to-public: false
+
+          push-to-prime: true
+          prime-registry: ${{ env.PRIME_REGISTRY }}
+          prime-repo: rancher
+          prime-username: ${{ env.PRIME_REGISTRY_USERNAME }}
+          prime-password: ${{ env.PRIME_REGISTRY_PASSWORD }}
+
+      - name: Publish SUC image to DockerHub and Prime Staging
+        uses: rancher/ecm-distro-tools/actions/publish-image@10ab39987d39be83da6a252c1c3b540e496e0287 # master
+        with:
+          image: "system-agent"
+          tag: ${{ github.ref_name }}-${{ matrix.tag-suffix }}-suc
+          platforms: linux/${{ matrix.arch }}
+          make-target: push-image-suc
+          prime-make-target: push-prime-image-suc
+
+          public-registry: docker.io
+          public-repo: rancher
+          public-username: ${{ env.DOCKER_USERNAME }}
+          public-password: ${{ env.DOCKER_PASSWORD }}
+
+          push-to-prime: true
+          prime-registry: ${{ env.PRIME_STG_REGISTRY }}
+          prime-repo: rancher
+          prime-username: ${{ env.PRIME_STG_REGISTRY_USERNAME }}
+          prime-password: ${{ env.PRIME_STG_REGISTRY_PASSWORD }}
+
+      - name: Publish SUC image to Prime Prod
+        if: ${{ !contains(github.ref_name, '-rc') }}
+        uses: rancher/ecm-distro-tools/actions/publish-image@10ab39987d39be83da6a252c1c3b540e496e0287 # master
+        with:
+          image: "system-agent"
+          tag: ${{ github.ref_name }}-${{ matrix.tag-suffix }}-suc
+          platforms: linux/${{ matrix.arch }}
+          make-target: push-image-suc
+          prime-make-target: push-prime-image-suc
+
+          push-to-public: false
+
+          push-to-prime: true
+          prime-registry: ${{ env.PRIME_REGISTRY }}
+          prime-repo: rancher
+          prime-username: ${{ env.PRIME_REGISTRY_USERNAME }}
+          prime-password: ${{ env.PRIME_REGISTRY_PASSWORD }}
+
+  merge:
+    permissions:
+      id-token: write # to read vault secrets
+      contents: read # to clone the repo
+    runs-on: ubuntu-latest
+    needs:
+      - create-draft-release
+      - release
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - name: Read Vault secrets
+        uses: rancher-eio/read-vault-secrets@0da85151ad1f19ed7986c41587e45aac1ace74b6 # main
+        with:
+          secrets: |
+            secret/data/github/repo/${{ github.repository }}/dockerhub/rancher/credentials username | DOCKER_USERNAME ;
+            secret/data/github/repo/${{ github.repository }}/dockerhub/rancher/credentials password | DOCKER_PASSWORD ;
+            secret/data/github/repo/${{ github.repository }}/rancher-prime-registry/credentials registry | PRIME_REGISTRY ;
+            secret/data/github/repo/${{ github.repository }}/rancher-prime-registry/credentials username | PRIME_REGISTRY_USERNAME ;
+            secret/data/github/repo/${{ github.repository }}/rancher-prime-registry/credentials password | PRIME_REGISTRY_PASSWORD ;
+            secret/data/github/repo/${{ github.repository }}/rancher-prime-stg-registry/credentials registry | PRIME_STG_REGISTRY ;
+            secret/data/github/repo/${{ github.repository }}/rancher-prime-stg-registry/credentials username | PRIME_STG_REGISTRY_USERNAME ;
+            secret/data/github/repo/${{ github.repository }}/rancher-prime-stg-registry/credentials password | PRIME_STG_REGISTRY_PASSWORD
+
+      - name: Publish main manifest to DockerHub and Prime Staging
+        uses: rancher/ecm-distro-tools/actions/publish-image@10ab39987d39be83da6a252c1c3b540e496e0287 # master
+        with:
+          image: "system-agent"
+          tag: ${{ github.ref_name }}
+          make-target: push-manifest
+          prime-make-target: push-prime-manifest
+
+          public-registry: docker.io
+          public-repo: rancher
+          public-username: ${{ env.DOCKER_USERNAME }}
+          public-password: ${{ env.DOCKER_PASSWORD }}
+
+          push-to-prime: true
+          prime-registry: ${{ env.PRIME_STG_REGISTRY }}
+          prime-repo: rancher
+          prime-username: ${{ env.PRIME_STG_REGISTRY_USERNAME }}
+          prime-password: ${{ env.PRIME_STG_REGISTRY_PASSWORD }}
+
+      - name: Publish main manifest to Prime Prod
+        if: ${{ !contains(github.ref_name, '-rc') }}
+        uses: rancher/ecm-distro-tools/actions/publish-image@10ab39987d39be83da6a252c1c3b540e496e0287 # master
+        with:
+          image: "system-agent"
+          tag: ${{ github.ref_name }}
+          make-target: push-manifest
+          prime-make-target: push-prime-manifest
+
+          push-to-public: false
+
+          push-to-prime: true
+          prime-registry: ${{ env.PRIME_REGISTRY }}
+          prime-repo: rancher
+          prime-username: ${{ env.PRIME_REGISTRY_USERNAME }}
+          prime-password: ${{ env.PRIME_REGISTRY_PASSWORD }}
+
+      - name: Publish SUC manifest to DockerHub and Prime Staging
+        uses: rancher/ecm-distro-tools/actions/publish-image@10ab39987d39be83da6a252c1c3b540e496e0287 # master
+        with:
+          image: "system-agent"
+          tag: ${{ github.ref_name }}-suc
+          make-target: push-manifest-suc
+          prime-make-target: push-prime-manifest-suc
+
+          public-registry: docker.io
+          public-repo: rancher
+          public-username: ${{ env.DOCKER_USERNAME }}
+          public-password: ${{ env.DOCKER_PASSWORD }}
+
+          push-to-prime: true
+          prime-registry: ${{ env.PRIME_STG_REGISTRY }}
+          prime-repo: rancher
+          prime-username: ${{ env.PRIME_STG_REGISTRY_USERNAME }}
+          prime-password: ${{ env.PRIME_STG_REGISTRY_PASSWORD }}
+
+      - name: Publish SUC manifest to Prime Prod
+        if: ${{ !contains(github.ref_name, '-rc') }}
+        uses: rancher/ecm-distro-tools/actions/publish-image@10ab39987d39be83da6a252c1c3b540e496e0287 # master
+        with:
+          image: "system-agent"
+          tag: ${{ github.ref_name }}-suc
+          make-target: push-manifest-suc
+          prime-make-target: push-prime-manifest-suc
+
+          push-to-public: false
+
+          push-to-prime: true
+          prime-registry: ${{ env.PRIME_REGISTRY }}
+          prime-repo: rancher
+          prime-username: ${{ env.PRIME_REGISTRY_USERNAME }}
+          prime-password: ${{ env.PRIME_REGISTRY_PASSWORD }}
+
+  github_release:
+    name: Finalize GitHub release
+    runs-on: ubuntu-latest
+    needs:
+      - create-draft-release
+      - merge
+      - release
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Build release binaries
+        run: make release-binaries
+        env:
+          VERSION: ${{ github.ref_name }}
+          COMMIT: ${{ github.sha }}
+
+      - name: Add artfiacts to the GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ env.TAG }} --clobber dist/*
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          flags="--draft=false"
+          # matching anything that contains a dash as a pre-release, e.g. `v1.2.3-rc1` or `v1.2.3-build1`
+          if [[ "${{ env.TAG }}" == *"-"* ]]; then
+            flags="${flags} --prerelease"
+          fi
+          gh release edit "${{ env.TAG }}" ${flags}

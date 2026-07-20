@@ -1,0 +1,143 @@
+name: On release
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+env:
+  REGISTRY: docker.io
+  REPO: rancher
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure ref is a tag
+        run: |
+          if [ "$GITHUB_REF_TYPE" != "tag" ]; then
+            echo "::error::This workflow must be dispatched on a tag ref (got ${GITHUB_REF_TYPE} '${GITHUB_REF}')"
+            exit 1
+          fi
+
+  build:
+    needs: guard
+    name: build and package
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch:
+        - amd64
+        - arm64
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+    - name: Build Binary
+      env:
+        GIT_TAG: ${{ github.ref_name }}
+      run: make build ARCH=${{ matrix.arch }}
+
+    - name: Package Helm Chart
+      env:
+        GIT_TAG: ${{ github.ref_name }}
+      run: make package-helm
+
+    - name: Prepare Artifacts
+      run: |
+        mkdir -p dist/artifacts
+        cp bin/webhook dist/artifacts/webhook-linux-${{ matrix.arch }}
+        cd dist/artifacts
+        sha256sum webhook-linux-${{ matrix.arch }} > sha256sum-${{ matrix.arch }}.txt
+
+    - name: Upload artifacts
+      # https://github.com/actions/upload-artifact/commit/65462800fd760344b1a7b4382951275a0abb4808
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      with:
+        name: webhook-artifacts-${{ matrix.arch }}
+        path: |
+          dist/artifacts/webhook-linux-${{ matrix.arch }}
+          dist/artifacts/sha256sum-${{ matrix.arch }}.txt
+          dist/artifacts/rancher-webhook-*.tgz
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+
+    - name: Checkout repository
+       # https://github.com/actions/checkout/releases/tag/v4.1.1
+      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+    - name: Package Helm Chart
+      env:
+        GIT_TAG: ${{ github.ref_name }}
+      run: make package-helm
+
+    - name: Download the amd64 artifacts
+      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+      # https://github.com/actions/download-artifact/releases/tag/v4.1.7
+      with:
+        name: webhook-artifacts-amd64
+        path: dist/artifacts
+
+    - name: Download the arm64 artifacts
+      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+      # https://github.com/actions/download-artifact/releases/tag/v4.1.7
+      with:
+        name: webhook-artifacts-arm64
+        path: dist/artifacts
+
+    - name: Upload the files
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VERSION: ${{ github.ref_name }}
+      run: |
+        ls -lR dist
+        cd dist/artifacts
+        flags="--verify-tag --generate-notes"
+        [[ "$VERSION" == *-rc* ]] && flags="$flags --prerelease"
+        gh --repo "$GITHUB_REPOSITORY" release create "$VERSION" $flags webhook-linux-* sha256sum-*.txt rancher-webhook*.tgz
+
+  publish:
+    needs: guard
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # Required for cosign signing
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: "Read vault secrets"
+        uses: rancher-eio/read-vault-secrets@0da85151ad1f19ed7986c41587e45aac1ace74b6 # v3
+        with:
+          secrets: |
+            secret/data/github/repo/${{ github.repository }}/dockerhub/rancher/credentials username | DOCKER_USERNAME ;
+            secret/data/github/repo/${{ github.repository }}/dockerhub/rancher/credentials password | DOCKER_PASSWORD ;
+            secret/data/github/repo/${{ github.repository }}/rancher-prime-stg-registry/credentials registry | PRIME_STG_REGISTRY ;
+            secret/data/github/repo/${{ github.repository }}/rancher-prime-stg-registry/credentials username | PRIME_STG_REGISTRY_USERNAME ;
+            secret/data/github/repo/${{ github.repository }}/rancher-prime-stg-registry/credentials password | PRIME_STG_REGISTRY_PASSWORD
+
+      - name: Publish image
+        uses: rancher/ecm-distro-tools/actions/publish-image@49656efa72e90062a70fac1a85ad121f4873a6a0 # v0.74.4
+        with:
+          image: rancher-webhook
+          tag: ${{ github.ref_name }}
+          platforms: linux/amd64,linux/arm64
+
+          public-registry: docker.io
+          public-repo: rancher
+          public-username: ${{ env.DOCKER_USERNAME }}
+          public-password: ${{ env.DOCKER_PASSWORD }}
+
+          push-to-prime: true
+          prime-repo: rancher
+          prime-make-target: push-prime-image
+          identity-registry: ${{ vars.PRIME_REGISTRY_HOSTNAME }}
+          prime-registry: ${{ env.PRIME_STG_REGISTRY }}
+          prime-username: ${{ env.PRIME_STG_REGISTRY_USERNAME }}
+          prime-password: ${{ env.PRIME_STG_REGISTRY_PASSWORD }}
