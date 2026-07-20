@@ -1,0 +1,484 @@
+{
+  "schema_version": "rancher-security-review-v1-gold-evaluation-sample-v1",
+  "sampling_basis": {
+    "refined": {
+      "reverse_tunnel": 10,
+      "serviceaccount_token": 8,
+      "kubernetes_rbac": 4
+    },
+    "canonical": {
+      "cluster_agent": 3,
+      "cloud_credential": 2,
+      "cve_security": 2,
+      "rke2_security": 1
+    }
+  },
+  "statistics": {
+    "sample_count": 30,
+    "source_level_distribution": {
+      "refined": 22,
+      "canonical": 8
+    },
+    "claim_type_distribution": {
+      "reverse_tunnel": 10,
+      "serviceaccount_token": 8,
+      "kubernetes_rbac": 4,
+      "cluster_agent": 3,
+      "cloud_credential": 2,
+      "cve_security": 2,
+      "rke2_security": 1
+    }
+  },
+  "claims": [
+    {
+      "claim_id": "refined-fb4a23d9950ccd9c0972",
+      "source_level": "refined",
+      "parent_claim_id": "claim-9cf7649cc430f62d",
+      "claim_type": "reverse_tunnel",
+      "statement": "集群通信平面以 Cluster Agent 为核心,通过 Token、Credential 和 Reverse Tunnel 等机制,实现 Rancher Server 与下游 Kubernetes 集群之间的安全通信。",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "kubernetes-docs-d2b2b8f5bcfc2fbd5c9f",
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5",
+        "rancher-docs-70c6280281b849819064",
+        "rancher-docs-202334565636f4f550b2"
+      ]
+    },
+    {
+      "claim_id": "refined-d6dda856728acb86626c",
+      "source_level": "refined",
+      "parent_claim_id": "claim-d6df35ef0981ec11",
+      "claim_type": "reverse_tunnel",
+      "statement": "针对上述问题,Rancher 采用 Cluster Agent 主动建立 Reverse Tunnel 的通信机制,以避免 Rancher Server 直接访问下游 Kubernetes API Server。",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255",
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5"
+      ]
+    },
+    {
+      "claim_id": "refined-72965245791ecc137ff6",
+      "source_level": "refined",
+      "parent_claim_id": "claim-c9a8812a026bd7a4",
+      "claim_type": "reverse_tunnel",
+      "statement": "图 3-6 Cluster Agent 主动建立 Reverse Tunnel,Rancher Server 通过 Tunnel 间接访问下游 Kubernetes API Server",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-85077908719b17c3d54b",
+        "rancher-docs-fed93cd44081c9fbecf4",
+        "rancher-docs-0a79344bb41ac2d513bf",
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5"
+      ]
+    },
+    {
+      "claim_id": "refined-da4fd1b74f842daea9e3",
+      "source_level": "refined",
+      "parent_claim_id": "claim-3d70fb8d8bb5f3a5",
+      "claim_type": "reverse_tunnel",
+      "statement": "Reverse Tunnel(反向隧道)是 Rancher Server 与下游 Kubernetes 集群之间的重要通信机制,主要用于解决 Rancher Server 难以直接访问下游 Kubernetes API Server 的场景",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "kubernetes-docs-d2b2b8f5bcfc2fbd5c9f",
+        "kubernetes-docs-f925774f89e73e46f64f",
+        "kubernetes-docs-57ebd78828db91f0178a",
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557"
+      ]
+    },
+    {
+      "claim_id": "refined-c42c2d83df8bd86b0526",
+      "source_level": "refined",
+      "parent_claim_id": "claim-3d70fb8d8bb5f3a5",
+      "claim_type": "reverse_tunnel",
+      "statement": "在直接访问模式下,管理平台需要能够连通各下游集群的 API Server,这往往要求下游集群开放管理入口,增加网络暴露面和运维复杂度",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-8559d3046af2b373306c",
+        "kubernetes-docs-a528d6d8a0493706a23a",
+        "rancher-docs-c39204680cf6a68dc398",
+        "kubernetes-docs-d4a55d60ced671d06c55",
+        "kubernetes-docs-bc8021011c712cd83255"
+      ]
+    },
+    {
+      "claim_id": "refined-831e32b7ab1c39631a3c",
+      "source_level": "refined",
+      "parent_claim_id": "claim-3d70fb8d8bb5f3a5",
+      "claim_type": "reverse_tunnel",
+      "statement": "Rancher 通过部署在下游集群中的 Cluster Agent 主动向 Rancher Server 建立并维持通信连接,使管理请求可以通过该连接转发至下游集群",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5",
+        "rancher-docs-70c6280281b849819064",
+        "rancher-docs-1c926db20b8dfa506577",
+        "rancher-docs-571450b4333f4e9d4f6c"
+      ]
+    },
+    {
+      "claim_id": "refined-e6482111565ae2ebeaaf",
+      "source_level": "refined",
+      "parent_claim_id": "claim-b236df80530b6330",
+      "claim_type": "reverse_tunnel",
+      "statement": "Reverse Tunnel 建立后,Rancher Server 不需要直接暴露或访问下游 Kubernetes API Server,而是通过已建立的 Agent 通信通道下发管理请求",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255",
+        "kubernetes-docs-d2b2b8f5bcfc2fbd5c9f",
+        "kubernetes-docs-f925774f89e73e46f64f"
+      ]
+    },
+    {
+      "claim_id": "refined-b770700ea44ca0439eee",
+      "source_level": "refined",
+      "parent_claim_id": "claim-b236df80530b6330",
+      "claim_type": "reverse_tunnel",
+      "statement": "Cluster Agent 接收到请求后,再调用本地 Kubernetes API Server,完成资源查询、工作负载管理、配置更新和状态同步等操作,并将执行结果返回 Rancher Server",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-1c926db20b8dfa506577",
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255",
+        "rancher-docs-8bd627c7ae0c6ec16043"
+      ]
+    },
+    {
+      "claim_id": "refined-7016c74eb8a255319dca",
+      "source_level": "refined",
+      "parent_claim_id": "claim-b236df80530b6330",
+      "claim_type": "reverse_tunnel",
+      "statement": "该机制能够适应 NAT、防火墙、私有网络和边缘环境等网络条件,提高 Rancher 在多云、混合云和受限网络场景下的部署灵活性",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-5c36e3d2c175f7385cd4",
+        "rancher-docs-6fafff36b64c25dbbeda",
+        "rancher-docs-8592243cd8d958b9611c",
+        "rancher-source-b06983888a5967417bf8",
+        "rancher-docs-d8c87ce77632e8c0fa77"
+      ]
+    },
+    {
+      "claim_id": "refined-953fcb5130a3737cd0f9",
+      "source_level": "refined",
+      "parent_claim_id": "claim-004fad4318dfe14d",
+      "claim_type": "reverse_tunnel",
+      "statement": "从软件架构角度看,Reverse Tunnel 并不是独立运行的组件,而是 Rancher Server 与 Cluster Agent 之间的一种通信机制",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5",
+        "rancher-docs-70c6280281b849819064",
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557"
+      ]
+    },
+    {
+      "claim_id": "refined-0ef4822e39a69497000d",
+      "source_level": "refined",
+      "parent_claim_id": "claim-fdb6477afdb5dc04",
+      "claim_type": "serviceaccount_token",
+      "statement": "从软件架构来看,Cluster Agent 部署于下游 Kubernetes 集群中,负责连接 Rancher Server 与 Kubernetes API Server,是两者之间的通信桥梁",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-1c926db20b8dfa506577",
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255",
+        "rancher-docs-8bd627c7ae0c6ec16043"
+      ]
+    },
+    {
+      "claim_id": "refined-a56e8cfae6c5e2de261f",
+      "source_level": "refined",
+      "parent_claim_id": "claim-fdb6477afdb5dc04",
+      "claim_type": "serviceaccount_token",
+      "statement": "一方面,它通过安全通信链路与 Rancher Server 保持连接",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-cfc4b23e4fa57c8bc37f",
+        "rancher-source-5132129b5cd22c580284",
+        "rancher-source-b087fdecdf29cd98f64a",
+        "rancher-docs-9e490e2a50eca8093666",
+        "rancher-docs-daacc5675a7061143bb0"
+      ]
+    },
+    {
+      "claim_id": "refined-0f435fa3b61ff0484610",
+      "source_level": "refined",
+      "parent_claim_id": "claim-fdb6477afdb5dc04",
+      "claim_type": "serviceaccount_token",
+      "statement": "另一方面,它依托下游集群中的 ServiceAccount 与 RBAC 权限访问 Kubernetes API,从而避免 Rancher Server 必须直接暴露或访问每个下游集群的 API Server,提升了多云、混合云和受限网络环境下的集群接入能力",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "kubernetes-docs-5a08413e6ac2ea4963fe",
+        "kubernetes-docs-395b066cbafbdd8a8a14",
+        "kubernetes-docs-3f643563abde83254905",
+        "kubernetes-docs-229aa04d261fc6c6653e",
+        "kubernetes-docs-4ba75f9ac7f1e5ad28c4"
+      ]
+    },
+    {
+      "claim_id": "refined-3d19d3cb10ddadc79d1d",
+      "source_level": "refined",
+      "parent_claim_id": "claim-4e5a6e18fd06091d",
+      "claim_type": "serviceaccount_token",
+      "statement": "在导入已有 Kubernetes 集群时,Rancher Server 会生成包含 Cluster Registration Token 的导入清单",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-ffe3871dcb5b13fca601",
+        "rancher-docs-3345eae99aff6b0c5f50",
+        "rancher-docs-8f4faeff0c598c4e6735",
+        "rancher-docs-9a37bbbce5e5505f6799",
+        "rancher-docs-49b15c5c09998de89164"
+      ]
+    },
+    {
+      "claim_id": "refined-efeea21c51d4ac61f9ee",
+      "source_level": "refined",
+      "parent_claim_id": "claim-4e5a6e18fd06091d",
+      "claim_type": "serviceaccount_token",
+      "statement": "目标集群执行该清单后,Cluster Agent 根据其中的 Rancher Server 地址、Registration Token 及 CA 校验信息向 Rancher Server 发起注册请求",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-source-09c148080cca6ad2476d",
+        "rancher-docs-ffe3871dcb5b13fca601",
+        "rancher-docs-571450b4333f4e9d4f6c",
+        "rancher-docs-3345eae99aff6b0c5f50",
+        "kubernetes-docs-63d7abd442a980c9f12d"
+      ]
+    },
+    {
+      "claim_id": "refined-370f154b21d3921d262c",
+      "source_level": "refined",
+      "parent_claim_id": "claim-4e5a6e18fd06091d",
+      "claim_type": "serviceaccount_token",
+      "statement": "Registration Token 主要用于集群接入阶段,用于将下游集群与 Rancher 平台中的集群对象建立关联",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-3345eae99aff6b0c5f50",
+        "rancher-docs-ffe3871dcb5b13fca601",
+        "kubernetes-docs-660ea9b76448b7d414d5",
+        "rancher-docs-9a37bbbce5e5505f6799",
+        "rancher-docs-8f4faeff0c598c4e6735"
+      ]
+    },
+    {
+      "claim_id": "refined-5d0dc640986e4d7550bb",
+      "source_level": "refined",
+      "parent_claim_id": "claim-46ea46c2eab1762a",
+      "claim_type": "serviceaccount_token",
+      "statement": "Cluster Agent 完成注册并进入运行阶段后,不再依赖 Registration Token,而是使用 Kubernetes 原生 ServiceAccount 及其对应的 ServiceAccount Token 作为集群内身份访问 Kubernetes API Server",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "kubernetes-docs-4ba75f9ac7f1e5ad28c4",
+        "kubernetes-docs-aa69dede8781d3923b41",
+        "kubernetes-docs-229aa04d261fc6c6653e",
+        "rancher-docs-ffe3871dcb5b13fca601",
+        "kubernetes-docs-3241dfc63af524639258"
+      ]
+    },
+    {
+      "claim_id": "refined-0747f76a69bbcc6313fa",
+      "source_level": "refined",
+      "parent_claim_id": "claim-46ea46c2eab1762a",
+      "claim_type": "serviceaccount_token",
+      "statement": "Agent 能够访问哪些 Kubernetes 资源,则由对应的 RBAC 权限配置决定",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-7fcdf6918d828879bace",
+        "rancher-docs-ad3b8b5fdbe80668bf55",
+        "rancher-docs-fb5bf546d028d40e39c1",
+        "rancher-source-e604de95e77a929daafd",
+        "rancher-docs-f142e723d9eb5e0fcd96"
+      ]
+    },
+    {
+      "claim_id": "refined-485c217a3029fb689da7",
+      "source_level": "refined",
+      "parent_claim_id": "claim-3a5bd3fd2b1fd13a",
+      "claim_type": "kubernetes_rbac",
+      "statement": "1.2. 身份认证与权限管理:Rancher 提供完善的身份认证(Authentication)和基于角色的访问控制(Role-Based Access Control,RBAC)机制,支持本地用户、LDAP、Active Directory、GitHub、SAML、OIDC 等多种认证方式,并通过 Global Role、Cluster Role、Project Role 等权限模型,实现不同用户和团队的细粒度权限控制,提高平台安全性。",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-1ce36711c8cd78e419dc",
+        "rancher-docs-5f432a509d5f11c47ed1",
+        "rancher-docs-081c9b9867c9b7ed6c84",
+        "rancher-docs-f5a134b077b11c91ae95",
+        "rancher-docs-79f4a925eb6849ab81d7"
+      ]
+    },
+    {
+      "claim_id": "refined-88363e3fced1edd43948",
+      "source_level": "refined",
+      "parent_claim_id": "claim-efa7ecd3f540c26a",
+      "claim_type": "kubernetes_rbac",
+      "statement": "将认证后的请求交由 Rancher API Server 处理,并在访问下游集群时配合 Rancher RBAC和 Kubernetes RBAC 完成后续授权控制。",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "kubernetes-docs-395b066cbafbdd8a8a14",
+        "kubernetes-docs-7f82eafac2379bbcf252",
+        "kubernetes-docs-5a08413e6ac2ea4963fe",
+        "rancher-docs-110a56a378b2eff9d58b",
+        "rancher-docs-8098baa1a6b4a247ce72"
+      ]
+    },
+    {
+      "claim_id": "refined-3e27f3097952c294550e",
+      "source_level": "refined",
+      "parent_claim_id": "claim-602a5e745b9c8d0a",
+      "claim_type": "kubernetes_rbac",
+      "statement": "从安全角度来看,该机制将平台级授权与 Kubernetes 原生 RBAC 相结合,实现了统一授权与细粒度访问控制",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-110a56a378b2eff9d58b",
+        "rancher-docs-8098baa1a6b4a247ce72",
+        "rancher-docs-993b87423ca3a5a0fa50",
+        "rancher-docs-58cb94c3adc3cee13c52",
+        "kubernetes-docs-395b066cbafbdd8a8a14"
+      ]
+    },
+    {
+      "claim_id": "refined-d6bffdae2a8006c51b02",
+      "source_level": "refined",
+      "parent_claim_id": "claim-602a5e745b9c8d0a",
+      "claim_type": "kubernetes_rbac",
+      "statement": "一方面,管理员可以在 Rancher 中集中管理多集群用户权限,减少分别维护各 Kubernetes 集群 RBAC 配置的复杂度",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-110a56a378b2eff9d58b",
+        "rancher-docs-8098baa1a6b4a247ce72",
+        "rancher-docs-993b87423ca3a5a0fa50",
+        "rancher-docs-58cb94c3adc3cee13c52",
+        "kubernetes-docs-395b066cbafbdd8a8a14"
+      ]
+    },
+    {
+      "claim_id": "claim-a430ef3fb491d40b",
+      "source_level": "canonical",
+      "parent_claim_id": "",
+      "claim_type": "cluster_agent",
+      "statement": "Rancher 采用集中式多集群管理架构,以 Rancher Server 为管理中心,对多个 Kubernetes 集群进行统一管理。整个系统主要由 Authentication Proxy、Rancher API Server、Cluster Controller、Cluster Agent、Kubernetes API Server 以及 etcd 等组件组成。 用户通过 Rancher UI、CLI 或 API 访问 Rancher Server,管理请求经过身份认证和权限校验后,通过安全隧道分发至目标集群的 Cluster Agent,并由其与本地 Kubernetes API Server 交互以实现集群资源管理。",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-ca8b7fc6e8feda6e4d5c",
+        "rancher-docs-ed3f59e2c13a4396a77c",
+        "rancher-docs-2a876af410dc4a80b9e6",
+        "rancher-docs-6cd6e17c8ca59dfc16ca",
+        "rancher-docs-ee81309bdec13bae2077"
+      ]
+    },
+    {
+      "claim_id": "claim-e10bf8632ed8b152",
+      "source_level": "canonical",
+      "parent_claim_id": "",
+      "claim_type": "cluster_agent",
+      "statement": "当用户访问 Rancher Server 时,无论请求来自 Web UI、CLI、API,还是通过 Rancher 代理的 Kubernetes API,都会首先经过 Authentication Proxy 完成身份认证。认证成功后,请求交由 Rancher API Server 处理;对于涉及下游集群资源访问的请求,再由 Cluster Controller、Cluster Agent 等组件协同完成后续处理。",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-ca8b7fc6e8feda6e4d5c",
+        "rancher-docs-ed3f59e2c13a4396a77c",
+        "rancher-docs-2a876af410dc4a80b9e6",
+        "rancher-docs-6cd6e17c8ca59dfc16ca",
+        "rancher-docs-ee81309bdec13bae2077"
+      ]
+    },
+    {
+      "claim_id": "claim-5dd455aa1d3e5489",
+      "source_level": "canonical",
+      "parent_claim_id": "",
+      "claim_type": "cluster_agent",
+      "statement": "Rancher API Server 是 Rancher Server 管理平面的核心业务组件,负责接收 Authentication Proxy 完成身份认证后的请求,并对 Rancher 平台对象进行统一管理。它作为 Rancher 对外提供管理能力的统一 API 入口,负责解析用户请求、执行业务逻辑、访问数据存储,并协调 Cluster Controller、Cluster Agent 等组件完成下游 Kubernetes 集群的管理任务。",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-6cd6e17c8ca59dfc16ca",
+        "rancher-docs-ee81309bdec13bae2077",
+        "rancher-docs-b42f8947a6842bf7c18d",
+        "rancher-docs-793e9c615b13161dc8a8",
+        "rancher-docs-0dc2c453b89ba08ffd15"
+      ]
+    },
+    {
+      "claim_id": "claim-dfe9bd4c30fe9871",
+      "source_level": "canonical",
+      "parent_claim_id": "",
+      "claim_type": "cloud_credential",
+      "statement": "凭证管理信息 | Registration Token、API Token、Cloud Credential、TLS 证书配置、Secret 引用及相关管理信息。",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-ffe3871dcb5b13fca601",
+        "rancher-docs-7eef6d179eec8900c90a",
+        "kubernetes-docs-8e0c95c0de95d27d328a",
+        "rancher-source-d961bac627a39c4fe4c9",
+        "rancher-source-8d3e24f98bff57ec2073"
+      ]
+    },
+    {
+      "claim_id": "claim-0ffb0dd164f937cd",
+      "source_level": "canonical",
+      "parent_claim_id": "",
+      "claim_type": "cloud_credential",
+      "statement": "除 Cluster Agent 使用的凭证外,Rancher 在平台运行过程中还使用多种 Token 与 Credential 支撑不同功能。例如,用户、CLI 或自动化程序通常使用 API Token 调用 Rancher API;Cloud Credential 用于 Rancher 调用 AWS、Azure、GCP 等云平台接口完成集群创建或资源管理;TLS Certificate 与 Private Key 用于 Rancher Server 与 Cluster Agent 之间建立 TLS 安全通信;上述敏感配置通常由 Rancher 管理,并可能通过 Kubernetes Secret 保存或引用。",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "kubernetes-docs-d18c14dd306bca98f38f",
+        "rancher-docs-f50266d5a0d0b563fd20",
+        "rancher-docs-a8d45b442aea2965c44d",
+        "rancher-docs-068608f480626d6f9082",
+        "rancher-docs-3ddb10bec7ca7ed457a2"
+      ]
+    },
+    {
+      "claim_id": "claim-07ab6a2242540b6a",
+      "source_level": "canonical",
+      "parent_claim_id": "",
+      "claim_type": "cve_security",
+      "statement": "CVE-2026-41053 | GitHub App 团队成员关系过度展开 / 权限映射错误 | 8.8 High | 身份认证、权限映射 | 升级至 Rancher v2.14.2 或 v2.13.6;升级后执行 Principal Refresh(用户身份刷新),重新同步 GitHub Team 成员关系;检查 GitHub Team 与 Rancher Role 的权限映射。",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "kubernetes-docs-ad62a6b9a2764688e48a",
+        "rancher-docs-05692d0595b3987a55df",
+        "rancher-docs-7de7a2ccabbefebf4b25",
+        "rancher-docs-eb4512e2a3cf03917c2a",
+        "rancher-docs-5882fe267bba5f51ed80"
+      ]
+    },
+    {
+      "claim_id": "claim-490b12f5918e8e93",
+      "source_level": "canonical",
+      "parent_claim_id": "",
+      "claim_type": "cve_security",
+      "statement": "CVE-2026-44939 | Import API YAML 参数(authImage)命令注入 | 9.6 Critical | Import API、集群导入链路 | 升级至官方修复版本;限制 Import API 使用权限;加强 Import YAML 参数校验。",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-330fd4b1cab796dda7d1",
+        "rancher-docs-18d3c9ec9e22d4d203d8",
+        "rancher-docs-05d6e41088c193c7cafd",
+        "rancher-source-075c191862fc48747373",
+        "rancher-source-b120a19ef04218d03ec6"
+      ]
+    },
+    {
+      "claim_id": "claim-2da1cf8805cc2253",
+      "source_level": "canonical",
+      "parent_claim_id": "",
+      "claim_type": "rke2_security",
+      "statement": "RKE2 面向安全加固及合规场景设计。官方文档提供 FIPS 140-2 支持说明,并配套发布 CIS Hardening Guide,用于指导 Kubernetes 集群安全加固。在政府、军队及关键基础设施等高安全场景中,RKE2 能支持满足 FIPS、CIS 等安全要求,并可结合安全基线指南进行加固,并支持 SELinux 等安全机制,因此更加适用于对安全和合规要求较高的 Kubernetes 部署环境。",
+      "current_engine_status": "partially_supported",
+      "evidence_chunk_ids": [
+        "rancher-docs-b659cdb45dfcf32f7c0b",
+        "rancher-docs-d9b95cb3d653488485b9",
+        "rancher-docs-99aafe88ad16a4efc42d",
+        "rancher-docs-34617fc7dc12aec23fc4",
+        "rancher-docs-4d2cf78080a6fd0ed933"
+      ]
+    }
+  ]
+}

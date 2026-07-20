@@ -1,0 +1,2773 @@
+{
+  "schema_version": "rancher-security-review-v1-evidence-decisions-v1",
+  "decision_engine": "EvidenceDecisionEngine",
+  "retrieval_source": "evidence-retrieval-validation.json",
+  "model_calls": 0,
+  "network_requests": 0,
+  "statistics": {
+    "total_claims": 53,
+    "supported": 0,
+    "insufficient": 0,
+    "manual_review": 53,
+    "evidence_chunk_usage_count": 101,
+    "evidence_references_count": 265
+  },
+  "decisions": [
+    {
+      "claim_id": "claim-3a5bd3fd2b1fd13a",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-1ce36711c8cd78e419dc",
+        "rancher-docs-5f432a509d5f11c47ed1",
+        "rancher-docs-f5a134b077b11c91ae95",
+        "rancher-docs-081c9b9867c9b7ed6c84",
+        "rancher-docs-79f4a925eb6849ab81d7"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-1ce36711c8cd78e419dc",
+          "document_path": "content/rancher/v2.6/en/admin-settings/authentication/ad/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/admin-settings/authentication/ad/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-5f432a509d5f11c47ed1",
+          "document_path": "content/rancher/v2.0-v2.4/en/admin-settings/authentication/ad/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/admin-settings/authentication/ad/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-f5a134b077b11c91ae95",
+          "document_path": "content/rancher/v2.6/en/monitoring-alerting/prometheus-federator/rbac/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/monitoring-alerting/prometheus-federator/rbac/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-081c9b9867c9b7ed6c84",
+          "document_path": "content/rancher/v2.5/en/admin-settings/authentication/ad/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/admin-settings/authentication/ad/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-79f4a925eb6849ab81d7",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.1/benchmark-2.1/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/security/rancher-2.1/benchmark-2.1/_index.md",
+          "title": "Testing controls methodology",
+          "section": "1.6.1 - Ensure that the cluster-admin role is only used where required (Not Scored)"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-2da1cf8805cc2253",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-b659cdb45dfcf32f7c0b",
+        "rancher-docs-99aafe88ad16a4efc42d",
+        "rancher-docs-34617fc7dc12aec23fc4",
+        "rancher-docs-d9b95cb3d653488485b9",
+        "rancher-docs-4d2cf78080a6fd0ed933"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-b659cdb45dfcf32f7c0b",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-benchmark-2.6/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-benchmark-2.6/_index.md",
+          "title": "CIS v1.6 Kubernetes Benchmark - Rancher v2.6 RKE2 with Kubernetes v1.21 up to v1.23",
+          "section": "Overview"
+        },
+        {
+          "chunk_id": "rancher-docs-99aafe88ad16a4efc42d",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.2/benchmark-2.2/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/security/rancher-2.2/benchmark-2.2/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-34617fc7dc12aec23fc4",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.2/hardening-2.2/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/security/rancher-2.2/hardening-2.2/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-d9b95cb3d653488485b9",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-hardening-2.6/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-hardening-2.6/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-4d2cf78080a6fd0ed933",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.3.x/rancher-v2.3.5/benchmark-2.3.5/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/security/rancher-2.3.x/rancher-v2.3.5/benchmark-2.3.5/_index.md",
+          "title": "CIS Kubernetes Benchmark v1.5 - Rancher v2.3.5 with Kubernetes v1.15",
+          "section": "Overview"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-a430ef3fb491d40b",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-6cd6e17c8ca59dfc16ca",
+        "rancher-docs-ee81309bdec13bae2077",
+        "rancher-docs-b42f8947a6842bf7c18d",
+        "rancher-docs-ca8b7fc6e8feda6e4d5c",
+        "rancher-docs-ed3f59e2c13a4396a77c"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-6cd6e17c8ca59dfc16ca",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        },
+        {
+          "chunk_id": "rancher-docs-ee81309bdec13bae2077",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        },
+        {
+          "chunk_id": "rancher-docs-b42f8947a6842bf7c18d",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        },
+        {
+          "chunk_id": "rancher-docs-ca8b7fc6e8feda6e4d5c",
+          "document_path": "content/rancher/v2.5/en/cluster-admin/cluster-access/ace/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cluster-admin/cluster-access/ace/_index.md",
+          "title": "About the kubeconfig File",
+          "section": "Two Authentication Methods for RKE Clusters"
+        },
+        {
+          "chunk_id": "rancher-docs-ed3f59e2c13a4396a77c",
+          "document_path": "content/rancher/v2.6/en/cluster-admin/cluster-access/ace/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/cluster-admin/cluster-access/ace/_index.md",
+          "title": "About the kubeconfig File",
+          "section": "Two Authentication Methods for RKE Clusters"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-e10bf8632ed8b152",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-6cd6e17c8ca59dfc16ca",
+        "rancher-docs-ee81309bdec13bae2077",
+        "rancher-docs-b42f8947a6842bf7c18d",
+        "rancher-docs-ca8b7fc6e8feda6e4d5c",
+        "rancher-docs-ed3f59e2c13a4396a77c"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-6cd6e17c8ca59dfc16ca",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        },
+        {
+          "chunk_id": "rancher-docs-ee81309bdec13bae2077",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        },
+        {
+          "chunk_id": "rancher-docs-b42f8947a6842bf7c18d",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        },
+        {
+          "chunk_id": "rancher-docs-ca8b7fc6e8feda6e4d5c",
+          "document_path": "content/rancher/v2.5/en/cluster-admin/cluster-access/ace/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cluster-admin/cluster-access/ace/_index.md",
+          "title": "About the kubeconfig File",
+          "section": "Two Authentication Methods for RKE Clusters"
+        },
+        {
+          "chunk_id": "rancher-docs-ed3f59e2c13a4396a77c",
+          "document_path": "content/rancher/v2.6/en/cluster-admin/cluster-access/ace/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/cluster-admin/cluster-access/ace/_index.md",
+          "title": "About the kubeconfig File",
+          "section": "Two Authentication Methods for RKE Clusters"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-efa7ecd3f540c26a",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-110a56a378b2eff9d58b",
+        "rancher-docs-8098baa1a6b4a247ce72",
+        "rancher-docs-993b87423ca3a5a0fa50",
+        "rancher-docs-7fcdf6918d828879bace",
+        "rancher-docs-58cb94c3adc3cee13c52"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-110a56a378b2eff9d58b",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.3.x/rancher-v2.3.5/benchmark-2.3.5/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/security/rancher-2.3.x/rancher-v2.3.5/benchmark-2.3.5/_index.md",
+          "title": "CIS Kubernetes Benchmark v1.5 - Rancher v2.3.5 with Kubernetes v1.15",
+          "section": "1.2.9 Ensure that the `--authorization-mode` argument includes `RBAC` (Scored)"
+        },
+        {
+          "chunk_id": "rancher-docs-8098baa1a6b4a247ce72",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.4/benchmark-2.4/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/security/rancher-2.4/benchmark-2.4/_index.md",
+          "title": "CIS Kubernetes Benchmark v1.5 - Rancher v2.4 with Kubernetes v1.15",
+          "section": "1.2.9 Ensure that the `--authorization-mode` argument includes `RBAC` (Scored)"
+        },
+        {
+          "chunk_id": "rancher-docs-993b87423ca3a5a0fa50",
+          "document_path": "content/rancher/v2.5/en/security/rancher-2.5/1.5-benchmark-2.5/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/security/rancher-2.5/1.5-benchmark-2.5/_index.md",
+          "title": "CIS v1.5 Kubernetes Benchmark - Rancher v2.5 with Kubernetes v1.15",
+          "section": "1.2.9 Ensure that the `--authorization-mode` argument includes `RBAC` (Scored)"
+        },
+        {
+          "chunk_id": "rancher-docs-7fcdf6918d828879bace",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-benchmark-2.6/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-benchmark-2.6/_index.md",
+          "title": "CIS v1.6 Kubernetes Benchmark - Rancher v2.6 RKE2 with Kubernetes v1.21 up to v1.23",
+          "section": "1.2.9 Ensure that the --authorization-mode argument includes RBAC (Automated)"
+        },
+        {
+          "chunk_id": "rancher-docs-58cb94c3adc3cee13c52",
+          "document_path": "content/rancher/v2.5/en/security/rancher-2.5/1.6-benchmark-2.5/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/security/rancher-2.5/1.6-benchmark-2.5/_index.md",
+          "title": "CIS 1.6 Kubernetes Benchmark - Rancher v2.5.4 with Kubernetes v1.18",
+          "section": "1.2.9 Ensure that the --authorization-mode argument includes RBAC (Automated)"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-5dd455aa1d3e5489",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-6cd6e17c8ca59dfc16ca",
+        "rancher-docs-ee81309bdec13bae2077",
+        "rancher-docs-b42f8947a6842bf7c18d",
+        "rancher-docs-793e9c615b13161dc8a8",
+        "rancher-docs-0dc2c453b89ba08ffd15"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-6cd6e17c8ca59dfc16ca",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        },
+        {
+          "chunk_id": "rancher-docs-ee81309bdec13bae2077",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        },
+        {
+          "chunk_id": "rancher-docs-b42f8947a6842bf7c18d",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        },
+        {
+          "chunk_id": "rancher-docs-793e9c615b13161dc8a8",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        },
+        {
+          "chunk_id": "rancher-docs-0dc2c453b89ba08ffd15",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-cae029775fd8a02b",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-6cd6e17c8ca59dfc16ca",
+        "rancher-docs-ee81309bdec13bae2077",
+        "rancher-docs-b42f8947a6842bf7c18d",
+        "rancher-docs-793e9c615b13161dc8a8",
+        "rancher-docs-0dc2c453b89ba08ffd15"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-6cd6e17c8ca59dfc16ca",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        },
+        {
+          "chunk_id": "rancher-docs-ee81309bdec13bae2077",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        },
+        {
+          "chunk_id": "rancher-docs-b42f8947a6842bf7c18d",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        },
+        {
+          "chunk_id": "rancher-docs-793e9c615b13161dc8a8",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        },
+        {
+          "chunk_id": "rancher-docs-0dc2c453b89ba08ffd15",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "1. The Authentication Proxy"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-dda808f491d5cb72",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5",
+        "rancher-docs-70c6280281b849819064",
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-70c6280281b849819064",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-dfe9bd4c30fe9871",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-7eef6d179eec8900c90a",
+        "rancher-docs-aa8973096ea501e217cf",
+        "rancher-docs-5ce734d46d813473e724",
+        "rancher-docs-ffe3871dcb5b13fca601",
+        "rancher-docs-49b15c5c09998de89164"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-7eef6d179eec8900c90a",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/cve/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/security/cve/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-aa8973096ea501e217cf",
+          "document_path": "content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Create a Cloud Credential"
+        },
+        {
+          "chunk_id": "rancher-docs-5ce734d46d813473e724",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "title": "About RancherD Installs",
+          "section": "1. Set up Configurations"
+        },
+        {
+          "chunk_id": "rancher-docs-49b15c5c09998de89164",
+          "document_path": "content/rancher/v2.5/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Install Kubernetes and Set up the RKE2 Server"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-9cf7649cc430f62d",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5",
+        "rancher-docs-70c6280281b849819064",
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-70c6280281b849819064",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-cc8a4b9123dd3a04",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-8d1c832ad5ebd0a34a72",
+        "rancher-docs-820a18756dc294678622",
+        "rancher-docs-05692d0595b3987a55df",
+        "rancher-docs-7de7a2ccabbefebf4b25",
+        "rancher-docs-eb4512e2a3cf03917c2a"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-8d1c832ad5ebd0a34a72",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "Method 2: Manually update checksum"
+        },
+        {
+          "chunk_id": "rancher-docs-820a18756dc294678622",
+          "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "Method 2: Manually update checksum"
+        },
+        {
+          "chunk_id": "rancher-docs-05692d0595b3987a55df",
+          "document_path": "content/rancher/v2.0-v2.4/en/troubleshooting/kubernetes-resources/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/troubleshooting/kubernetes-resources/_index.md",
+          "title": "Nodes",
+          "section": "cattle-cluster-agent"
+        },
+        {
+          "chunk_id": "rancher-docs-7de7a2ccabbefebf4b25",
+          "document_path": "content/rancher/v2.5/en/troubleshooting/kubernetes-resources/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/troubleshooting/kubernetes-resources/_index.md",
+          "title": "Nodes",
+          "section": "cattle-cluster-agent"
+        },
+        {
+          "chunk_id": "rancher-docs-eb4512e2a3cf03917c2a",
+          "document_path": "content/rancher/v2.6/en/troubleshooting/kubernetes-resources/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/troubleshooting/kubernetes-resources/_index.md",
+          "title": "Nodes",
+          "section": "cattle-cluster-agent"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-28724412fb92c4bc",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-1c926db20b8dfa506577",
+        "rancher-docs-f49e9fd3b583d761d0eb",
+        "rancher-docs-508c523d453ef506fe9d",
+        "rancher-docs-59de573eec48e94664a1",
+        "rancher-docs-202334565636f4f550b2"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-1c926db20b8dfa506577",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-f49e9fd3b583d761d0eb",
+          "document_path": "content/rancher/v2.0-v2.4/en/quick-start-guide/cli/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/quick-start-guide/cli/_index.md",
+          "title": "Rancher CLI",
+          "section": "kubectl"
+        },
+        {
+          "chunk_id": "rancher-docs-508c523d453ef506fe9d",
+          "document_path": "content/rancher/v2.5/en/cli/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cli/_index.md",
+          "title": "Rancher CLI",
+          "section": "kubectl Utility"
+        },
+        {
+          "chunk_id": "rancher-docs-59de573eec48e94664a1",
+          "document_path": "content/rancher/v2.6/en/cli/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/cli/_index.md",
+          "title": "Rancher CLI",
+          "section": "kubectl Utility"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-fdb6477afdb5dc04",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-1c926db20b8dfa506577",
+        "rancher-docs-242336cbe771f88fb008",
+        "rancher-docs-7711c4ea31d29dd31796",
+        "rancher-docs-b348cabb1f93ac5e25e3",
+        "rancher-docs-7fcdf6918d828879bace"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-1c926db20b8dfa506577",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-242336cbe771f88fb008",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-admin/cleaning-cluster-nodes/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/cluster-admin/cleaning-cluster-nodes/_index.md",
+          "title": "What Gets Removed?",
+          "section": "Removing Rancher Components from Imported Clusters"
+        },
+        {
+          "chunk_id": "rancher-docs-7711c4ea31d29dd31796",
+          "document_path": "content/rancher/v2.5/en/cluster-admin/cleaning-cluster-nodes/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cluster-admin/cleaning-cluster-nodes/_index.md",
+          "title": "What Gets Removed?",
+          "section": "Removing Rancher Components from Registered Clusters"
+        },
+        {
+          "chunk_id": "rancher-docs-b348cabb1f93ac5e25e3",
+          "document_path": "content/rancher/v2.6/en/cluster-admin/cleaning-cluster-nodes/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/cluster-admin/cleaning-cluster-nodes/_index.md",
+          "title": "What Gets Removed?",
+          "section": "Removing Rancher Components from Registered Clusters"
+        },
+        {
+          "chunk_id": "rancher-docs-7fcdf6918d828879bace",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-benchmark-2.6/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-benchmark-2.6/_index.md",
+          "title": "CIS v1.6 Kubernetes Benchmark - Rancher v2.6 RKE2 with Kubernetes v1.21 up to v1.23",
+          "section": "1.2.9 Ensure that the --authorization-mode argument includes RBAC (Automated)"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-7d87a09616951654",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-1c926db20b8dfa506577",
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255",
+        "rancher-docs-7ac4d8a5368f1a2d9d8c"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-1c926db20b8dfa506577",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-7ac4d8a5368f1a2d9d8c",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke-1.6-hardening-2.6/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/security/hardening-guides/rke-1.6-hardening-2.6/_index.md",
+          "title": "Overview",
+          "section": "cluster_dns_server: 10.43.0.10"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-4e5a6e18fd06091d",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-ffe3871dcb5b13fca601",
+        "rancher-docs-571450b4333f4e9d4f6c",
+        "rancher-docs-3345eae99aff6b0c5f50",
+        "rancher-docs-8d1c832ad5ebd0a34a72",
+        "rancher-docs-820a18756dc294678622"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "title": "About RancherD Installs",
+          "section": "1. Set up Configurations"
+        },
+        {
+          "chunk_id": "rancher-docs-571450b4333f4e9d4f6c",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "title": "Certificates for the Rancher Server",
+          "section": "Cluster"
+        },
+        {
+          "chunk_id": "rancher-docs-3345eae99aff6b0c5f50",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "title": "About RancherD Installs",
+          "section": "1. Configure the fixed registration address on a new node"
+        },
+        {
+          "chunk_id": "rancher-docs-8d1c832ad5ebd0a34a72",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "Method 2: Manually update checksum"
+        },
+        {
+          "chunk_id": "rancher-docs-820a18756dc294678622",
+          "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "Method 2: Manually update checksum"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-46ea46c2eab1762a",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-ad9b82afaa68c82cb8ac",
+        "rancher-docs-748f5cf1e407170bc8f8",
+        "rancher-docs-8cdb69d4459e9d2e464a",
+        "rancher-docs-0cc7be253b65e98fa5e4",
+        "rancher-docs-2b35711506df87edb755"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-ad9b82afaa68c82cb8ac",
+          "document_path": "content/rancher/v2.5/en/cli/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cli/_index.md",
+          "title": "Rancher CLI",
+          "section": "CLI Authentication"
+        },
+        {
+          "chunk_id": "rancher-docs-748f5cf1e407170bc8f8",
+          "document_path": "content/rancher/v2.6/en/cli/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/cli/_index.md",
+          "title": "Rancher CLI",
+          "section": "CLI Authentication"
+        },
+        {
+          "chunk_id": "rancher-docs-8cdb69d4459e9d2e464a",
+          "document_path": "content/rancher/v2.0-v2.4/en/cli/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/cli/_index.md",
+          "title": "Download Rancher CLI",
+          "section": "CLI Authentication"
+        },
+        {
+          "chunk_id": "rancher-docs-0cc7be253b65e98fa5e4",
+          "document_path": "content/rancher/v2.5/en/cli/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cli/_index.md",
+          "title": "Rancher CLI",
+          "section": "Requirements"
+        },
+        {
+          "chunk_id": "rancher-docs-2b35711506df87edb755",
+          "document_path": "content/rancher/v2.6/en/cli/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/cli/_index.md",
+          "title": "Rancher CLI",
+          "section": "Requirements"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-0ffb0dd164f937cd",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-f50266d5a0d0b563fd20",
+        "rancher-docs-a8d45b442aea2965c44d",
+        "rancher-docs-068608f480626d6f9082",
+        "rancher-docs-3ddb10bec7ca7ed457a2",
+        "rancher-docs-aa8973096ea501e217cf"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-f50266d5a0d0b563fd20",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "1. Create/update the certificate secret resource"
+        },
+        {
+          "chunk_id": "rancher-docs-a8d45b442aea2965c44d",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "1. Create/update the certificate secret resource"
+        },
+        {
+          "chunk_id": "rancher-docs-068608f480626d6f9082",
+          "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "1. Create/update the certificate secret resource"
+        },
+        {
+          "chunk_id": "rancher-docs-3ddb10bec7ca7ed457a2",
+          "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "1. Create/update the certificate secret resource"
+        },
+        {
+          "chunk_id": "rancher-docs-aa8973096ea501e217cf",
+          "document_path": "content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Create a Cloud Credential"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-7270067608fbdaf1",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-571450b4333f4e9d4f6c",
+        "rancher-docs-5ce734d46d813473e724",
+        "rancher-docs-bb7674d494f31d50fb52",
+        "rancher-docs-70bf7a2219abd449baf7",
+        "rancher-docs-aa8973096ea501e217cf"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-571450b4333f4e9d4f6c",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "title": "Certificates for the Rancher Server",
+          "section": "Cluster"
+        },
+        {
+          "chunk_id": "rancher-docs-5ce734d46d813473e724",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-bb7674d494f31d50fb52",
+          "document_path": "content/rancher/v2.0-v2.4/en/api/api-tokens/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/api/api-tokens/_index.md",
+          "title": "Deleting tokens",
+          "section": "Deleting tokens"
+        },
+        {
+          "chunk_id": "rancher-docs-70bf7a2219abd449baf7",
+          "document_path": "content/rancher/v2.5/en/api/api-tokens/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/api/api-tokens/_index.md",
+          "title": "Deleting tokens",
+          "section": "Deleting tokens"
+        },
+        {
+          "chunk_id": "rancher-docs-aa8973096ea501e217cf",
+          "document_path": "content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Create a Cloud Credential"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-d6df35ef0981ec11",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255",
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-c9a8812a026bd7a4",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-85077908719b17c3d54b",
+        "rancher-docs-fed93cd44081c9fbecf4",
+        "rancher-docs-0a79344bb41ac2d513bf",
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-85077908719b17c3d54b",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "3. Node Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-fed93cd44081c9fbecf4",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "3. Node Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-0a79344bb41ac2d513bf",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "3. Node Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-3d70fb8d8bb5f3a5",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255",
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-b236df80530b6330",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255",
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-004fad4318dfe14d",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255",
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-9ef1cf2b85f4dde1",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-1c926db20b8dfa506577",
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255",
+        "rancher-docs-8bd627c7ae0c6ec16043"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-1c926db20b8dfa506577",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-845af20c0ac3ca01",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-ffe3871dcb5b13fca601",
+        "rancher-docs-3345eae99aff6b0c5f50",
+        "rancher-docs-571450b4333f4e9d4f6c",
+        "rancher-docs-8d1c832ad5ebd0a34a72",
+        "rancher-docs-820a18756dc294678622"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "title": "About RancherD Installs",
+          "section": "1. Set up Configurations"
+        },
+        {
+          "chunk_id": "rancher-docs-3345eae99aff6b0c5f50",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "title": "About RancherD Installs",
+          "section": "1. Configure the fixed registration address on a new node"
+        },
+        {
+          "chunk_id": "rancher-docs-571450b4333f4e9d4f6c",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "title": "Certificates for the Rancher Server",
+          "section": "Cluster"
+        },
+        {
+          "chunk_id": "rancher-docs-8d1c832ad5ebd0a34a72",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "Method 2: Manually update checksum"
+        },
+        {
+          "chunk_id": "rancher-docs-820a18756dc294678622",
+          "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "Method 2: Manually update checksum"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-0e19e0dbee0458f8",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-8d1c832ad5ebd0a34a72",
+        "rancher-docs-820a18756dc294678622",
+        "rancher-docs-05692d0595b3987a55df",
+        "rancher-docs-7de7a2ccabbefebf4b25",
+        "rancher-docs-eb4512e2a3cf03917c2a"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-8d1c832ad5ebd0a34a72",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "Method 2: Manually update checksum"
+        },
+        {
+          "chunk_id": "rancher-docs-820a18756dc294678622",
+          "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "Method 2: Manually update checksum"
+        },
+        {
+          "chunk_id": "rancher-docs-05692d0595b3987a55df",
+          "document_path": "content/rancher/v2.0-v2.4/en/troubleshooting/kubernetes-resources/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/troubleshooting/kubernetes-resources/_index.md",
+          "title": "Nodes",
+          "section": "cattle-cluster-agent"
+        },
+        {
+          "chunk_id": "rancher-docs-7de7a2ccabbefebf4b25",
+          "document_path": "content/rancher/v2.5/en/troubleshooting/kubernetes-resources/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/troubleshooting/kubernetes-resources/_index.md",
+          "title": "Nodes",
+          "section": "cattle-cluster-agent"
+        },
+        {
+          "chunk_id": "rancher-docs-eb4512e2a3cf03917c2a",
+          "document_path": "content/rancher/v2.6/en/troubleshooting/kubernetes-resources/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/troubleshooting/kubernetes-resources/_index.md",
+          "title": "Nodes",
+          "section": "cattle-cluster-agent"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-bcb84205d2b33429",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-ffe3871dcb5b13fca601",
+        "rancher-docs-3345eae99aff6b0c5f50",
+        "rancher-docs-d38968067cf1e8de7703",
+        "rancher-docs-323820e0c7fbfcfb9b3c",
+        "rancher-docs-401f6c9538e42ee5f462"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "title": "About RancherD Installs",
+          "section": "1. Set up Configurations"
+        },
+        {
+          "chunk_id": "rancher-docs-3345eae99aff6b0c5f50",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "title": "About RancherD Installs",
+          "section": "1. Configure the fixed registration address on a new node"
+        },
+        {
+          "chunk_id": "rancher-docs-d38968067cf1e8de7703",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "2. Create/update the CA certificate secret resource"
+        },
+        {
+          "chunk_id": "rancher-docs-323820e0c7fbfcfb9b3c",
+          "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "2. Create/update the CA certificate secret resource"
+        },
+        {
+          "chunk_id": "rancher-docs-401f6c9538e42ee5f462",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "2. Delete the CA certificate secret resource"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-65e1ca3204fea1d2",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-ffe3871dcb5b13fca601",
+        "rancher-docs-571450b4333f4e9d4f6c",
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "title": "About RancherD Installs",
+          "section": "1. Set up Configurations"
+        },
+        {
+          "chunk_id": "rancher-docs-571450b4333f4e9d4f6c",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "title": "Certificates for the Rancher Server",
+          "section": "Cluster"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-e4937840068f62f9",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255",
+        "rancher-docs-85077908719b17c3d54b",
+        "rancher-docs-fed93cd44081c9fbecf4"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-85077908719b17c3d54b",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "3. Node Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-fed93cd44081c9fbecf4",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "3. Node Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-ecaaff6a824b3778",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255",
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-11b622ffcf147111",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255",
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-602a5e745b9c8d0a",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-8559d3046af2b373306c",
+        "rancher-docs-8b3d296f51affa695ac4",
+        "rancher-docs-c39204680cf6a68dc398",
+        "rancher-docs-e7df9537c48b5af49264",
+        "rancher-docs-8739215273d3a6c5ab2f"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-8559d3046af2b373306c",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-hardening-2.6/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-hardening-2.6/_index.md",
+          "title": "Overview",
+          "section": "API Server audit configuration"
+        },
+        {
+          "chunk_id": "rancher-docs-8b3d296f51affa695ac4",
+          "document_path": "content/rancher/v2.6/en/monitoring-alerting/prometheus-federator/rbac/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/monitoring-alerting/prometheus-federator/rbac/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-c39204680cf6a68dc398",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-hardening-2.6/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-hardening-2.6/_index.md",
+          "title": "Overview",
+          "section": "API Server audit configuration"
+        },
+        {
+          "chunk_id": "rancher-docs-e7df9537c48b5af49264",
+          "document_path": "content/rancher/v2.6/en/monitoring-alerting/prometheus-federator/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/monitoring-alerting/prometheus-federator/_index.md",
+          "title": "How does the operator work?",
+          "section": "Namespaces"
+        },
+        {
+          "chunk_id": "rancher-docs-8739215273d3a6c5ab2f",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.1/hardening-2.1/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/security/rancher-2.1/hardening-2.1/_index.md",
+          "title": "Profile Definitions",
+          "section": "3.3.1 - Ensure that administrator privileges are only granted to those who require them"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-b93994e65b657d92",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5",
+        "rancher-docs-70c6280281b849819064",
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-70c6280281b849819064",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-29e0a89bc852ef77",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-1c926db20b8dfa506577",
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255",
+        "rancher-docs-8bd627c7ae0c6ec16043"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-1c926db20b8dfa506577",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-b961b28e7707f8a1",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-8d1c832ad5ebd0a34a72",
+        "rancher-docs-820a18756dc294678622",
+        "rancher-docs-cb27cff62ecfb4853251",
+        "rancher-docs-8ec7be6a7ef45c47dfdd",
+        "rancher-docs-7ac4d8a5368f1a2d9d8c"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-8d1c832ad5ebd0a34a72",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "Method 2: Manually update checksum"
+        },
+        {
+          "chunk_id": "rancher-docs-820a18756dc294678622",
+          "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "Method 2: Manually update checksum"
+        },
+        {
+          "chunk_id": "rancher-docs-cb27cff62ecfb4853251",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "Why is this step required?"
+        },
+        {
+          "chunk_id": "rancher-docs-8ec7be6a7ef45c47dfdd",
+          "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "Why is this step required?"
+        },
+        {
+          "chunk_id": "rancher-docs-7ac4d8a5368f1a2d9d8c",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke-1.6-hardening-2.6/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/security/hardening-guides/rke-1.6-hardening-2.6/_index.md",
+          "title": "Overview",
+          "section": "cluster_dns_server: 10.43.0.10"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-2211ad16cd7b1afb",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-1c926db20b8dfa506577",
+        "rancher-docs-242336cbe771f88fb008",
+        "rancher-docs-7711c4ea31d29dd31796",
+        "rancher-docs-b348cabb1f93ac5e25e3",
+        "rancher-docs-7fcdf6918d828879bace"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-1c926db20b8dfa506577",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-242336cbe771f88fb008",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-admin/cleaning-cluster-nodes/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/cluster-admin/cleaning-cluster-nodes/_index.md",
+          "title": "What Gets Removed?",
+          "section": "Removing Rancher Components from Imported Clusters"
+        },
+        {
+          "chunk_id": "rancher-docs-7711c4ea31d29dd31796",
+          "document_path": "content/rancher/v2.5/en/cluster-admin/cleaning-cluster-nodes/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cluster-admin/cleaning-cluster-nodes/_index.md",
+          "title": "What Gets Removed?",
+          "section": "Removing Rancher Components from Registered Clusters"
+        },
+        {
+          "chunk_id": "rancher-docs-b348cabb1f93ac5e25e3",
+          "document_path": "content/rancher/v2.6/en/cluster-admin/cleaning-cluster-nodes/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/cluster-admin/cleaning-cluster-nodes/_index.md",
+          "title": "What Gets Removed?",
+          "section": "Removing Rancher Components from Registered Clusters"
+        },
+        {
+          "chunk_id": "rancher-docs-7fcdf6918d828879bace",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-benchmark-2.6/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-benchmark-2.6/_index.md",
+          "title": "CIS v1.6 Kubernetes Benchmark - Rancher v2.6 RKE2 with Kubernetes v1.21 up to v1.23",
+          "section": "1.2.9 Ensure that the --authorization-mode argument includes RBAC (Automated)"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-8333e4587b8fc8cd",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-5ce734d46d813473e724",
+        "rancher-docs-aa8973096ea501e217cf",
+        "rancher-docs-253f728f10e85b242afa",
+        "rancher-docs-20b8c733d1b03bb0437a",
+        "rancher-docs-a1b333c4ace4a9fdf5f6"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-5ce734d46d813473e724",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-aa8973096ea501e217cf",
+          "document_path": "content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Create a Cloud Credential"
+        },
+        {
+          "chunk_id": "rancher-docs-253f728f10e85b242afa",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-admin/cluster-autoscaler/amazon/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/cluster-admin/cluster-autoscaler/amazon/_index.md",
+          "title": "Prerequisites",
+          "section": "2. Configure the Cloud Provider"
+        },
+        {
+          "chunk_id": "rancher-docs-20b8c733d1b03bb0437a",
+          "document_path": "content/rancher/v2.5/en/cluster-admin/cluster-autoscaler/amazon/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cluster-admin/cluster-autoscaler/amazon/_index.md",
+          "title": "Prerequisites",
+          "section": "2. Configure the Cloud Provider"
+        },
+        {
+          "chunk_id": "rancher-docs-a1b333c4ace4a9fdf5f6",
+          "document_path": "content/rancher/v2.6/en/cluster-admin/cluster-autoscaler/amazon/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/cluster-admin/cluster-autoscaler/amazon/_index.md",
+          "title": "Prerequisites",
+          "section": "2. Configure the Cloud Provider"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-74b3fa824cefed5f",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-aa8973096ea501e217cf",
+        "rancher-docs-5ce734d46d813473e724",
+        "rancher-docs-7eef6d179eec8900c90a",
+        "rancher-docs-9a37bbbce5e5505f6799",
+        "rancher-docs-bb7674d494f31d50fb52"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-aa8973096ea501e217cf",
+          "document_path": "content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Create a Cloud Credential"
+        },
+        {
+          "chunk_id": "rancher-docs-5ce734d46d813473e724",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-7eef6d179eec8900c90a",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/cve/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/security/cve/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-9a37bbbce5e5505f6799",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "title": "About RancherD Installs",
+          "section": "Fixed Registration Address"
+        },
+        {
+          "chunk_id": "rancher-docs-bb7674d494f31d50fb52",
+          "document_path": "content/rancher/v2.0-v2.4/en/api/api-tokens/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/api/api-tokens/_index.md",
+          "title": "Deleting tokens",
+          "section": "Deleting tokens"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-fef5595aa1772fb0",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-7eef6d179eec8900c90a",
+        "rancher-docs-aa8973096ea501e217cf",
+        "rancher-docs-5ce734d46d813473e724",
+        "rancher-docs-ffe3871dcb5b13fca601",
+        "rancher-docs-e4050fab525996d35d25"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-7eef6d179eec8900c90a",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/cve/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/security/cve/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-aa8973096ea501e217cf",
+          "document_path": "content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Create a Cloud Credential"
+        },
+        {
+          "chunk_id": "rancher-docs-5ce734d46d813473e724",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "title": "About RancherD Installs",
+          "section": "1. Set up Configurations"
+        },
+        {
+          "chunk_id": "rancher-docs-e4050fab525996d35d25",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "3. Reconfigure the Rancher deployment"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-6e9320a999c7b847",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-ffe3871dcb5b13fca601",
+        "rancher-docs-aa8973096ea501e217cf",
+        "rancher-docs-49b15c5c09998de89164",
+        "rancher-docs-d5af4371ddfae52b4362",
+        "rancher-docs-5ce734d46d813473e724"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "title": "About RancherD Installs",
+          "section": "1. Set up Configurations"
+        },
+        {
+          "chunk_id": "rancher-docs-aa8973096ea501e217cf",
+          "document_path": "content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Create a Cloud Credential"
+        },
+        {
+          "chunk_id": "rancher-docs-49b15c5c09998de89164",
+          "document_path": "content/rancher/v2.5/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Install Kubernetes and Set up the RKE2 Server"
+        },
+        {
+          "chunk_id": "rancher-docs-d5af4371ddfae52b4362",
+          "document_path": "content/rancher/v2.6/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Install Kubernetes and Set up the RKE2 Server"
+        },
+        {
+          "chunk_id": "rancher-docs-5ce734d46d813473e724",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "title": " Index",
+          "section": " Index"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-f35d274b851aac86",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-ad9b82afaa68c82cb8ac",
+        "rancher-docs-748f5cf1e407170bc8f8",
+        "rancher-docs-8cdb69d4459e9d2e464a",
+        "rancher-docs-0cc7be253b65e98fa5e4",
+        "rancher-docs-2b35711506df87edb755"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-ad9b82afaa68c82cb8ac",
+          "document_path": "content/rancher/v2.5/en/cli/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cli/_index.md",
+          "title": "Rancher CLI",
+          "section": "CLI Authentication"
+        },
+        {
+          "chunk_id": "rancher-docs-748f5cf1e407170bc8f8",
+          "document_path": "content/rancher/v2.6/en/cli/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/cli/_index.md",
+          "title": "Rancher CLI",
+          "section": "CLI Authentication"
+        },
+        {
+          "chunk_id": "rancher-docs-8cdb69d4459e9d2e464a",
+          "document_path": "content/rancher/v2.0-v2.4/en/cli/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/cli/_index.md",
+          "title": "Download Rancher CLI",
+          "section": "CLI Authentication"
+        },
+        {
+          "chunk_id": "rancher-docs-0cc7be253b65e98fa5e4",
+          "document_path": "content/rancher/v2.5/en/cli/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cli/_index.md",
+          "title": "Rancher CLI",
+          "section": "Requirements"
+        },
+        {
+          "chunk_id": "rancher-docs-2b35711506df87edb755",
+          "document_path": "content/rancher/v2.6/en/cli/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/cli/_index.md",
+          "title": "Rancher CLI",
+          "section": "Requirements"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-ba84a598d37639c7",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-ffe3871dcb5b13fca601",
+        "rancher-docs-3345eae99aff6b0c5f50",
+        "rancher-docs-49b15c5c09998de89164",
+        "rancher-docs-d5af4371ddfae52b4362",
+        "rancher-docs-571450b4333f4e9d4f6c"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "title": "About RancherD Installs",
+          "section": "1. Set up Configurations"
+        },
+        {
+          "chunk_id": "rancher-docs-3345eae99aff6b0c5f50",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "title": "About RancherD Installs",
+          "section": "1. Configure the fixed registration address on a new node"
+        },
+        {
+          "chunk_id": "rancher-docs-49b15c5c09998de89164",
+          "document_path": "content/rancher/v2.5/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Install Kubernetes and Set up the RKE2 Server"
+        },
+        {
+          "chunk_id": "rancher-docs-d5af4371ddfae52b4362",
+          "document_path": "content/rancher/v2.6/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Install Kubernetes and Set up the RKE2 Server"
+        },
+        {
+          "chunk_id": "rancher-docs-571450b4333f4e9d4f6c",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "title": "Certificates for the Rancher Server",
+          "section": "Cluster"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-868b0aa7bd10b3d7",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557",
+        "rancher-docs-099b711ded32ed988255",
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-3973c8bbb8c228ae",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-889fa0ce53f3130cfc4b",
+        "rancher-docs-df3f288b5be0d5786997",
+        "rancher-docs-d1c675bc4a0e779e2b65",
+        "rancher-docs-85077908719b17c3d54b",
+        "rancher-docs-fed93cd44081c9fbecf4"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-889fa0ce53f3130cfc4b",
+          "document_path": "content/rancher/v2.5/en/cluster-provisioning/rke-clusters/rancher-agents/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cluster-provisioning/rke-clusters/rancher-agents/_index.md",
+          "title": "cattle-cluster-agent",
+          "section": "cattle-node-agent"
+        },
+        {
+          "chunk_id": "rancher-docs-df3f288b5be0d5786997",
+          "document_path": "content/rancher/v2.6/en/cluster-provisioning/rke-clusters/rancher-agents/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/cluster-provisioning/rke-clusters/rancher-agents/_index.md",
+          "title": "cattle-cluster-agent",
+          "section": "cattle-node-agent"
+        },
+        {
+          "chunk_id": "rancher-docs-d1c675bc4a0e779e2b65",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/rancher-agents/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/rancher-agents/_index.md",
+          "title": "cattle-cluster-agent",
+          "section": "cattle-node-agent"
+        },
+        {
+          "chunk_id": "rancher-docs-85077908719b17c3d54b",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "3. Node Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-fed93cd44081c9fbecf4",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "3. Node Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-8fd850285f9e35dd",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-8bd627c7ae0c6ec16043",
+        "rancher-docs-c498c0a0d657c796aed5",
+        "rancher-docs-70c6280281b849819064",
+        "rancher-docs-202334565636f4f550b2",
+        "rancher-docs-93664ac167ccc6487557"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-70c6280281b849819064",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/overview/architecture/_index.md",
+          "title": "Rancher Server Architecture",
+          "section": "2. Cluster Controllers and Cluster Agents"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-a1acb75d43035b12",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-05caaa68405b29332252",
+        "rancher-docs-ad9b82afaa68c82cb8ac",
+        "rancher-docs-748f5cf1e407170bc8f8",
+        "rancher-docs-2296c877e3e9dfc90f84",
+        "rancher-docs-cefff130e63506a88aee"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-05caaa68405b29332252",
+          "document_path": "content/rancher/v2.6/en/admin-settings/authentication/ad/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/admin-settings/authentication/ad/_index.md",
+          "title": "Prerequisites",
+          "section": "Prerequisites"
+        },
+        {
+          "chunk_id": "rancher-docs-ad9b82afaa68c82cb8ac",
+          "document_path": "content/rancher/v2.5/en/cli/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cli/_index.md",
+          "title": "Rancher CLI",
+          "section": "CLI Authentication"
+        },
+        {
+          "chunk_id": "rancher-docs-748f5cf1e407170bc8f8",
+          "document_path": "content/rancher/v2.6/en/cli/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/cli/_index.md",
+          "title": "Rancher CLI",
+          "section": "CLI Authentication"
+        },
+        {
+          "chunk_id": "rancher-docs-2296c877e3e9dfc90f84",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "Why is this step required?"
+        },
+        {
+          "chunk_id": "rancher-docs-cefff130e63506a88aee",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md",
+          "title": "Updating a Private CA Certificate",
+          "section": "Why is this step required?"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-07ab6a2242540b6a",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-05692d0595b3987a55df",
+        "rancher-docs-7de7a2ccabbefebf4b25",
+        "rancher-docs-eb4512e2a3cf03917c2a",
+        "rancher-docs-5882fe267bba5f51ed80",
+        "rancher-docs-e482a14a35b547298a19"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-05692d0595b3987a55df",
+          "document_path": "content/rancher/v2.0-v2.4/en/troubleshooting/kubernetes-resources/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/troubleshooting/kubernetes-resources/_index.md",
+          "title": "Nodes",
+          "section": "cattle-cluster-agent"
+        },
+        {
+          "chunk_id": "rancher-docs-7de7a2ccabbefebf4b25",
+          "document_path": "content/rancher/v2.5/en/troubleshooting/kubernetes-resources/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/troubleshooting/kubernetes-resources/_index.md",
+          "title": "Nodes",
+          "section": "cattle-cluster-agent"
+        },
+        {
+          "chunk_id": "rancher-docs-eb4512e2a3cf03917c2a",
+          "document_path": "content/rancher/v2.6/en/troubleshooting/kubernetes-resources/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/troubleshooting/kubernetes-resources/_index.md",
+          "title": "Nodes",
+          "section": "cattle-cluster-agent"
+        },
+        {
+          "chunk_id": "rancher-docs-5882fe267bba5f51ed80",
+          "document_path": "content/rancher/v2.0-v2.4/en/troubleshooting/imported-clusters/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/troubleshooting/imported-clusters/_index.md",
+          "title": "Rancher agents",
+          "section": "cattle-cluster-agent"
+        },
+        {
+          "chunk_id": "rancher-docs-e482a14a35b547298a19",
+          "document_path": "content/rancher/v2.5/en/troubleshooting/imported-clusters/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/troubleshooting/imported-clusters/_index.md",
+          "title": "Rancher agents",
+          "section": "cattle-cluster-agent"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-490b12f5918e8e93",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-e15848471b69dfac1dad",
+        "rancher-docs-330fd4b1cab796dda7d1",
+        "rancher-docs-18d3c9ec9e22d4d203d8",
+        "rancher-docs-af6f6bf61d2dc4d26866",
+        "rancher-docs-05d6e41088c193c7cafd"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-e15848471b69dfac1dad",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-admin/tools/istio/setup/deploy-workloads/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/cluster-admin/tools/istio/setup/deploy-workloads/_index.md",
+          "title": "3. Add Deployments and Services",
+          "section": "3. Add Deployments and Services"
+        },
+        {
+          "chunk_id": "rancher-docs-330fd4b1cab796dda7d1",
+          "document_path": "content/rancher/v2.6/en/admin-settings/authentication/azure-ad/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/admin-settings/authentication/azure-ad/_index.md",
+          "title": "Microsoft Graph API",
+          "section": "Updating Endpoints in the Rancher UI"
+        },
+        {
+          "chunk_id": "rancher-docs-18d3c9ec9e22d4d203d8",
+          "document_path": "content/rancher/v2.5/en/admin-settings/authentication/azure-ad/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/admin-settings/authentication/azure-ad/_index.md",
+          "title": "Microsoft Graph API",
+          "section": "Updating Endpoints in the Rancher UI"
+        },
+        {
+          "chunk_id": "rancher-docs-af6f6bf61d2dc4d26866",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "title": "Certificates for the Rancher Server",
+          "section": "Common Options"
+        },
+        {
+          "chunk_id": "rancher-docs-05d6e41088c193c7cafd",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-hardening-2.6/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-hardening-2.6/_index.md",
+          "title": "Overview",
+          "section": "`PodSecurityPolicies`"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-5ff0574984016b2d",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-aa8973096ea501e217cf",
+        "rancher-docs-5ce734d46d813473e724",
+        "rancher-docs-7eef6d179eec8900c90a",
+        "rancher-docs-4b83749798230800c10b",
+        "rancher-docs-c40678075c3ea3cae083"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-aa8973096ea501e217cf",
+          "document_path": "content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Create a Cloud Credential"
+        },
+        {
+          "chunk_id": "rancher-docs-5ce734d46d813473e724",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-7eef6d179eec8900c90a",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/cve/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/security/cve/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-4b83749798230800c10b",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke-1.6-hardening-2.6/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/security/hardening-guides/rke-1.6-hardening-2.6/_index.md",
+          "title": "Overview",
+          "section": "Assume that ephemeral CSI drivers & persistentVolumes set up by the cluster admin are safe to use."
+        },
+        {
+          "chunk_id": "rancher-docs-c40678075c3ea3cae083",
+          "document_path": "content/rancher/v2.5/en/security/rancher-2.5/1.6-benchmark-2.5/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/security/rancher-2.5/1.6-benchmark-2.5/_index.md",
+          "title": "CIS 1.6 Kubernetes Benchmark - Rancher v2.5.4 with Kubernetes v1.18",
+          "section": "5.4.2 Consider external secret storage (Manual)"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-66f966a5ee89c717",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-ffe3871dcb5b13fca601",
+        "rancher-docs-3345eae99aff6b0c5f50",
+        "rancher-docs-49b15c5c09998de89164",
+        "rancher-docs-d5af4371ddfae52b4362",
+        "rancher-docs-571450b4333f4e9d4f6c"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "title": "About RancherD Installs",
+          "section": "1. Set up Configurations"
+        },
+        {
+          "chunk_id": "rancher-docs-3345eae99aff6b0c5f50",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md",
+          "title": "About RancherD Installs",
+          "section": "1. Configure the fixed registration address on a new node"
+        },
+        {
+          "chunk_id": "rancher-docs-49b15c5c09998de89164",
+          "document_path": "content/rancher/v2.5/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Install Kubernetes and Set up the RKE2 Server"
+        },
+        {
+          "chunk_id": "rancher-docs-d5af4371ddfae52b4362",
+          "document_path": "content/rancher/v2.6/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/installation/resources/k8s-tutorials/ha-rke2/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Install Kubernetes and Set up the RKE2 Server"
+        },
+        {
+          "chunk_id": "rancher-docs-571450b4333f4e9d4f6c",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md",
+          "title": "Certificates for the Rancher Server",
+          "section": "Cluster"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-a42b205c07bcfe24",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-36b8ffd2d398d000408e",
+        "rancher-docs-efbc63a20951bcda5f85",
+        "rancher-docs-88dfdaf5144c001bd81e",
+        "rancher-docs-3d5819bb56ddc41c9dea",
+        "rancher-docs-087e20ea6c5706286943"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-36b8ffd2d398d000408e",
+          "document_path": "content/rancher/v2.6/en/admin-settings/authentication/google/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/admin-settings/authentication/google/_index.md",
+          "title": "Prerequisites",
+          "section": "Configuring Google OAuth in Rancher"
+        },
+        {
+          "chunk_id": "rancher-docs-efbc63a20951bcda5f85",
+          "document_path": "content/rancher/v2.5/en/admin-settings/authentication/google/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/admin-settings/authentication/google/_index.md",
+          "title": "Prerequisites",
+          "section": "Configuring Google OAuth in Rancher"
+        },
+        {
+          "chunk_id": "rancher-docs-88dfdaf5144c001bd81e",
+          "document_path": "content/rancher/v2.0-v2.4/en/admin-settings/authentication/google/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/admin-settings/authentication/google/_index.md",
+          "title": "Prerequisites",
+          "section": "Configuring Google OAuth in Rancher"
+        },
+        {
+          "chunk_id": "rancher-docs-3d5819bb56ddc41c9dea",
+          "document_path": "content/rancher/v2.5/en/admin-settings/authentication/ad/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/admin-settings/authentication/ad/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-087e20ea6c5706286943",
+          "document_path": "content/rancher/v2.6/en/admin-settings/authentication/ad/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/admin-settings/authentication/ad/_index.md",
+          "title": " Index",
+          "section": " Index"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-f4a38994a955e40c",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-5ce734d46d813473e724",
+        "rancher-docs-7eef6d179eec8900c90a",
+        "rancher-docs-aa8973096ea501e217cf",
+        "rancher-docs-4b83749798230800c10b",
+        "rancher-docs-c40678075c3ea3cae083"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-5ce734d46d813473e724",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-7eef6d179eec8900c90a",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/cve/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/security/cve/_index.md",
+          "title": " Index",
+          "section": " Index"
+        },
+        {
+          "chunk_id": "rancher-docs-aa8973096ea501e217cf",
+          "document_path": "content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md",
+          "title": "Prerequisites",
+          "section": "1. Create a Cloud Credential"
+        },
+        {
+          "chunk_id": "rancher-docs-4b83749798230800c10b",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke-1.6-hardening-2.6/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/security/hardening-guides/rke-1.6-hardening-2.6/_index.md",
+          "title": "Overview",
+          "section": "Assume that ephemeral CSI drivers & persistentVolumes set up by the cluster admin are safe to use."
+        },
+        {
+          "chunk_id": "rancher-docs-c40678075c3ea3cae083",
+          "document_path": "content/rancher/v2.5/en/security/rancher-2.5/1.6-benchmark-2.5/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/security/rancher-2.5/1.6-benchmark-2.5/_index.md",
+          "title": "CIS 1.6 Kubernetes Benchmark - Rancher v2.5.4 with Kubernetes v1.18",
+          "section": "5.4.2 Consider external secret storage (Manual)"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    },
+    {
+      "claim_id": "claim-71015deaa0a8a259",
+      "status": "needs_manual_review",
+      "decision_status": "partially_supported",
+      "evidence_chunks": [
+        "rancher-docs-bb7674d494f31d50fb52",
+        "rancher-docs-70bf7a2219abd449baf7",
+        "rancher-docs-33ca249dc0374f5f0084",
+        "rancher-docs-bce173f0227570ec41b0",
+        "rancher-docs-6ba814b24361b56d2078"
+      ],
+      "citation_candidates": [
+        {
+          "chunk_id": "rancher-docs-bb7674d494f31d50fb52",
+          "document_path": "content/rancher/v2.0-v2.4/en/api/api-tokens/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.0-v2.4/en/api/api-tokens/_index.md",
+          "title": "Deleting tokens",
+          "section": "Deleting tokens"
+        },
+        {
+          "chunk_id": "rancher-docs-70bf7a2219abd449baf7",
+          "document_path": "content/rancher/v2.5/en/api/api-tokens/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/api/api-tokens/_index.md",
+          "title": "Deleting tokens",
+          "section": "Deleting tokens"
+        },
+        {
+          "chunk_id": "rancher-docs-33ca249dc0374f5f0084",
+          "document_path": "content/rancher/v2.6/en/api/api-tokens/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/api/api-tokens/_index.md",
+          "title": "Deleting tokens",
+          "section": "Deleting tokens"
+        },
+        {
+          "chunk_id": "rancher-docs-bce173f0227570ec41b0",
+          "document_path": "content/rancher/v2.5/en/admin-settings/authentication/azure-ad/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.5/en/admin-settings/authentication/azure-ad/_index.md",
+          "title": "Microsoft Graph API",
+          "section": "1. Register Rancher with Azure"
+        },
+        {
+          "chunk_id": "rancher-docs-6ba814b24361b56d2078",
+          "document_path": "content/rancher/v2.6/en/admin-settings/authentication/azure-ad/_index.md",
+          "canonical_url": "https://github.com/rancher/docs/blob/2133a3d8dd4d665753d51d117de06c23d216a313/content/rancher/v2.6/en/admin-settings/authentication/azure-ad/_index.md",
+          "title": "Microsoft Graph API",
+          "section": "1. Register Rancher with Azure"
+        }
+      ],
+      "limitations": [
+        "Deterministic evidence decision; no semantic model judgment was used."
+      ]
+    }
+  ]
+}

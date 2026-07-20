@@ -1,0 +1,2206 @@
+{
+  "schema_version": "rancher-security-review-v1-evidence-retrieval-validation-v2",
+  "retrieval_engine": "OfflineBm25EvidenceRetriever",
+  "top_k": 5,
+  "model_calls": 0,
+  "network_requests": 0,
+  "statistics": {
+    "total_claims": 53,
+    "claims_with_hits": 53,
+    "claims_without_hits": 0,
+    "average_hit_count": 5,
+    "source_type_distribution": {
+      "rancher_docs": 50,
+      "kubernetes_docs": 19,
+      "rancher_source": 13
+    },
+    "multi_source_claims": 26,
+    "reverse_tunnel": {
+      "claim_count": 12,
+      "claims_with_hits": 12,
+      "claims_without_hits": 0,
+      "average_hit_count": 5,
+      "source_type_distribution": {
+        "kubernetes_docs": 3,
+        "rancher_docs": 10,
+        "rancher_source": 3
+      },
+      "multi_source_claims": 4
+    },
+    "serviceaccount_token": {
+      "claim_count": 10,
+      "claims_with_hits": 10,
+      "claims_without_hits": 0,
+      "average_hit_count": 5,
+      "source_type_distribution": {
+        "kubernetes_docs": 6,
+        "rancher_docs": 10,
+        "rancher_source": 2
+      },
+      "multi_source_claims": 6
+    },
+    "kubernetes_rbac": {
+      "claim_count": 4,
+      "claims_with_hits": 4,
+      "claims_without_hits": 0,
+      "average_hit_count": 5,
+      "source_type_distribution": {
+        "rancher_docs": 4,
+        "kubernetes_docs": 2,
+        "rancher_source": 1
+      },
+      "multi_source_claims": 3
+    }
+  },
+  "results": [
+    {
+      "claim_id": "claim-3a5bd3fd2b1fd13a",
+      "claim_type": "kubernetes_rbac",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-1ce36711c8cd78e419dc",
+          "score": 34.47175100469576,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/admin-settings/authentication/ad/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-5f432a509d5f11c47ed1",
+          "score": 33.97733823363577,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/admin-settings/authentication/ad/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-081c9b9867c9b7ed6c84",
+          "score": 33.8610644603778,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/admin-settings/authentication/ad/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-f5a134b077b11c91ae95",
+          "score": 31.77792775013632,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/monitoring-alerting/prometheus-federator/rbac/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-79f4a925eb6849ab81d7",
+          "score": 30.185932943062426,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.1/benchmark-2.1/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-2da1cf8805cc2253",
+      "claim_type": "rke2_security",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-b659cdb45dfcf32f7c0b",
+          "score": 31.188842024690647,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-benchmark-2.6/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-d9b95cb3d653488485b9",
+          "score": 29.36675223151045,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-hardening-2.6/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-99aafe88ad16a4efc42d",
+          "score": 29.142663182210832,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.2/benchmark-2.2/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-34617fc7dc12aec23fc4",
+          "score": 28.817674997403408,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.2/hardening-2.2/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-4d2cf78080a6fd0ed933",
+          "score": 25.881635660789158,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.3.x/rancher-v2.3.5/benchmark-2.3.5/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-a430ef3fb491d40b",
+      "claim_type": "cluster_agent",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-ca8b7fc6e8feda6e4d5c",
+          "score": 24.827169036070043,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/cluster-admin/cluster-access/ace/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-ed3f59e2c13a4396a77c",
+          "score": 24.827169036070043,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/cluster-admin/cluster-access/ace/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-2a876af410dc4a80b9e6",
+          "score": 24.75652972510803,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-admin/cluster-access/ace/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-6cd6e17c8ca59dfc16ca",
+          "score": 24.55975142636001,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-ee81309bdec13bae2077",
+          "score": 24.55975142636001,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-e10bf8632ed8b152",
+      "claim_type": "cluster_agent",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-ca8b7fc6e8feda6e4d5c",
+          "score": 24.827169036070046,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/cluster-admin/cluster-access/ace/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-ed3f59e2c13a4396a77c",
+          "score": 24.827169036070046,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/cluster-admin/cluster-access/ace/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-2a876af410dc4a80b9e6",
+          "score": 24.75652972510803,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-admin/cluster-access/ace/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-6cd6e17c8ca59dfc16ca",
+          "score": 24.55975142636001,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-ee81309bdec13bae2077",
+          "score": 24.55975142636001,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-efa7ecd3f540c26a",
+      "claim_type": "kubernetes_rbac",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "kubernetes-docs-395b066cbafbdd8a8a14",
+          "score": 14.55231273575484,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/rbac.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-7f82eafac2379bbcf252",
+          "score": 12.639341084528867,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/rbac.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-5a08413e6ac2ea4963fe",
+          "score": 12.444561849182385,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/service-accounts.html"
+        },
+        {
+          "chunk_id": "rancher-docs-110a56a378b2eff9d58b",
+          "score": 12.453271622621322,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.3.x/rancher-v2.3.5/benchmark-2.3.5/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-8098baa1a6b4a247ce72",
+          "score": 12.453271622621322,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.4/benchmark-2.4/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-5dd455aa1d3e5489",
+      "claim_type": "cluster_agent",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-6cd6e17c8ca59dfc16ca",
+          "score": 24.55975142636001,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-ee81309bdec13bae2077",
+          "score": 24.55975142636001,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-b42f8947a6842bf7c18d",
+          "score": 24.55975142636001,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-793e9c615b13161dc8a8",
+          "score": 22.795534826788888,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-0dc2c453b89ba08ffd15",
+          "score": 22.795534826788888,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-cae029775fd8a02b",
+      "claim_type": "cluster_agent",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-6cd6e17c8ca59dfc16ca",
+          "score": 24.55975142636001,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-ee81309bdec13bae2077",
+          "score": 24.55975142636001,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-b42f8947a6842bf7c18d",
+          "score": 24.55975142636001,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-793e9c615b13161dc8a8",
+          "score": 22.795534826788888,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-0dc2c453b89ba08ffd15",
+          "score": 22.795534826788888,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-dda808f491d5cb72",
+      "claim_type": "cluster_agent",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "score": 20.57024149319028,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "score": 20.57024149319028,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-70c6280281b849819064",
+          "score": 20.57024149319028,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "score": 18.724157452625608,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "score": 18.724157452625608,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-dfe9bd4c30fe9871",
+      "claim_type": "cloud_credential",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "score": 20.722887124049773,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-7eef6d179eec8900c90a",
+          "score": 20.14703414646182,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/cve/_index.md"
+        },
+        {
+          "chunk_id": "kubernetes-docs-8e0c95c0de95d27d328a",
+          "score": 19.639848953527874,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/secret.html"
+        },
+        {
+          "chunk_id": "rancher-source-d961bac627a39c4fe4c9",
+          "score": 19.540164631346325,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/webhook/docs.md"
+        },
+        {
+          "chunk_id": "rancher-source-8d3e24f98bff57ec2073",
+          "score": 19.50482155886468,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/webhook/pkg/resources/provisioning.cattle.io/v1/cluster/validator.go"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs",
+        "rancher_source"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-9cf7649cc430f62d",
+      "claim_type": "reverse_tunnel",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "kubernetes-docs-d2b2b8f5bcfc2fbd5c9f",
+          "score": 20.996776573649516,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/authentication.html"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "score": 19.97837326412152,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "score": 19.97837326412152,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-70c6280281b849819064",
+          "score": 19.97837326412152,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "score": 19.739915772790575,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-cc8a4b9123dd3a04",
+      "claim_type": "cluster_agent",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-8d1c832ad5ebd0a34a72",
+          "score": 22.113754041400277,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-820a18756dc294678622",
+          "score": 22.113754041400277,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-05692d0595b3987a55df",
+          "score": 20.213455265416478,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/troubleshooting/kubernetes-resources/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-7de7a2ccabbefebf4b25",
+          "score": 20.213455265416478,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/troubleshooting/kubernetes-resources/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-eb4512e2a3cf03917c2a",
+          "score": 20.213455265416478,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/troubleshooting/kubernetes-resources/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-28724412fb92c4bc",
+      "claim_type": "cluster_agent",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-1c926db20b8dfa506577",
+          "score": 16.417062387971097,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md"
+        },
+        {
+          "chunk_id": "kubernetes-docs-d4a55d60ced671d06c55",
+          "score": 16.054783235252522,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/authentication.html"
+        },
+        {
+          "chunk_id": "rancher-docs-f49e9fd3b583d761d0eb",
+          "score": 16.03620540087852,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/quick-start-guide/cli/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-508c523d453ef506fe9d",
+          "score": 15.850261443584998,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/cli/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-59de573eec48e94664a1",
+          "score": 15.850261443584998,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/cli/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-fdb6477afdb5dc04",
+      "claim_type": "serviceaccount_token",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "kubernetes-docs-5a08413e6ac2ea4963fe",
+          "score": 18.300833445405125,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/service-accounts.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-3f643563abde83254905",
+          "score": 16.364234604667043,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/service-accounts.html"
+        },
+        {
+          "chunk_id": "rancher-docs-1c926db20b8dfa506577",
+          "score": 16.4170623879711,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-242336cbe771f88fb008",
+          "score": 15.96822478215455,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-admin/cleaning-cluster-nodes/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-7711c4ea31d29dd31796",
+          "score": 15.96822478215455,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/cluster-admin/cleaning-cluster-nodes/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-7d87a09616951654",
+      "claim_type": "cluster_agent",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-1c926db20b8dfa506577",
+          "score": 16.417062387971097,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-7ac4d8a5368f1a2d9d8c",
+          "score": 14.98440003370975,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke-1.6-hardening-2.6/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-3e7bf19b9b3ab055c118",
+          "score": 14.730729707342473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.3.x/rancher-v2.3.3/hardening-2.3.3/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "score": 14.690740446357498,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "score": 14.690740446357498,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-4e5a6e18fd06091d",
+      "claim_type": "serviceaccount_token",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-source-09c148080cca6ad2476d",
+          "score": 20.47500206179173,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/system-agent/test/testenv/setup.go"
+        },
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "score": 19.989872846283824,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md"
+        },
+        {
+          "chunk_id": "kubernetes-docs-63d7abd442a980c9f12d",
+          "score": 18.32065677308484,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/authentication.html"
+        },
+        {
+          "chunk_id": "rancher-docs-571450b4333f4e9d4f6c",
+          "score": 18.235838782057023,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-3345eae99aff6b0c5f50",
+          "score": 18.05094794594132,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs",
+        "rancher_source"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-46ea46c2eab1762a",
+      "claim_type": "serviceaccount_token",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-ad9b82afaa68c82cb8ac",
+          "score": 22.50574756143538,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/cli/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-748f5cf1e407170bc8f8",
+          "score": 22.50574756143538,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/cli/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-8cdb69d4459e9d2e464a",
+          "score": 22.401211876069123,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/cli/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-0cc7be253b65e98fa5e4",
+          "score": 21.456906959855544,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/cli/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-2b35711506df87edb755",
+          "score": 21.456906959855544,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/cli/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-0ffb0dd164f937cd",
+      "claim_type": "cloud_credential",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "kubernetes-docs-d18c14dd306bca98f38f",
+          "score": 34.55816022051514,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/secret.html"
+        },
+        {
+          "chunk_id": "rancher-docs-f50266d5a0d0b563fd20",
+          "score": 32.906630378219816,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-a8d45b442aea2965c44d",
+          "score": 32.906630378219816,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-068608f480626d6f9082",
+          "score": 32.906630378219816,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-3ddb10bec7ca7ed457a2",
+          "score": 32.906630378219816,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-7270067608fbdaf1",
+      "claim_type": "credential_management",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "kubernetes-docs-8e0c95c0de95d27d328a",
+          "score": 17.39121088103773,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/secret.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-efa05feec3fa0554bb29",
+          "score": 17.388920987464626,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/secret.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-469f165331cd1379bee3",
+          "score": 16.781269674675215,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/authentication.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-01bca8ec353210cf4f79",
+          "score": 16.144927979737417,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/secret.html"
+        },
+        {
+          "chunk_id": "rancher-source-e604de95e77a929daafd",
+          "score": 15.683254021589823,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/system-agent/examples/configuration/README.md"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_source"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-d6df35ef0981ec11",
+      "claim_type": "reverse_tunnel",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "score": 22.07930003843473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "score": 22.07930003843473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "score": 22.07930003843473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "score": 19.97837326412152,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "score": 19.97837326412152,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-c9a8812a026bd7a4",
+      "claim_type": "reverse_tunnel",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-85077908719b17c3d54b",
+          "score": 22.77316580751476,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-fed93cd44081c9fbecf4",
+          "score": 22.77316580751476,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-0a79344bb41ac2d513bf",
+          "score": 22.77316580751476,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "score": 22.2727159919166,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "score": 22.2727159919166,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-3d70fb8d8bb5f3a5",
+      "claim_type": "reverse_tunnel",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "score": 22.079300038434734,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "score": 22.079300038434734,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "score": 22.079300038434734,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "score": 19.978373264121522,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "score": 19.978373264121522,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-b236df80530b6330",
+      "claim_type": "reverse_tunnel",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "score": 22.07930003843473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "score": 22.07930003843473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "score": 22.07930003843473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "score": 19.978373264121522,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "score": 19.978373264121522,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-004fad4318dfe14d",
+      "claim_type": "reverse_tunnel",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "score": 22.07930003843473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "score": 22.07930003843473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "score": 22.07930003843473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "score": 19.978373264121522,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "score": 19.978373264121522,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-9ef1cf2b85f4dde1",
+      "claim_type": "cluster_agent",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-1c926db20b8dfa506577",
+          "score": 16.417062387971097,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "score": 14.690740446357498,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "score": 14.690740446357498,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "score": 14.690740446357498,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "score": 14.045943960058874,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-845af20c0ac3ca01",
+      "claim_type": "serviceaccount_token",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "score": 22.620872362629306,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-3345eae99aff6b0c5f50",
+          "score": 21.07862461200078,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md"
+        },
+        {
+          "chunk_id": "rancher-source-09c148080cca6ad2476d",
+          "score": 20.47500206179173,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/system-agent/test/testenv/setup.go"
+        },
+        {
+          "chunk_id": "rancher-source-e604de95e77a929daafd",
+          "score": 18.744780442874617,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/system-agent/examples/configuration/README.md"
+        },
+        {
+          "chunk_id": "kubernetes-docs-63d7abd442a980c9f12d",
+          "score": 18.32065677308484,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/authentication.html"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs",
+        "rancher_source"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-0e19e0dbee0458f8",
+      "claim_type": "serviceaccount_token",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-8d1c832ad5ebd0a34a72",
+          "score": 28.91833470208386,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-820a18756dc294678622",
+          "score": 28.91833470208386,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-05692d0595b3987a55df",
+          "score": 27.06283551987169,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/troubleshooting/kubernetes-resources/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-7de7a2ccabbefebf4b25",
+          "score": 27.06283551987169,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/troubleshooting/kubernetes-resources/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-eb4512e2a3cf03917c2a",
+          "score": 27.06283551987169,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/troubleshooting/kubernetes-resources/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-bcb84205d2b33429",
+      "claim_type": "serviceaccount_token",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "score": 21.656423824156356,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-3345eae99aff6b0c5f50",
+          "score": 18.05094794594132,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-49b15c5c09998de89164",
+          "score": 16.39028245325443,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/resources/k8s-tutorials/ha-rke2/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-d5af4371ddfae52b4362",
+          "score": 16.39028245325443,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/installation/resources/k8s-tutorials/ha-rke2/_index.md"
+        },
+        {
+          "chunk_id": "kubernetes-docs-660ea9b76448b7d414d5",
+          "score": 15.48958197401239,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/secret.html"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-65e1ca3204fea1d2",
+      "claim_type": "reverse_tunnel",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "score": 23.58892020298143,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md"
+        },
+        {
+          "chunk_id": "rancher-source-09c148080cca6ad2476d",
+          "score": 23.558552763946686,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/system-agent/test/testenv/setup.go"
+        },
+        {
+          "chunk_id": "rancher-docs-571450b4333f4e9d4f6c",
+          "score": 22.478026255646217,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "score": 20.99242407607976,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "score": 20.99242407607976,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs",
+        "rancher_source"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-e4937840068f62f9",
+      "claim_type": "reverse_tunnel",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-source-6d1af80746d8e5d41703",
+          "score": 22.862383316173627,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/remotedialer/README.md"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "score": 22.07930003843473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "score": 22.07930003843473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "score": 22.07930003843473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-85077908719b17c3d54b",
+          "score": 21.596832821948304,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs",
+        "rancher_source"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-ecaaff6a824b3778",
+      "claim_type": "reverse_tunnel",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "kubernetes-docs-aa69dede8781d3923b41",
+          "score": 26.37455320006988,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/authentication.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-4ba75f9ac7f1e5ad28c4",
+          "score": 26.103799890258248,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/service-accounts.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-f925774f89e73e46f64f",
+          "score": 24.30334745311678,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/authentication.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-d2b2b8f5bcfc2fbd5c9f",
+          "score": 23.883222850004017,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/authentication.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-51b5c5d2203da30ec179",
+          "score": 23.71253861768522,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/authentication.html"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-11b622ffcf147111",
+      "claim_type": "reverse_tunnel",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "score": 22.07930003843473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "score": 22.07930003843473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "score": 22.07930003843473,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "score": 19.97837326412152,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "score": 19.97837326412152,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-602a5e745b9c8d0a",
+      "claim_type": "kubernetes_rbac",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "kubernetes-docs-70200c81676c37e9897f",
+          "score": 18.989307063802492,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/rbac.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-43fba67db80f06f705e3",
+          "score": 17.83122918798124,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/service-accounts.html"
+        },
+        {
+          "chunk_id": "rancher-docs-8559d3046af2b373306c",
+          "score": 15.37176039910887,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-hardening-2.6/_index.md"
+        },
+        {
+          "chunk_id": "kubernetes-docs-19e6ecd7714e92bac8f5",
+          "score": 15.073872853435166,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/authorization.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-395b066cbafbdd8a8a14",
+          "score": 14.55231273575484,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/rbac.html"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-b93994e65b657d92",
+      "claim_type": "cluster_agent",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "score": 20.570241493190288,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "score": 20.570241493190288,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-70c6280281b849819064",
+          "score": 20.570241493190288,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-source-d14b0509f8adc1fbbf2f",
+          "score": 19.847774160569166,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/remotedialer/README.md"
+        },
+        {
+          "chunk_id": "rancher-source-baffca1acde98a3e594d",
+          "score": 18.893015781039598,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/system-agent/install.sh"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs",
+        "rancher_source"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-29e0a89bc852ef77",
+      "claim_type": "cluster_agent",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-1c926db20b8dfa506577",
+          "score": 16.417062387971097,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "score": 14.690740446357497,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "score": 14.690740446357497,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "score": 14.690740446357497,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "score": 14.045943960058871,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-b961b28e7707f8a1",
+      "claim_type": "cluster_agent",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-8d1c832ad5ebd0a34a72",
+          "score": 16.281664469880077,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-820a18756dc294678622",
+          "score": 16.281664469880077,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-cb27cff62ecfb4853251",
+          "score": 15.324422892542376,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/resources/update-rancher-cert/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-8ec7be6a7ef45c47dfdd",
+          "score": 15.324422892542376,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/installation/resources/update-rancher-cert/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-7ac4d8a5368f1a2d9d8c",
+          "score": 14.98440003370975,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke-1.6-hardening-2.6/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-2211ad16cd7b1afb",
+      "claim_type": "serviceaccount_token",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "kubernetes-docs-5a08413e6ac2ea4963fe",
+          "score": 18.30075548408992,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/service-accounts.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-3f643563abde83254905",
+          "score": 16.364152906366897,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/service-accounts.html"
+        },
+        {
+          "chunk_id": "rancher-docs-1c926db20b8dfa506577",
+          "score": 16.416893277550237,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/rancherd-configuration/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-242336cbe771f88fb008",
+          "score": 15.968040788841657,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-admin/cleaning-cluster-nodes/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-7711c4ea31d29dd31796",
+          "score": 15.968040788841657,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/cluster-admin/cleaning-cluster-nodes/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-8333e4587b8fc8cd",
+      "claim_type": "cloud_credential",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-253f728f10e85b242afa",
+          "score": 21.6883451458801,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-admin/cluster-autoscaler/amazon/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-20b8c733d1b03bb0437a",
+          "score": 21.6883451458801,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/cluster-admin/cluster-autoscaler/amazon/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-a1b333c4ace4a9fdf5f6",
+          "score": 21.6883451458801,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/cluster-admin/cluster-autoscaler/amazon/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-5ce734d46d813473e724",
+          "score": 20.09436308626497,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-aa8973096ea501e217cf",
+          "score": 18.838585312768366,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-74b3fa824cefed5f",
+      "claim_type": "cloud_credential",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "kubernetes-docs-efa05feec3fa0554bb29",
+          "score": 24.300693508658423,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/secret.html"
+        },
+        {
+          "chunk_id": "rancher-docs-aa8973096ea501e217cf",
+          "score": 20.49012390767023,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md"
+        },
+        {
+          "chunk_id": "kubernetes-docs-469f165331cd1379bee3",
+          "score": 20.149353998398716,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/authentication.html"
+        },
+        {
+          "chunk_id": "rancher-docs-7eef6d179eec8900c90a",
+          "score": 20.14721264942058,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/cve/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-5ce734d46d813473e724",
+          "score": 20.094363086264973,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-fef5595aa1772fb0",
+      "claim_type": "cloud_credential",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-7eef6d179eec8900c90a",
+          "score": 20.14703414646182,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/cve/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "score": 19.295082366056185,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md"
+        },
+        {
+          "chunk_id": "kubernetes-docs-469f165331cd1379bee3",
+          "score": 19.092497265749564,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/authentication.html"
+        },
+        {
+          "chunk_id": "rancher-docs-aa8973096ea501e217cf",
+          "score": 18.838433905189913,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-5ce734d46d813473e724",
+          "score": 18.704925660073016,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-6e9320a999c7b847",
+      "claim_type": "cloud_credential",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "score": 30.06317395075693,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md"
+        },
+        {
+          "chunk_id": "rancher-source-8d3e24f98bff57ec2073",
+          "score": 28.229474681005435,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/webhook/pkg/resources/provisioning.cattle.io/v1/cluster/validator.go"
+        },
+        {
+          "chunk_id": "rancher-docs-49b15c5c09998de89164",
+          "score": 25.405106367331413,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/resources/k8s-tutorials/ha-rke2/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-d5af4371ddfae52b4362",
+          "score": 25.405106367331413,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/installation/resources/k8s-tutorials/ha-rke2/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-b42704928883b85b6094",
+          "score": 24.504166208441507,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-benchmark-2.6/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs",
+        "rancher_source"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-f35d274b851aac86",
+      "claim_type": "serviceaccount_token",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-ad9b82afaa68c82cb8ac",
+          "score": 18.666567273840457,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/cli/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-748f5cf1e407170bc8f8",
+          "score": 18.666567273840457,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/cli/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-8cdb69d4459e9d2e464a",
+          "score": 18.579150275194067,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/cli/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-0cc7be253b65e98fa5e4",
+          "score": 18.170652969782477,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/cli/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-2b35711506df87edb755",
+          "score": 18.170652969782477,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/cli/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-ba84a598d37639c7",
+      "claim_type": "serviceaccount_token",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "score": 18.31161956992825,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md"
+        },
+        {
+          "chunk_id": "kubernetes-docs-660ea9b76448b7d414d5",
+          "score": 15.48958197401239,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/secret.html"
+        },
+        {
+          "chunk_id": "rancher-docs-3345eae99aff6b0c5f50",
+          "score": 14.202923145925592,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md"
+        },
+        {
+          "chunk_id": "kubernetes-docs-cb8286c98969dbb29bf0",
+          "score": 13.239827694243747,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/secret.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-1d36657c73a02383e0b7",
+          "score": 13.236429830872185,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/secret.html"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-868b0aa7bd10b3d7",
+      "claim_type": "cluster_agent",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "score": 29.683541321403297,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "score": 29.683541321403297,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-099b711ded32ed988255",
+          "score": 29.683541321403297,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "score": 26.943683931800006,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "score": 26.943683931800006,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-3973c8bbb8c228ae",
+      "claim_type": "rke2_security",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-889fa0ce53f3130cfc4b",
+          "score": 28.651749753755777,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/cluster-provisioning/rke-clusters/rancher-agents/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-df3f288b5be0d5786997",
+          "score": 28.651749753755777,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/cluster-provisioning/rke-clusters/rancher-agents/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-d1c675bc4a0e779e2b65",
+          "score": 27.00518812276559,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/rancher-agents/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-85077908719b17c3d54b",
+          "score": 22.011141081487143,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-fed93cd44081c9fbecf4",
+          "score": 22.011141081487143,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-8fd850285f9e35dd",
+      "claim_type": "reverse_tunnel",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-8bd627c7ae0c6ec16043",
+          "score": 31.37728084694816,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-c498c0a0d657c796aed5",
+          "score": 31.37728084694816,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-70c6280281b849819064",
+          "score": 31.37728084694816,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-202334565636f4f550b2",
+          "score": 29.84442861422472,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/overview/architecture/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-93664ac167ccc6487557",
+          "score": 29.84442861422472,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/overview/architecture/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-a1acb75d43035b12",
+      "claim_type": "reverse_tunnel",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-source-d14b0509f8adc1fbbf2f",
+          "score": 33.45578968979147,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/remotedialer/README.md"
+        },
+        {
+          "chunk_id": "rancher-source-6d1af80746d8e5d41703",
+          "score": 28.330590559425957,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/remotedialer/README.md"
+        },
+        {
+          "chunk_id": "rancher-source-f6849ed3844bead25f26",
+          "score": 27.771026908262233,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/system-agent/install.sh"
+        },
+        {
+          "chunk_id": "kubernetes-docs-d2b2b8f5bcfc2fbd5c9f",
+          "score": 27.48547679990635,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/authentication.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-9c8e434363c1ac90888e",
+          "score": 26.306785986050734,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/authentication.html"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_source"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-07ab6a2242540b6a",
+      "claim_type": "cve_security",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "kubernetes-docs-ad62a6b9a2764688e48a",
+          "score": 13.93047404518164,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/authentication.html"
+        },
+        {
+          "chunk_id": "rancher-docs-05692d0595b3987a55df",
+          "score": 13.939596890064053,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/troubleshooting/kubernetes-resources/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-7de7a2ccabbefebf4b25",
+          "score": 13.939596890064053,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/troubleshooting/kubernetes-resources/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-eb4512e2a3cf03917c2a",
+          "score": 13.939596890064053,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/troubleshooting/kubernetes-resources/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-5882fe267bba5f51ed80",
+          "score": 13.814258108496494,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/troubleshooting/imported-clusters/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-490b12f5918e8e93",
+      "claim_type": "cve_security",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-330fd4b1cab796dda7d1",
+          "score": 10.177507505416095,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/admin-settings/authentication/azure-ad/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-18d3c9ec9e22d4d203d8",
+          "score": 10.07024703669314,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/admin-settings/authentication/azure-ad/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-05d6e41088c193c7cafd",
+          "score": 8.039076732294975,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/security/hardening-guides/rke2-1.6-hardening-2.6/_index.md"
+        },
+        {
+          "chunk_id": "rancher-source-075c191862fc48747373",
+          "score": 7.918342624654971,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/webhook/pkg/podsecurityadmission/podsecurityadmission.go"
+        },
+        {
+          "chunk_id": "rancher-source-b120a19ef04218d03ec6",
+          "score": 7.162636875934523,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/webhook/pkg/resources/provisioning.cattle.io/v1/cluster/validator_test.go"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs",
+        "rancher_source"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-5ff0574984016b2d",
+      "claim_type": "cve_security",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-source-d961bac627a39c4fe4c9",
+          "score": 19.540164631346325,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/webhook/docs.md"
+        },
+        {
+          "chunk_id": "rancher-source-179f7794241dc773ffd1",
+          "score": 18.99429546150108,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/webhook/pkg/resources/infrastructure.cluster.x-k8s.io/v1beta2/awsclusterstaticidentity/AWSClusterStaticIdentity.md"
+        },
+        {
+          "chunk_id": "rancher-docs-aa8973096ea501e217cf",
+          "score": 18.838433905189913,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/cluster-provisioning/hosted-kubernetes-clusters/gke/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-5ce734d46d813473e724",
+          "score": 18.704925660073016,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md"
+        },
+        {
+          "chunk_id": "rancher-source-e857e9cbbbf8d35856cb",
+          "score": 18.563297811691115,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/webhook/pkg/resources/infrastructure.cluster.x-k8s.io/v1beta2/awsclusterstaticidentity/AWSClusterStaticIdentity.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs",
+        "rancher_source"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-66f966a5ee89c717",
+      "claim_type": "cve_security",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-ffe3871dcb5b13fca601",
+          "score": 18.31161956992825,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md"
+        },
+        {
+          "chunk_id": "kubernetes-docs-660ea9b76448b7d414d5",
+          "score": 15.48958197401239,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/secret.html"
+        },
+        {
+          "chunk_id": "rancher-docs-3345eae99aff6b0c5f50",
+          "score": 14.202923145925592,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/installation/other-installation-methods/install-rancher-on-linux/_index.md"
+        },
+        {
+          "chunk_id": "kubernetes-docs-cb8286c98969dbb29bf0",
+          "score": 13.239827694243745,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/secret.html"
+        },
+        {
+          "chunk_id": "kubernetes-docs-1d36657c73a02383e0b7",
+          "score": 13.236429830872186,
+          "source_type": "kubernetes_docs",
+          "document_path": "evidence/raw/kubernetes/secret.html"
+        }
+      ],
+      "source_types_used": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-a42b205c07bcfe24",
+      "claim_type": "kubernetes_rbac",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-36b8ffd2d398d000408e",
+          "score": 24.62030202397431,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/admin-settings/authentication/google/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-efbc63a20951bcda5f85",
+          "score": 21.68165198523649,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/admin-settings/authentication/google/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-88dfdaf5144c001bd81e",
+          "score": 21.591946652603557,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/admin-settings/authentication/google/_index.md"
+        },
+        {
+          "chunk_id": "rancher-source-750e3a8b50c465185f59",
+          "score": 16.755341236270354,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/webhook/pkg/resources/common/common.go"
+        },
+        {
+          "chunk_id": "rancher-docs-377f5646bfd4a6e5932e",
+          "score": 16.72497422938737,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/rancher-2.3.x/rancher-v2.3.3/hardening-2.3.3/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs",
+        "rancher_source"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-f4a38994a955e40c",
+      "claim_type": "cloud_credential",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-7eef6d179eec8900c90a",
+          "score": 20.14721264942058,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/security/cve/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-5ce734d46d813473e724",
+          "score": 20.09436308626497,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/cluster-provisioning/rke-clusters/node-pools/digital-ocean/do-node-template-config/_index.md"
+        },
+        {
+          "chunk_id": "rancher-source-d961bac627a39c4fe4c9",
+          "score": 19.540300722594896,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/webhook/docs.md"
+        },
+        {
+          "chunk_id": "rancher-source-8d3e24f98bff57ec2073",
+          "score": 19.50492682755616,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/webhook/pkg/resources/provisioning.cattle.io/v1/cluster/validator.go"
+        },
+        {
+          "chunk_id": "rancher-source-179f7794241dc773ffd1",
+          "score": 18.994427729832132,
+          "source_type": "rancher_source",
+          "document_path": "evidence/raw/rancher/source/webhook/pkg/resources/infrastructure.cluster.x-k8s.io/v1beta2/awsclusterstaticidentity/AWSClusterStaticIdentity.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs",
+        "rancher_source"
+      ],
+      "hit_count": 5
+    },
+    {
+      "claim_id": "claim-71015deaa0a8a259",
+      "claim_type": "serviceaccount_token",
+      "retrieved_chunks": [
+        {
+          "chunk_id": "rancher-docs-bb7674d494f31d50fb52",
+          "score": 25.152263336617104,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.0-v2.4/en/api/api-tokens/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-70bf7a2219abd449baf7",
+          "score": 25.152263336617104,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/api/api-tokens/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-33ca249dc0374f5f0084",
+          "score": 25.001005108316797,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/api/api-tokens/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-bce173f0227570ec41b0",
+          "score": 24.394331127813583,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.5/en/admin-settings/authentication/azure-ad/_index.md"
+        },
+        {
+          "chunk_id": "rancher-docs-6ba814b24361b56d2078",
+          "score": 24.394331127813583,
+          "source_type": "rancher_docs",
+          "document_path": "content/rancher/v2.6/en/admin-settings/authentication/azure-ad/_index.md"
+        }
+      ],
+      "source_types_used": [
+        "rancher_docs"
+      ],
+      "hit_count": 5
+    }
+  ]
+}

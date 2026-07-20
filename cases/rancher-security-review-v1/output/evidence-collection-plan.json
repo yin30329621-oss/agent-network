@@ -1,0 +1,930 @@
+{
+  "schema_version": "rancher-security-review-v1-evidence-collection-plan-v1",
+  "collection_policy": "offline_manifest_only",
+  "network_accessed": false,
+  "model_calls": 0,
+  "claim_count": 53,
+  "p0_count": 39,
+  "p1_count": 14,
+  "source_type_counts": {
+    "kubernetes_docs": 15,
+    "rancher_docs": 35,
+    "rke2_docs": 2,
+    "cis_fips_docs": 2,
+    "github_source": 13,
+    "cloud_provider_iam_docs": 7,
+    "rancher_architecture_docs": 12,
+    "github_remotedialer_source": 12,
+    "suse_advisory": 4,
+    "rancher_security_advisory": 4,
+    "nvd_ghsa": 4
+  },
+  "estimated_evidence_chunk_count": 110,
+  "records": [
+    {
+      "claim_id": "claim-3a5bd3fd2b1fd13a",
+      "verification_targets": [
+        "Rancher and Kubernetes RBAC authorization boundary"
+      ],
+      "required_sources": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-2da1cf8805cc2253",
+      "verification_targets": [
+        "RKE2 security, FIPS, CIS, and hardening capability"
+      ],
+      "required_sources": [
+        "rke2_docs",
+        "cis_fips_docs"
+      ],
+      "priority": "P1",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "security_advisory"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-a430ef3fb491d40b",
+      "verification_targets": [
+        "Cluster Agent deployment and Rancher/downstream communication"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "github_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-e10bf8632ed8b152",
+      "verification_targets": [
+        "Cluster Agent deployment and Rancher/downstream communication"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "github_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-efa7ecd3f540c26a",
+      "verification_targets": [
+        "Rancher and Kubernetes RBAC authorization boundary"
+      ],
+      "required_sources": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-5dd455aa1d3e5489",
+      "verification_targets": [
+        "Cluster Agent deployment and Rancher/downstream communication"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "github_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-cae029775fd8a02b",
+      "verification_targets": [
+        "Cluster Agent deployment and Rancher/downstream communication"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "github_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-dda808f491d5cb72",
+      "verification_targets": [
+        "Cluster Agent deployment and Rancher/downstream communication"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "github_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-dfe9bd4c30fe9871",
+      "verification_targets": [
+        "Cloud Credential storage, permission scope, and provider use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "cloud_provider_iam_docs"
+      ],
+      "priority": "P1",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-9cf7649cc430f62d",
+      "verification_targets": [
+        "Reverse Tunnel establishment and request forwarding"
+      ],
+      "required_sources": [
+        "rancher_architecture_docs",
+        "github_remotedialer_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-cc8a4b9123dd3a04",
+      "verification_targets": [
+        "Cluster Agent deployment and Rancher/downstream communication"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "github_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-28724412fb92c4bc",
+      "verification_targets": [
+        "Cluster Agent deployment and Rancher/downstream communication"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "github_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-fdb6477afdb5dc04",
+      "verification_targets": [
+        "ServiceAccount, registration token, or API token lifecycle and use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "kubernetes_docs"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-7d87a09616951654",
+      "verification_targets": [
+        "Cluster Agent deployment and Rancher/downstream communication"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "github_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-4e5a6e18fd06091d",
+      "verification_targets": [
+        "ServiceAccount, registration token, or API token lifecycle and use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "kubernetes_docs"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-46ea46c2eab1762a",
+      "verification_targets": [
+        "ServiceAccount, registration token, or API token lifecycle and use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "kubernetes_docs"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-0ffb0dd164f937cd",
+      "verification_targets": [
+        "Cloud Credential storage, permission scope, and provider use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "cloud_provider_iam_docs"
+      ],
+      "priority": "P1",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-7270067608fbdaf1",
+      "verification_targets": [
+        "Credential and Secret storage or access behavior"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "kubernetes_docs"
+      ],
+      "priority": "P1",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-d6df35ef0981ec11",
+      "verification_targets": [
+        "Reverse Tunnel establishment and request forwarding"
+      ],
+      "required_sources": [
+        "rancher_architecture_docs",
+        "github_remotedialer_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-c9a8812a026bd7a4",
+      "verification_targets": [
+        "Reverse Tunnel establishment and request forwarding"
+      ],
+      "required_sources": [
+        "rancher_architecture_docs",
+        "github_remotedialer_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-3d70fb8d8bb5f3a5",
+      "verification_targets": [
+        "Reverse Tunnel establishment and request forwarding"
+      ],
+      "required_sources": [
+        "rancher_architecture_docs",
+        "github_remotedialer_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-b236df80530b6330",
+      "verification_targets": [
+        "Reverse Tunnel establishment and request forwarding"
+      ],
+      "required_sources": [
+        "rancher_architecture_docs",
+        "github_remotedialer_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-004fad4318dfe14d",
+      "verification_targets": [
+        "Reverse Tunnel establishment and request forwarding"
+      ],
+      "required_sources": [
+        "rancher_architecture_docs",
+        "github_remotedialer_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-9ef1cf2b85f4dde1",
+      "verification_targets": [
+        "Cluster Agent deployment and Rancher/downstream communication"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "github_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-845af20c0ac3ca01",
+      "verification_targets": [
+        "ServiceAccount, registration token, or API token lifecycle and use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "kubernetes_docs"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-0e19e0dbee0458f8",
+      "verification_targets": [
+        "ServiceAccount, registration token, or API token lifecycle and use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "kubernetes_docs"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-bcb84205d2b33429",
+      "verification_targets": [
+        "ServiceAccount, registration token, or API token lifecycle and use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "kubernetes_docs"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-65e1ca3204fea1d2",
+      "verification_targets": [
+        "Reverse Tunnel establishment and request forwarding"
+      ],
+      "required_sources": [
+        "rancher_architecture_docs",
+        "github_remotedialer_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-e4937840068f62f9",
+      "verification_targets": [
+        "Reverse Tunnel establishment and request forwarding"
+      ],
+      "required_sources": [
+        "rancher_architecture_docs",
+        "github_remotedialer_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-ecaaff6a824b3778",
+      "verification_targets": [
+        "Reverse Tunnel establishment and request forwarding"
+      ],
+      "required_sources": [
+        "rancher_architecture_docs",
+        "github_remotedialer_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-11b622ffcf147111",
+      "verification_targets": [
+        "Reverse Tunnel establishment and request forwarding"
+      ],
+      "required_sources": [
+        "rancher_architecture_docs",
+        "github_remotedialer_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-602a5e745b9c8d0a",
+      "verification_targets": [
+        "Rancher and Kubernetes RBAC authorization boundary"
+      ],
+      "required_sources": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-b93994e65b657d92",
+      "verification_targets": [
+        "Cluster Agent deployment and Rancher/downstream communication"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "github_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-29e0a89bc852ef77",
+      "verification_targets": [
+        "Cluster Agent deployment and Rancher/downstream communication"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "github_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-b961b28e7707f8a1",
+      "verification_targets": [
+        "Cluster Agent deployment and Rancher/downstream communication"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "github_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-2211ad16cd7b1afb",
+      "verification_targets": [
+        "ServiceAccount, registration token, or API token lifecycle and use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "kubernetes_docs"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-8333e4587b8fc8cd",
+      "verification_targets": [
+        "Cloud Credential storage, permission scope, and provider use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "cloud_provider_iam_docs"
+      ],
+      "priority": "P1",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-74b3fa824cefed5f",
+      "verification_targets": [
+        "Cloud Credential storage, permission scope, and provider use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "cloud_provider_iam_docs"
+      ],
+      "priority": "P1",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-fef5595aa1772fb0",
+      "verification_targets": [
+        "Cloud Credential storage, permission scope, and provider use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "cloud_provider_iam_docs"
+      ],
+      "priority": "P1",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-6e9320a999c7b847",
+      "verification_targets": [
+        "Cloud Credential storage, permission scope, and provider use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "cloud_provider_iam_docs"
+      ],
+      "priority": "P1",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-f35d274b851aac86",
+      "verification_targets": [
+        "ServiceAccount, registration token, or API token lifecycle and use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "kubernetes_docs"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-ba84a598d37639c7",
+      "verification_targets": [
+        "ServiceAccount, registration token, or API token lifecycle and use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "kubernetes_docs"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-868b0aa7bd10b3d7",
+      "verification_targets": [
+        "Cluster Agent deployment and Rancher/downstream communication"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "github_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-3973c8bbb8c228ae",
+      "verification_targets": [
+        "RKE2 security, FIPS, CIS, and hardening capability"
+      ],
+      "required_sources": [
+        "rke2_docs",
+        "cis_fips_docs"
+      ],
+      "priority": "P1",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "security_advisory"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-8fd850285f9e35dd",
+      "verification_targets": [
+        "Reverse Tunnel establishment and request forwarding"
+      ],
+      "required_sources": [
+        "rancher_architecture_docs",
+        "github_remotedialer_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-a1acb75d43035b12",
+      "verification_targets": [
+        "Reverse Tunnel establishment and request forwarding"
+      ],
+      "required_sources": [
+        "rancher_architecture_docs",
+        "github_remotedialer_source"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-07ab6a2242540b6a",
+      "verification_targets": [
+        "CVE identity, affected scope, impact, and remediation"
+      ],
+      "required_sources": [
+        "suse_advisory",
+        "rancher_security_advisory",
+        "nvd_ghsa"
+      ],
+      "priority": "P1",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "security_advisory",
+        "official_document"
+      ],
+      "estimated_evidence_chunks": 3
+    },
+    {
+      "claim_id": "claim-490b12f5918e8e93",
+      "verification_targets": [
+        "CVE identity, affected scope, impact, and remediation"
+      ],
+      "required_sources": [
+        "suse_advisory",
+        "rancher_security_advisory",
+        "nvd_ghsa"
+      ],
+      "priority": "P1",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "security_advisory",
+        "official_document"
+      ],
+      "estimated_evidence_chunks": 3
+    },
+    {
+      "claim_id": "claim-5ff0574984016b2d",
+      "verification_targets": [
+        "CVE identity, affected scope, impact, and remediation"
+      ],
+      "required_sources": [
+        "suse_advisory",
+        "rancher_security_advisory",
+        "nvd_ghsa"
+      ],
+      "priority": "P1",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "security_advisory",
+        "official_document"
+      ],
+      "estimated_evidence_chunks": 3
+    },
+    {
+      "claim_id": "claim-66f966a5ee89c717",
+      "verification_targets": [
+        "CVE identity, affected scope, impact, and remediation"
+      ],
+      "required_sources": [
+        "suse_advisory",
+        "rancher_security_advisory",
+        "nvd_ghsa"
+      ],
+      "priority": "P1",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "security_advisory",
+        "official_document"
+      ],
+      "estimated_evidence_chunks": 3
+    },
+    {
+      "claim_id": "claim-a42b205c07bcfe24",
+      "verification_targets": [
+        "Rancher and Kubernetes RBAC authorization boundary"
+      ],
+      "required_sources": [
+        "kubernetes_docs",
+        "rancher_docs"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-f4a38994a955e40c",
+      "verification_targets": [
+        "Cloud Credential storage, permission scope, and provider use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "cloud_provider_iam_docs"
+      ],
+      "priority": "P1",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    },
+    {
+      "claim_id": "claim-71015deaa0a8a259",
+      "verification_targets": [
+        "ServiceAccount, registration token, or API token lifecycle and use"
+      ],
+      "required_sources": [
+        "rancher_docs",
+        "kubernetes_docs"
+      ],
+      "priority": "P0",
+      "collection_status": "pending",
+      "required_evidence_types": [
+        "official_document",
+        "source_code"
+      ],
+      "estimated_evidence_chunks": 2
+    }
+  ]
+}
