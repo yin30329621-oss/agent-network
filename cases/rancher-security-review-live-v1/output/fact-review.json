@@ -1,0 +1,1663 @@
+{
+  "execution_status": "completed",
+  "reconciliations": [
+    {
+      "claim_id": "claim-6da7330b58d38357",
+      "status": "manual_review_required",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-8bd627c7ae0c6ec16043",
+          "rancher-docs-c498c0a0d657c796aed5"
+        ],
+        "reasoning_summary": "Evidence describes cluster agents but not deployment/access links.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-6da7330b58d38357",
+        "response_metadata": {
+          "content_length": 1205,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "supported",
+        "recommended_status": "supported",
+        "cited_chunk_ids": [
+          "rancher-docs-8bd627c7ae0c6ec16043",
+          "rancher-docs-c498c0a0d657c796aed5"
+        ],
+        "reasoning_summary": "The claim is a section heading regarding Cluster Agent deployment and access links. The cited evidence explicitly describes the deployment of one cluster agent per downstream cluster and its access link (tunnel) to the cluster controller, fully supporting the topic.",
+        "limitations": [
+          "Claim is a heading, not a full proposition.",
+          "Evidence does not detail the exact deployment steps, only the architecture."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-6da7330b58d38357",
+        "response_metadata": {
+          "content_length": 2012,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "supported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "evidence_gate_blocked_upgrade"
+      ],
+      "review_priority": "high"
+    },
+    {
+      "claim_id": "claim-2c276d7e37626ba9",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "kubernetes-docs-469f165331cd1379bee3",
+          "kubernetes-docs-4e2c146ce9402d6a609d"
+        ],
+        "reasoning_summary": "Evidence covers token/credential topics but not security management.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-2c276d7e37626ba9",
+        "response_metadata": {
+          "content_length": 1205,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "kubernetes-docs-469f165331cd1379bee3",
+          "kubernetes-docs-4e2c146ce9402d6a609d"
+        ],
+        "reasoning_summary": "The claim is a heading for Rancher's token and credential security management. The cited evidence only discusses generic Kubernetes authentication and credential plugins, failing to address Rancher-specific token management or security controls.",
+        "limitations": [
+          "Evidence is for upstream Kubernetes, not Rancher.",
+          "Claim is a heading lacking specific verifiable assertions."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-2c276d7e37626ba9",
+        "response_metadata": {
+          "content_length": 2012,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-3a5bd3fd2b1fd13a",
+      "status": "consensus",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-1ce36711c8cd78e419dc",
+          "rancher-docs-5f432a509d5f11c47ed1"
+        ],
+        "reasoning_summary": "Evidence shows AD auth but not full RBAC model described.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-3a5bd3fd2b1fd13a",
+        "response_metadata": {
+          "content_length": 1205,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-1ce36711c8cd78e419dc",
+          "rancher-docs-5f432a509d5f11c47ed1"
+        ],
+        "reasoning_summary": "The claim asserts Rancher supports multiple auth methods (LDAP, AD, GitHub, SAML, OIDC) and RBAC models. The evidence only confirms Active Directory integration, leaving the other auth providers and the specific RBAC role models unsupported.",
+        "limitations": [
+          "Evidence only covers Active Directory.",
+          "No evidence provided for RBAC models or other auth providers."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-3a5bd3fd2b1fd13a",
+        "response_metadata": {
+          "content_length": 2012,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "warnings": [],
+      "needs_manual_review": false,
+      "manual_review_reasons": [],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-a430ef3fb491d40b",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "pending",
+        "cited_chunk_ids": [
+          "rancher-docs-ca8b7fc6e8feda6e4d5c",
+          "rancher-docs-ed3f59e2c13a4396a77c"
+        ],
+        "reasoning_summary": "Evidence partially supports claim; no exact match or contradiction found.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-a430ef3fb491d40b",
+        "response_metadata": {
+          "content_length": 1191,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unknown"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "rancher-docs-ca8b7fc6e8feda6e4d5c",
+          "rancher-docs-ed3f59e2c13a4396a77c"
+        ],
+        "reasoning_summary": "The provided evidence only discusses kubeconfig authentication methods for RKE and non-RKE clusters. It completely lacks information regarding Rancher's overall architecture, specific components (Authentication Proxy, API Server, Cluster Controller, Agent, etcd), and the secure tunnel mechanism described in the claim.",
+        "limitations": [
+          "Evidence focuses solely on kubeconfig access methods.",
+          "No architectural overview or component details are present.",
+          "Fails to verify the secure tunnel or agent interaction claims."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-a430ef3fb491d40b",
+        "response_metadata": {
+          "content_length": 2347,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-ad51af831ebb77ac",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "pending",
+        "cited_chunk_ids": [
+          "rancher-docs-6cd6e17c8ca59dfc16ca",
+          "rancher-docs-ee81309bdec13bae2077"
+        ],
+        "reasoning_summary": "Evidence partially supports claim; no exact match or contradiction found.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-ad51af831ebb77ac",
+        "response_metadata": {
+          "content_length": 1191,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unknown"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "rancher-docs-6cd6e17c8ca59dfc16ca",
+          "rancher-docs-ee81309bdec13bae2077"
+        ],
+        "reasoning_summary": "The evidence only mentions the authentication proxy forwarding Kubernetes API calls. It does not cover the Management Plane concept, Rancher API Server, Cluster Controller, Cluster Agent, or etcd data store, making it insufficient to support the comprehensive architectural workflow described.",
+        "limitations": [
+          "Evidence is limited to a specific user scenario.",
+          "Missing details on Management Plane and API Server.",
+          "Does not mention Cluster Controller, Agent, or etcd."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-ad51af831ebb77ac",
+        "response_metadata": {
+          "content_length": 2347,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-e10bf8632ed8b152",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "pending",
+        "cited_chunk_ids": [
+          "rancher-docs-ca8b7fc6e8feda6e4d5c",
+          "rancher-docs-ed3f59e2c13a4396a77c"
+        ],
+        "reasoning_summary": "Evidence partially supports claim; no exact match or contradiction found.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-e10bf8632ed8b152",
+        "response_metadata": {
+          "content_length": 1191,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unknown"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "rancher-docs-ca8b7fc6e8feda6e4d5c",
+          "rancher-docs-ed3f59e2c13a4396a77c"
+        ],
+        "reasoning_summary": "The evidence discusses kubeconfig authentication for cluster access but fails to address the claim's specifics about request origins (Web UI, CLI, API), the Authentication Proxy's role for all requests, or the subsequent handling by the Rancher API Server, Cluster Controller, and Cluster Agent.",
+        "limitations": [
+          "Evidence is restricted to kubeconfig and ACE contexts.",
+          "No mention of Web UI, CLI, or API request routing.",
+          "Lacks information on API Server and Controller workflows."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-e10bf8632ed8b152",
+        "response_metadata": {
+          "content_length": 2347,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-efa7ecd3f540c26a",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "kubernetes-docs-395b066cbafbdd8a8a14",
+          "rancher-docs-110a56a378b2eff9d58b"
+        ],
+        "reasoning_summary": "Evidence mentions RBAC but not the full claim about Rancher API Server handling requests.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-efa7ecd3f540c26a",
+        "response_metadata": {
+          "content_length": 1255,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "kubernetes-docs-395b066cbafbdd8a8a14",
+          "rancher-docs-110a56a378b2eff9d58b"
+        ],
+        "reasoning_summary": "Evidence only covers generic Kubernetes RBAC and a Rancher CIS benchmark for apiserver flags. It lacks any documentation regarding Rancher API Server processing authenticated requests or the integration of Rancher RBAC with Kubernetes RBAC for downstream cluster authorization.",
+        "limitations": [
+          "Evidence does not mention Rancher API Server.",
+          "No details on Rancher RBAC integration."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-efa7ecd3f540c26a",
+        "response_metadata": {
+          "content_length": 1991,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-5dd455aa1d3e5489",
+      "status": "consensus",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-6cd6e17c8ca59dfc16ca",
+          "rancher-docs-ee81309bdec13bae2077"
+        ],
+        "reasoning_summary": "Evidence describes authentication proxy but not Rancher API Server's role.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-5dd455aa1d3e5489",
+        "response_metadata": {
+          "content_length": 1255,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-6cd6e17c8ca59dfc16ca",
+          "rancher-docs-ee81309bdec13bae2077"
+        ],
+        "reasoning_summary": "Evidence describes the Authentication Proxy forwarding API calls but does not detail the Rancher API Server's internal responsibilities like parsing requests, executing business logic, accessing data storage, or coordinating controllers and agents as claimed.",
+        "limitations": [
+          "Focuses only on Authentication Proxy.",
+          "Missing Rancher API Server internal mechanics."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-5dd455aa1d3e5489",
+        "response_metadata": {
+          "content_length": 1991,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "warnings": [],
+      "needs_manual_review": false,
+      "manual_review_reasons": [],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-0da3750861fead32",
+      "status": "consensus",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-8bd627c7ae0c6ec16043",
+          "rancher-docs-c498c0a0d657c796aed5"
+        ],
+        "reasoning_summary": "Evidence describes cluster controllers and agents but not the coordination claim.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-0da3750861fead32",
+        "response_metadata": {
+          "content_length": 1255,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-8bd627c7ae0c6ec16043",
+          "rancher-docs-c498c0a0d657c796aed5"
+        ],
+        "reasoning_summary": "Evidence confirms cluster agents tunnel to cluster controllers to watch resource changes, supporting collaborative management. However, it does not explicitly verify that this coordination is triggered 'based on requests' as stated in the claim.",
+        "limitations": [
+          "Does not confirm request-driven triggering.",
+          "Lacks explicit API Server coordination details."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-0da3750861fead32",
+        "response_metadata": {
+          "content_length": 1991,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "warnings": [],
+      "needs_manual_review": false,
+      "manual_review_reasons": [],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-63478ad7db4614c3",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-8bd627c7ae0c6ec16043",
+          "rancher-docs-c498c0a0d657c796aed5"
+        ],
+        "reasoning_summary": "Evidence mentions cluster controller and agent but not Rancher API Server's role.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-63478ad7db4614c3",
+        "response_metadata": {
+          "content_length": 1238,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "rancher-docs-8bd627c7ae0c6ec16043",
+          "rancher-docs-c498c0a0d657c796aed5"
+        ],
+        "reasoning_summary": "Evidence describes cluster agents and controllers but omits the Rancher API Server's role, authentication handling, and request coordination. It fails to substantiate the core architectural claims about the API Server.",
+        "limitations": [
+          "Evidence lacks API Server details",
+          "No mention of authentication handling",
+          "Excerpt is truncated"
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-63478ad7db4614c3",
+        "response_metadata": {
+          "content_length": 1913,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-cae029775fd8a02b",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-6cd6e17c8ca59dfc16ca",
+          "rancher-docs-ee81309bdec13bae2077"
+        ],
+        "reasoning_summary": "Evidence describes authentication proxy but not Cluster Controller's role.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-cae029775fd8a02b",
+        "response_metadata": {
+          "content_length": 1238,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "rancher-docs-6cd6e17c8ca59dfc16ca",
+          "rancher-docs-ee81309bdec13bae2077"
+        ],
+        "reasoning_summary": "Evidence only covers the authentication proxy forwarding API calls. It does not address the cluster controller's responsibilities, state change listening, or its position in the request flow after the API server.",
+        "limitations": [
+          "Missing cluster controller details",
+          "No API server request flow",
+          "Excerpt is truncated"
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-cae029775fd8a02b",
+        "response_metadata": {
+          "content_length": 1913,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-dda808f491d5cb72",
+      "status": "consensus",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-8bd627c7ae0c6ec16043",
+          "rancher-docs-c498c0a0d657c796aed5"
+        ],
+        "reasoning_summary": "Evidence mentions cluster controller and agent but not indirect API access.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-dda808f491d5cb72",
+        "response_metadata": {
+          "content_length": 1238,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-8bd627c7ae0c6ec16043",
+          "rancher-docs-c498c0a0d657c796aed5"
+        ],
+        "reasoning_summary": "Evidence confirms cluster agents open tunnels to controllers and controllers watch for resource changes, supporting coordination and state sync. However, it lacks explicit confirmation that controllers never directly access the downstream K8s API.",
+        "limitations": [
+          "No explicit denial of direct API access",
+          "Excerpt is truncated",
+          "Agent's direct API calls not detailed"
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-dda808f491d5cb72",
+        "response_metadata": {
+          "content_length": 1913,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "warnings": [],
+      "needs_manual_review": false,
+      "manual_review_reasons": [],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-8567da682028e848",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-1c926db20b8dfa506577",
+          "rancher-source-d14b0509f8adc1fbbf2f"
+        ],
+        "reasoning_summary": "Evidence partially supports claim; no exact match or contradiction.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-8567da682028e848",
+        "response_metadata": {
+          "content_length": 1211,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "rancher-docs-1c926db20b8dfa506577",
+          "rancher-source-d14b0509f8adc1fbbf2f"
+        ],
+        "reasoning_summary": "Evidence discusses deprecated RancherD configuration and remotedialer network tunnels. It does not describe the Cluster Controller's task scheduling mechanism or its coordination with the Cluster Agent based on API server requests.",
+        "limitations": [
+          "Evidence is topically unrelated to the specific architectural claim.",
+          "No semantic model judgment was used in the initial decision."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-8567da682028e848",
+        "response_metadata": {
+          "content_length": 2043,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-487c9b0f9f97e410",
+      "status": "consensus",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-8bd627c7ae0c6ec16043",
+          "rancher-docs-c498c0a0d657c796aed5"
+        ],
+        "reasoning_summary": "Evidence partially supports claim; no exact match or contradiction.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-487c9b0f9f97e410",
+        "response_metadata": {
+          "content_length": 1211,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-8bd627c7ae0c6ec16043",
+          "rancher-docs-c498c0a0d657c796aed5"
+        ],
+        "reasoning_summary": "Evidence confirms cluster controllers watch downstream resource changes and bring current state via a tunnel from the cluster agent. This partially supports state synchronization but lacks explicit details on updating Rancher's internal cluster status and runtime info.",
+        "limitations": [
+          "Excerpt truncates before fully detailing state update mechanisms.",
+          "No semantic model judgment was used in the initial decision."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-487c9b0f9f97e410",
+        "response_metadata": {
+          "content_length": 2043,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "warnings": [],
+      "needs_manual_review": false,
+      "manual_review_reasons": [],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-235a797973d69fad",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-ab7bef51493ae373c14c",
+          "rancher-docs-a34ed25ffb8621744493"
+        ],
+        "reasoning_summary": "Evidence partially supports claim; no exact match or contradiction.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-235a797973d69fad",
+        "response_metadata": {
+          "content_length": 1211,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "rancher-docs-ab7bef51493ae373c14c",
+          "rancher-docs-a34ed25ffb8621744493"
+        ],
+        "reasoning_summary": "Evidence only describes etcd directory ownership for Kubernetes hardening. It does not validate Rancher's Data Store architecture, Cloud Credential storage, or the API server's interaction with etcd for management data.",
+        "limitations": [
+          "Evidence is a generic Kubernetes hardening guide, not Rancher architecture.",
+          "No semantic model judgment was used in the initial decision."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-235a797973d69fad",
+        "response_metadata": {
+          "content_length": 2043,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-25f0a58a1a8efbd4",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-e7df9537c48b5af49264",
+          "rancher-docs-5b3f43e2ec54365db5c6"
+        ],
+        "reasoning_summary": "Evidence mentions RBAC and roles but not full mapping details.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-25f0a58a1a8efbd4",
+        "response_metadata": {
+          "content_length": 1208,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "rancher-docs-e7df9537c48b5af49264",
+          "rancher-docs-5b3f43e2ec54365db5c6"
+        ],
+        "reasoning_summary": "The claim describes Rancher's core permission configuration (Global, Cluster, Project roles, RBAC mapping) in the Data Store. The provided evidence only discusses RBAC for the Prometheus Federator monitoring feature in v2.6, which is too narrow to validate the general architectural claim about core Rancher roles and Data Store mappings.",
+        "limitations": [
+          "Evidence is specific to Prometheus Federator, not core Rancher RBAC.",
+          "Lacks details on Global and Cluster roles.",
+          "Does not address Data Store mapping mechanisms."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-25f0a58a1a8efbd4",
+        "response_metadata": {
+          "content_length": 2541,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-dfe9bd4c30fe9871",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-ffe3871dcb5b13fca601",
+          "rancher-docs-7eef6d179eec8900c90a"
+        ],
+        "reasoning_summary": "Evidence covers TLS and cloud credentials but not all token types.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-dfe9bd4c30fe9871",
+        "response_metadata": {
+          "content_length": 1208,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "rancher-docs-ffe3871dcb5b13fca601",
+          "rancher-docs-7eef6d179eec8900c90a"
+        ],
+        "reasoning_summary": "The claim lists multiple credential types managed in the Data Store (Registration Token, API Token, Cloud Credential, TLS, Secrets). The evidence only partially covers TLS configuration in v2.5 and a CVE related to cloud credentials in v2.0-v2.4. It completely omits Registration Tokens, API Tokens, and Secrets, and relies on outdated or fragmented versions.",
+        "limitations": [
+          "Evidence misses Registration Token, API Token, and Secret references.",
+          "Relies on outdated versions (v2.0-v2.4) and specific installation guides.",
+          "Fragmented coverage of the comprehensive credential list."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-dfe9bd4c30fe9871",
+        "response_metadata": {
+          "content_length": 2541,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-9cf7649cc430f62d",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "kubernetes-docs-d2b2b8f5bcfc2fbd5c9f",
+          "rancher-docs-8bd627c7ae0c6ec16043"
+        ],
+        "reasoning_summary": "Evidence shows cluster agent tunnel but not token/credential details.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-9cf7649cc430f62d",
+        "response_metadata": {
+          "content_length": 1208,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "kubernetes-docs-d2b2b8f5bcfc2fbd5c9f",
+          "rancher-docs-8bd627c7ae0c6ec16043"
+        ],
+        "reasoning_summary": "The claim details the cluster communication plane using cluster agents, tokens, credentials, and reverse tunnels. The Kubernetes evidence is irrelevant (dashboard auth). The Rancher evidence (v2.0-v2.4) mentions the cluster agent and tunnel but lacks specifics on token and credential mechanisms for secure communication, and uses an outdated version.",
+        "limitations": [
+          "Kubernetes evidence is irrelevant to Rancher cluster agents.",
+          "Rancher evidence lacks token and credential mechanism details.",
+          "Relies on outdated architecture documentation (v2.0-v2.4)."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-9cf7649cc430f62d",
+        "response_metadata": {
+          "content_length": 2541,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-c86311533ca78a45",
+      "status": "manual_review_required",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-8bd627c7ae0c6ec16043",
+          "rancher-docs-c498c0a0d657c796aed5"
+        ],
+        "reasoning_summary": "Evidence describes cluster agent role but lacks explicit mention of task execution and state sync.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-c86311533ca78a45",
+        "response_metadata": {
+          "content_length": 1274,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "supported",
+        "recommended_status": "supported",
+        "cited_chunk_ids": [
+          "rancher-docs-8bd627c7ae0c6ec16043",
+          "rancher-docs-c498c0a0d657c796aed5"
+        ],
+        "reasoning_summary": "Evidence confirms each downstream cluster has a cluster agent opening a tunnel to the Rancher server's cluster controller, which watches resource changes and syncs state, directly supporting the claim's core assertions about deployment, communication, and state synchronization.",
+        "limitations": [
+          "Evidence does not explicitly detail the execution of management tasks.",
+          "Lacks specific mention of multi-cluster unified management context."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-c86311533ca78a45",
+        "response_metadata": {
+          "content_length": 2019,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "supported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "evidence_gate_blocked_upgrade"
+      ],
+      "review_priority": "high"
+    },
+    {
+      "claim_id": "claim-cc8a4b9123dd3a04",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-8d1c832ad5ebd0a34a72",
+          "rancher-docs-820a18756dc294678622"
+        ],
+        "reasoning_summary": "Evidence mentions agent but does not confirm deployment details or communication link.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-cc8a4b9123dd3a04",
+        "response_metadata": {
+          "content_length": 1274,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "rancher-docs-8d1c832ad5ebd0a34a72",
+          "rancher-docs-820a18756dc294678622"
+        ],
+        "reasoning_summary": "The provided evidence only discusses manually patching the agent's CA checksum environment variable. It completely fails to address the agent's deployment namespace, communication link establishment, or its role as a core proxy component.",
+        "limitations": [
+          "Evidence is entirely unrelated to the architectural claims.",
+          "No information on cattle-system namespace or deployment flow."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-cc8a4b9123dd3a04",
+        "response_metadata": {
+          "content_length": 2019,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-28724412fb92c4bc",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-1c926db20b8dfa506577",
+          "rancher-docs-f49e9fd3b583d761d0eb"
+        ],
+        "reasoning_summary": "Evidence does not address cluster agent functions or reporting described in claim.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-28724412fb92c4bc",
+        "response_metadata": {
+          "content_length": 1274,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "rancher-docs-1c926db20b8dfa506577",
+          "rancher-docs-f49e9fd3b583d761d0eb"
+        ],
+        "reasoning_summary": "The retrieved chunks discuss RancherD configuration and kubectl installation via the Web UI. They provide zero evidence regarding the cluster agent's internal operations, API server interactions, or status reporting mechanisms.",
+        "limitations": [
+          "Evidence is irrelevant to cluster agent functionality.",
+          "No mention of API server calls or status reporting."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-28724412fb92c4bc",
+        "response_metadata": {
+          "content_length": 2019,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-fdb6477afdb5dc04",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "pending",
+        "cited_chunk_ids": [
+          "kubernetes-docs-5a08413e6ac2ea4963fe",
+          "rancher-docs-1c926db20b8dfa506577"
+        ],
+        "reasoning_summary": "Evidence partially supports claim; no direct match found.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-fdb6477afdb5dc04",
+        "response_metadata": {
+          "content_length": 1146,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unknown"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "kubernetes-docs-5a08413e6ac2ea4963fe",
+          "rancher-docs-1c926db20b8dfa506577"
+        ],
+        "reasoning_summary": "The provided evidence does not support the claim. The Kubernetes service account documentation explains general K8s concepts but lacks any mention of Rancher Cluster Agent. The RancherD configuration reference is deprecated and unrelated to the Cluster Agent's communication bridge role.",
+        "limitations": [
+          "Evidence lacks specific Rancher Cluster Agent architecture details.",
+          "RancherD documentation is deprecated and irrelevant."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-fdb6477afdb5dc04",
+        "response_metadata": {
+          "content_length": 2118,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-1c25dfbc7034846b",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "pending",
+        "cited_chunk_ids": [
+          "rancher-docs-98b9812152ad11a059fe",
+          "rancher-docs-d2b538ac49f90f884c85"
+        ],
+        "reasoning_summary": "Evidence partially supports claim; no direct match found.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-1c25dfbc7034846b",
+        "response_metadata": {
+          "content_length": 1146,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unknown"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "rancher-docs-98b9812152ad11a059fe",
+          "rancher-docs-d2b538ac49f90f884c85"
+        ],
+        "reasoning_summary": "The architecture overviews mention Rancher Server managing downstream clusters but fail to detail the Cluster Agent's specific role in proactively establishing management communication links. The excerpts are too high-level to validate the specific communication mechanism claimed.",
+        "limitations": [
+          "Excerpts are high-level architecture summaries.",
+          "No explicit mention of Cluster Agent communication initiation."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-1c25dfbc7034846b",
+        "response_metadata": {
+          "content_length": 2118,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-8a20421aa3a005eb",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "pending",
+        "cited_chunk_ids": [
+          "rancher-docs-8559d3046af2b373306c",
+          "rancher-docs-171bc1dcda146357f058"
+        ],
+        "reasoning_summary": "Evidence partially supports claim; no direct match found.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-8a20421aa3a005eb",
+        "response_metadata": {
+          "content_length": 1146,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unknown"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "rancher-docs-8559d3046af2b373306c",
+          "rancher-docs-171bc1dcda146357f058"
+        ],
+        "reasoning_summary": "The selected evidence is entirely irrelevant to the claim. The excerpts discuss API Server audit logging configurations and pod specification file ownership for RKE/RKE2, providing zero information about the Cluster Agent executing management requests or interacting with the API Server.",
+        "limitations": [
+          "Evidence focuses on API Server auditing and file ownership.",
+          "Completely unrelated to Cluster Agent management tasks."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-8a20421aa3a005eb",
+        "response_metadata": {
+          "content_length": 2118,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-b2393c3c95243737",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-cfc4b23e4fa57c8bc37f",
+          "rancher-source-5132129b5cd22c580284"
+        ],
+        "reasoning_summary": "Evidence mentions Rancher server and agents but not continuous status sync.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-b2393c3c95243737",
+        "response_metadata": {
+          "content_length": 1251,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "rancher-docs-cfc4b23e4fa57c8bc37f",
+          "rancher-source-5132129b5cd22c580284"
+        ],
+        "reasoning_summary": "The provided evidence discusses RancherD CLI options and remotedialer client/server reassignment. It does not contain information about the Cluster Agent continuously synchronizing specific state information such as cluster, node, workload, and component health to the Rancher server.",
+        "limitations": [
+          "Evidence lacks specific details on state synchronization payloads.",
+          "Remotedialer excerpt focuses on pod reassignment, not state sync."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-b2393c3c95243737",
+        "response_metadata": {
+          "content_length": 1892,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-7b5f317a9d38ff68",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "kubernetes-docs-d2b2b8f5bcfc2fbd5c9f",
+          "kubernetes-docs-f925774f89e73e46f64f"
+        ],
+        "reasoning_summary": "Evidence covers reverse proxy and authentication but not ServiceAccount or tunnel.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-7b5f317a9d38ff68",
+        "response_metadata": {
+          "content_length": 1251,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "kubernetes-docs-d2b2b8f5bcfc2fbd5c9f",
+          "kubernetes-docs-f925774f89e73e46f64f"
+        ],
+        "reasoning_summary": "The evidence excerpts describe generic Kubernetes authentication mechanisms like OpenID Connect and reverse proxies. They do not address the Rancher Cluster Agent's specific use of a ServiceAccount to access the API server or its use of a reverse tunnel for secure communication with the Rancher server.",
+        "limitations": [
+          "Evidence is generic Kubernetes documentation, not Rancher-specific.",
+          "No mention of reverse tunnels or ServiceAccount usage for agents."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-7b5f317a9d38ff68",
+        "response_metadata": {
+          "content_length": 1892,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-7d87a09616951654",
+      "status": "reviewer_disagreement",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "partially_supported",
+        "cited_chunk_ids": [
+          "rancher-docs-1c926db20b8dfa506577",
+          "rancher-docs-7ac4d8a5368f1a2d9d8c"
+        ],
+        "reasoning_summary": "Evidence touches on Rancher config and TLS but not the full credential system.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-7d87a09616951654",
+        "response_metadata": {
+          "content_length": 1251,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "partially_supported"
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "unsupported",
+        "recommended_status": "unsupported",
+        "cited_chunk_ids": [
+          "rancher-docs-1c926db20b8dfa506577",
+          "rancher-docs-7ac4d8a5368f1a2d9d8c"
+        ],
+        "reasoning_summary": "The selected evidence covers deprecated RancherD configuration and RKE hardening guides. It completely fails to address the comprehensive identity credential system used by the Cluster Agent and Rancher server for cluster registration, agent authentication, API access, and cloud resource management.",
+        "limitations": [
+          "Evidence is unrelated to Rancher credential architecture.",
+          "RancherD is deprecated and irrelevant to current agent credentials."
+        ],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-7d87a09616951654",
+        "response_metadata": {
+          "content_length": 1892,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": "unsupported"
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "reviewer_status_disagreement"
+      ],
+      "review_priority": "normal"
+    },
+    {
+      "claim_id": "claim-4e5a6e18fd06091d",
+      "status": "single_reviewer_available",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "pending",
+        "cited_chunk_ids": [
+          "rancher-source-09c148080cca6ad2476d",
+          "rancher-docs-ffe3871dcb5b13fca601"
+        ],
+        "reasoning_summary": "Evidence mentions tokens and registration but does not fully confirm the claim.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-4e5a6e18fd06091d",
+        "response_metadata": {
+          "content_length": 1209,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": ""
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "manual_review_required",
+        "recommended_status": "manual_review_required",
+        "cited_chunk_ids": [],
+        "reasoning_summary": "",
+        "limitations": [
+          "Reviewer result is unavailable."
+        ],
+        "audit_status": "failed",
+        "parse_status": "parse_failed",
+        "audit_warnings": [
+          "invalid_response:invalid_json"
+        ],
+        "claim_id": "claim-4e5a6e18fd06091d",
+        "response_metadata": {
+          "content_length": 1920,
+          "starts_with_json": true,
+          "finish_reason": "stop",
+          "json_extraction_error": "multiple_json_objects"
+        },
+        "normalized_status": ""
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "single_reviewer_available"
+      ],
+      "review_priority": "high"
+    },
+    {
+      "claim_id": "claim-46ea46c2eab1762a",
+      "status": "single_reviewer_available",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "pending",
+        "cited_chunk_ids": [
+          "rancher-docs-ad9b82afaa68c82cb8ac",
+          "rancher-docs-748f5cf1e407170bc8f8"
+        ],
+        "reasoning_summary": "Evidence shows API token usage for CLI but not the full claim about agent tokens.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-46ea46c2eab1762a",
+        "response_metadata": {
+          "content_length": 1209,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": ""
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "manual_review_required",
+        "recommended_status": "manual_review_required",
+        "cited_chunk_ids": [],
+        "reasoning_summary": "",
+        "limitations": [
+          "Reviewer result is unavailable."
+        ],
+        "audit_status": "failed",
+        "parse_status": "parse_failed",
+        "audit_warnings": [
+          "invalid_response:invalid_json"
+        ],
+        "claim_id": "claim-46ea46c2eab1762a",
+        "response_metadata": {
+          "content_length": 1920,
+          "starts_with_json": true,
+          "finish_reason": "stop",
+          "json_extraction_error": "multiple_json_objects"
+        },
+        "normalized_status": ""
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "single_reviewer_available"
+      ],
+      "review_priority": "high"
+    },
+    {
+      "claim_id": "claim-07ab6a2242540b6a",
+      "status": "single_reviewer_available",
+      "fact_a": {
+        "reviewer_id": "fact-a",
+        "decision": "partially_supported",
+        "recommended_status": "pending",
+        "cited_chunk_ids": [
+          "rancher-docs-05692d0595b3987a55df",
+          "rancher-docs-7de7a2ccabbefebf4b25"
+        ],
+        "reasoning_summary": "Evidence is about cluster agent troubleshooting, not the CVE or mitigation.",
+        "limitations": [],
+        "audit_status": "completed",
+        "parse_status": "parsed",
+        "audit_warnings": [],
+        "claim_id": "claim-07ab6a2242540b6a",
+        "response_metadata": {
+          "content_length": 1209,
+          "starts_with_json": true,
+          "finish_reason": "stop"
+        },
+        "normalized_status": ""
+      },
+      "fact_b": {
+        "reviewer_id": "fact-b",
+        "decision": "manual_review_required",
+        "recommended_status": "manual_review_required",
+        "cited_chunk_ids": [],
+        "reasoning_summary": "",
+        "limitations": [
+          "Reviewer result is unavailable."
+        ],
+        "audit_status": "failed",
+        "parse_status": "parse_failed",
+        "audit_warnings": [
+          "invalid_response:invalid_json"
+        ],
+        "claim_id": "claim-07ab6a2242540b6a",
+        "response_metadata": {
+          "content_length": 1920,
+          "starts_with_json": true,
+          "finish_reason": "stop",
+          "json_extraction_error": "multiple_json_objects"
+        },
+        "normalized_status": ""
+      },
+      "warnings": [],
+      "needs_manual_review": true,
+      "manual_review_reasons": [
+        "single_reviewer_available"
+      ],
+      "review_priority": "high"
+    }
+  ],
+  "failure_slots": [],
+  "cost_metadata": {
+    "estimated_reviewer_calls": 20,
+    "actual_reviewer_calls": 20,
+    "coordinator_model_call_count": 0,
+    "adapter_model_call_count": 0,
+    "network_request_count": 0
+  },
+  "isolation": {
+    "deep_copy": true,
+    "shared_reviewer_output": false
+  }
+}

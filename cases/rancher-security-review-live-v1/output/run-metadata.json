@@ -1,0 +1,78 @@
+{
+  "mode": "live",
+  "claim_count": 30,
+  "batch_size": 3,
+  "model_names": {
+    "fact_a": "deepseek-v4-pro",
+    "fact_b": "qwen3.7-plus",
+    "security": "Pro/moonshotai/Kimi-K2.6",
+    "logic": "deepseek-ai/DeepSeek-V4-Flash",
+    "merge": "zai-org/GLM-5.2"
+  },
+  "completed_agents": [
+    "fact_a",
+    "fact_b",
+    "security",
+    "logic"
+  ],
+  "failed_agent": "logic",
+  "actual_model_calls": 21,
+  "runtime_seconds": 1018.7341423589969,
+  "evidence_network_requests": 0,
+  "input_token_estimates": {
+    "fact_a_total_input_tokens": 43157,
+    "fact_b_total_input_tokens": 43157,
+    "fact_batch_max_input_tokens": 7422,
+    "security_input_tokens": 0,
+    "logic_input_tokens": 11297,
+    "merge_input_tokens": 0,
+    "fact_batch_count": 6,
+    "evidence_traceability": true
+  },
+  "agent_invocation_config": {
+    "fact_a": {
+      "temperature": 0.1,
+      "response_format": {
+        "type": "json_object"
+      },
+      "json_only_instruction": true,
+      "compact_fields": [
+        "claim_id",
+        "decision",
+        "recommended_status",
+        "cited_chunk_ids",
+        "reasoning_summary",
+        "limitations"
+      ],
+      "max_reasoning_chars": 80,
+      "evidence_repetition": false
+    },
+    "fact_b": {
+      "unchanged": true
+    },
+    "security": {
+      "temperature": 0.0,
+      "response_format": {
+        "type": "json_object"
+      },
+      "json_only_instruction": true
+    },
+    "logic": {
+      "temperature": 0.0,
+      "response_format": {
+        "type": "json_object"
+      },
+      "timeout_seconds": 180,
+      "retry_attempts": 1,
+      "json_only_instruction": true
+    },
+    "merge": {
+      "temperature": 0.0,
+      "response_format": {
+        "type": "json_object"
+      },
+      "json_only_instruction": true
+    }
+  },
+  "execution_status": "failed"
+}

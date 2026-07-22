@@ -1,0 +1,284 @@
+{
+  "mode": "fact_a_bounded_fallback_live_validation",
+  "claim_count": 15,
+  "model": "deepseek-v4-pro",
+  "provider": "deepseek_official",
+  "temperature": 0.0,
+  "batch_size": 3,
+  "primary_batch_count": 5,
+  "failed_primary_batches": [
+    1,
+    2
+  ],
+  "fallback_single_claim_calls": 6,
+  "recovered_claims": [
+    "claim-6da7330b58d38357",
+    "claim-2c276d7e37626ba9",
+    "claim-3a5bd3fd2b1fd13a",
+    "claim-a430ef3fb491d40b",
+    "claim-ad51af831ebb77ac",
+    "claim-e10bf8632ed8b152"
+  ],
+  "unrecovered_claims": [],
+  "total_fact_a_calls": 11,
+  "primary_batches": [
+    {
+      "batch": 1,
+      "claim_ids": [
+        "claim-6da7330b58d38357",
+        "claim-2c276d7e37626ba9",
+        "claim-3a5bd3fd2b1fd13a"
+      ],
+      "success_count": 0,
+      "failure_count": 3,
+      "results": [
+        {
+          "finish_reason": "length",
+          "parse_status": "parse_failed",
+          "audit_status": "failed",
+          "truncated_response": true,
+          "content_length": 0
+        },
+        {
+          "finish_reason": "length",
+          "parse_status": "parse_failed",
+          "audit_status": "failed",
+          "truncated_response": true,
+          "content_length": 0
+        },
+        {
+          "finish_reason": "length",
+          "parse_status": "parse_failed",
+          "audit_status": "failed",
+          "truncated_response": true,
+          "content_length": 0
+        }
+      ],
+      "fallback_triggered": true
+    },
+    {
+      "batch": 2,
+      "claim_ids": [
+        "claim-a430ef3fb491d40b",
+        "claim-ad51af831ebb77ac",
+        "claim-e10bf8632ed8b152"
+      ],
+      "success_count": 0,
+      "failure_count": 3,
+      "results": [
+        {
+          "finish_reason": "length",
+          "parse_status": "parse_failed",
+          "audit_status": "failed",
+          "truncated_response": true,
+          "content_length": 0
+        },
+        {
+          "finish_reason": "length",
+          "parse_status": "parse_failed",
+          "audit_status": "failed",
+          "truncated_response": true,
+          "content_length": 0
+        },
+        {
+          "finish_reason": "length",
+          "parse_status": "parse_failed",
+          "audit_status": "failed",
+          "truncated_response": true,
+          "content_length": 0
+        }
+      ],
+      "fallback_triggered": true
+    },
+    {
+      "batch": 3,
+      "claim_ids": [
+        "claim-efa7ecd3f540c26a",
+        "claim-5dd455aa1d3e5489",
+        "claim-0da3750861fead32"
+      ],
+      "success_count": 3,
+      "failure_count": 0,
+      "results": [
+        {
+          "finish_reason": "stop",
+          "parse_status": "parsed",
+          "audit_status": "completed",
+          "truncated_response": false,
+          "content_length": 1225
+        },
+        {
+          "finish_reason": "stop",
+          "parse_status": "parsed",
+          "audit_status": "completed",
+          "truncated_response": false,
+          "content_length": 1225
+        },
+        {
+          "finish_reason": "stop",
+          "parse_status": "parsed",
+          "audit_status": "completed",
+          "truncated_response": false,
+          "content_length": 1225
+        }
+      ],
+      "fallback_triggered": false
+    },
+    {
+      "batch": 4,
+      "claim_ids": [
+        "claim-63478ad7db4614c3",
+        "claim-cae029775fd8a02b",
+        "claim-dda808f491d5cb72"
+      ],
+      "success_count": 3,
+      "failure_count": 0,
+      "results": [
+        {
+          "finish_reason": "stop",
+          "parse_status": "parsed",
+          "audit_status": "completed",
+          "truncated_response": false,
+          "content_length": 1515
+        },
+        {
+          "finish_reason": "stop",
+          "parse_status": "parsed",
+          "audit_status": "completed",
+          "truncated_response": false,
+          "content_length": 1515
+        },
+        {
+          "finish_reason": "stop",
+          "parse_status": "parsed",
+          "audit_status": "completed",
+          "truncated_response": false,
+          "content_length": 1515
+        }
+      ],
+      "fallback_triggered": false
+    },
+    {
+      "batch": 5,
+      "claim_ids": [
+        "claim-9cf7649cc430f62d",
+        "claim-fdb6477afdb5dc04",
+        "claim-07ab6a2242540b6a"
+      ],
+      "success_count": 3,
+      "failure_count": 0,
+      "results": [
+        {
+          "finish_reason": "stop",
+          "parse_status": "parsed",
+          "audit_status": "completed",
+          "truncated_response": false,
+          "content_length": 1179
+        },
+        {
+          "finish_reason": "stop",
+          "parse_status": "parsed",
+          "audit_status": "completed",
+          "truncated_response": false,
+          "content_length": 1179
+        },
+        {
+          "finish_reason": "stop",
+          "parse_status": "parsed",
+          "audit_status": "completed",
+          "truncated_response": false,
+          "content_length": 1179
+        }
+      ],
+      "fallback_triggered": false
+    }
+  ],
+  "fallbacks": [
+    {
+      "claim_id": "claim-6da7330b58d38357",
+      "source_batch": 1,
+      "attempts": 1,
+      "recovered": true,
+      "telemetry": {
+        "finish_reason": "stop",
+        "parse_status": "parsed",
+        "audit_status": "completed",
+        "truncated_response": false,
+        "content_length": 388
+      }
+    },
+    {
+      "claim_id": "claim-2c276d7e37626ba9",
+      "source_batch": 1,
+      "attempts": 1,
+      "recovered": true,
+      "telemetry": {
+        "finish_reason": "stop",
+        "parse_status": "parsed",
+        "audit_status": "completed",
+        "truncated_response": false,
+        "content_length": 2287
+      }
+    },
+    {
+      "claim_id": "claim-3a5bd3fd2b1fd13a",
+      "source_batch": 1,
+      "attempts": 1,
+      "recovered": true,
+      "telemetry": {
+        "finish_reason": "stop",
+        "parse_status": "parsed",
+        "audit_status": "completed",
+        "truncated_response": false,
+        "content_length": 509
+      }
+    },
+    {
+      "claim_id": "claim-a430ef3fb491d40b",
+      "source_batch": 2,
+      "attempts": 1,
+      "recovered": true,
+      "telemetry": {
+        "finish_reason": "stop",
+        "parse_status": "parsed",
+        "audit_status": "completed",
+        "truncated_response": false,
+        "content_length": 391
+      }
+    },
+    {
+      "claim_id": "claim-ad51af831ebb77ac",
+      "source_batch": 2,
+      "attempts": 1,
+      "recovered": true,
+      "telemetry": {
+        "finish_reason": "stop",
+        "parse_status": "parsed",
+        "audit_status": "completed",
+        "truncated_response": false,
+        "content_length": 351
+      }
+    },
+    {
+      "claim_id": "claim-e10bf8632ed8b152",
+      "source_batch": 2,
+      "attempts": 1,
+      "recovered": true,
+      "telemetry": {
+        "finish_reason": "stop",
+        "parse_status": "parsed",
+        "audit_status": "completed",
+        "truncated_response": false,
+        "content_length": 418
+      }
+    }
+  ],
+  "runtime_seconds": 336.8496182109957,
+  "evidence_network_requests": 0,
+  "success": true,
+  "retry_policy": {
+    "max_fallback_attempts_per_claim": 1,
+    "successful_primary_batches_retried": false,
+    "unbounded_retry": false
+  }
+}

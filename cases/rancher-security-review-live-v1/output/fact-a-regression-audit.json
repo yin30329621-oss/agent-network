@@ -1,0 +1,181 @@
+{
+  "mode": "fact_a_primary_batch_regression_audit",
+  "claim_count": 15,
+  "target_batches": [
+    1,
+    2
+  ],
+  "repetitions_per_batch": 3,
+  "total_model_calls": 6,
+  "model": "deepseek-v4-pro",
+  "provider": "deepseek_official",
+  "max_tokens": 4000,
+  "temperature": 0.0,
+  "response_format": {
+    "type": "json_object"
+  },
+  "reasoning_parameters": "not explicitly configured; provider default",
+  "prompt_template_sha256": "7e0a1287797f23e823031d1288eb8d86dd4c9bb0ba15f33e4506c2f26e7aaee0",
+  "prompt_template_length": 753,
+  "evidence_limits": {
+    "top_k": 2,
+    "chars_per_chunk": 350,
+    "max_evidence_chars_per_claim": 900
+  },
+  "batch_size": 3,
+  "today_failed_claim_ids": [
+    "claim-6da7330b58d38357",
+    "claim-2c276d7e37626ba9",
+    "claim-3a5bd3fd2b1fd13a",
+    "claim-a430ef3fb491d40b",
+    "claim-ad51af831ebb77ac",
+    "claim-e10bf8632ed8b152"
+  ],
+  "repetitions": [
+    {
+      "batch": 1,
+      "repetition": 1,
+      "claim_ids": [
+        "claim-6da7330b58d38357",
+        "claim-2c276d7e37626ba9",
+        "claim-3a5bd3fd2b1fd13a"
+      ],
+      "runtime_seconds": 31.84554195999226,
+      "finish_reason": "stop",
+      "response_length": 1235,
+      "parse_status": [
+        "parsed"
+      ],
+      "truncated_response": false,
+      "failure_category": "none_success",
+      "result_success_count": 3,
+      "token_telemetry": {
+        "prompt_tokens": 4983,
+        "completion_tokens": 2204,
+        "total_tokens": 7187
+      }
+    },
+    {
+      "batch": 1,
+      "repetition": 2,
+      "claim_ids": [
+        "claim-6da7330b58d38357",
+        "claim-2c276d7e37626ba9",
+        "claim-3a5bd3fd2b1fd13a"
+      ],
+      "runtime_seconds": 20.74321519699879,
+      "finish_reason": "stop",
+      "response_length": 1230,
+      "parse_status": [
+        "parsed"
+      ],
+      "truncated_response": false,
+      "failure_category": "none_success",
+      "result_success_count": 3,
+      "token_telemetry": {
+        "prompt_tokens": 4983,
+        "completion_tokens": 1659,
+        "total_tokens": 6642
+      }
+    },
+    {
+      "batch": 1,
+      "repetition": 3,
+      "claim_ids": [
+        "claim-6da7330b58d38357",
+        "claim-2c276d7e37626ba9",
+        "claim-3a5bd3fd2b1fd13a"
+      ],
+      "runtime_seconds": 42.91793849000533,
+      "finish_reason": "length",
+      "response_length": 2329,
+      "parse_status": [
+        "parse_failed"
+      ],
+      "truncated_response": true,
+      "failure_category": "provider_truncation",
+      "result_success_count": 0,
+      "token_telemetry": {
+        "prompt_tokens": 4983,
+        "completion_tokens": 4000,
+        "total_tokens": 8983
+      }
+    },
+    {
+      "batch": 2,
+      "repetition": 1,
+      "claim_ids": [
+        "claim-a430ef3fb491d40b",
+        "claim-ad51af831ebb77ac",
+        "claim-e10bf8632ed8b152"
+      ],
+      "runtime_seconds": 22.78809833500418,
+      "finish_reason": "stop",
+      "response_length": 1248,
+      "parse_status": [
+        "parsed"
+      ],
+      "truncated_response": false,
+      "failure_category": "none_success",
+      "result_success_count": 3,
+      "token_telemetry": {
+        "prompt_tokens": 6985,
+        "completion_tokens": 1674,
+        "total_tokens": 8659
+      }
+    },
+    {
+      "batch": 2,
+      "repetition": 2,
+      "claim_ids": [
+        "claim-a430ef3fb491d40b",
+        "claim-ad51af831ebb77ac",
+        "claim-e10bf8632ed8b152"
+      ],
+      "runtime_seconds": 43.97374325800047,
+      "finish_reason": "length",
+      "response_length": 2,
+      "parse_status": [
+        "parse_failed"
+      ],
+      "truncated_response": true,
+      "failure_category": "provider_truncation",
+      "result_success_count": 0,
+      "token_telemetry": {
+        "prompt_tokens": 6985,
+        "completion_tokens": 4000,
+        "total_tokens": 10985
+      }
+    },
+    {
+      "batch": 2,
+      "repetition": 3,
+      "claim_ids": [
+        "claim-a430ef3fb491d40b",
+        "claim-ad51af831ebb77ac",
+        "claim-e10bf8632ed8b152"
+      ],
+      "runtime_seconds": 23.595293345002574,
+      "finish_reason": "stop",
+      "response_length": 1180,
+      "parse_status": [
+        "parsed"
+      ],
+      "truncated_response": false,
+      "failure_category": "none_success",
+      "result_success_count": 3,
+      "token_telemetry": {
+        "prompt_tokens": 6985,
+        "completion_tokens": 1980,
+        "total_tokens": 8965
+      }
+    }
+  ],
+  "failure_category_counts": {
+    "none_success": 4,
+    "provider_truncation": 2
+  },
+  "runtime_seconds": 185.86406545899808,
+  "evidence_network_requests": 0,
+  "raw_response_saved": false
+}

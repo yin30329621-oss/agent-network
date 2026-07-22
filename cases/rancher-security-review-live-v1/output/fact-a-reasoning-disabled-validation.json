@@ -1,0 +1,143 @@
+{
+  "mode": "fact_a_reasoning_disabled_primary_validation",
+  "claim_count": 15,
+  "batch_size": 3,
+  "primary_batch_count": 5,
+  "planned_calls": 5,
+  "actual_model_calls": 5,
+  "model": "deepseek-v4-pro",
+  "provider": "deepseek_official",
+  "max_tokens": 4000,
+  "temperature": 0.0,
+  "request_options": {
+    "response_format": {
+      "type": "json_object"
+    },
+    "thinking": {
+      "type": "disabled"
+    }
+  },
+  "reasoning_disabled": true,
+  "batches": [
+    {
+      "batch": 1,
+      "execution_mode": "primary",
+      "claim_ids": [
+        "claim-6da7330b58d38357",
+        "claim-2c276d7e37626ba9",
+        "claim-3a5bd3fd2b1fd13a"
+      ],
+      "actual_model_calls": 1,
+      "runtime_seconds": 12.738311369001167,
+      "provider_request_id": null,
+      "response_length": 1234,
+      "content_empty": false,
+      "completion_tokens": 377,
+      "reasoning_tokens": null,
+      "reasoning_content_length": 0,
+      "finish_reason": "stop",
+      "parse_status": [
+        "parsed"
+      ],
+      "truncated_response": false,
+      "response_sha256": "4108a28f598e945c27ca9253983b60e5a4a0a86dbf9cb87d98fdaf81b6b0a59a"
+    },
+    {
+      "batch": 2,
+      "execution_mode": "primary",
+      "claim_ids": [
+        "claim-a430ef3fb491d40b",
+        "claim-ad51af831ebb77ac",
+        "claim-e10bf8632ed8b152"
+      ],
+      "actual_model_calls": 1,
+      "runtime_seconds": 4.208470973011572,
+      "provider_request_id": null,
+      "response_length": 1191,
+      "content_empty": false,
+      "completion_tokens": 365,
+      "reasoning_tokens": null,
+      "reasoning_content_length": 0,
+      "finish_reason": "stop",
+      "parse_status": [
+        "parsed"
+      ],
+      "truncated_response": false,
+      "response_sha256": "ad6e8374d01d74585bf72dde9d7d65ebe6276a0c41f01f6d6fe37e6a6de7039b"
+    },
+    {
+      "batch": 3,
+      "execution_mode": "primary",
+      "claim_ids": [
+        "claim-efa7ecd3f540c26a",
+        "claim-5dd455aa1d3e5489",
+        "claim-0da3750861fead32"
+      ],
+      "actual_model_calls": 1,
+      "runtime_seconds": 4.841992380999727,
+      "provider_request_id": null,
+      "response_length": 1286,
+      "content_empty": false,
+      "completion_tokens": 379,
+      "reasoning_tokens": null,
+      "reasoning_content_length": 0,
+      "finish_reason": "stop",
+      "parse_status": [
+        "parsed"
+      ],
+      "truncated_response": false,
+      "response_sha256": "3fca6d0094f4382cfca513b38193d709f245f7c9bc17d48670d2700febb97853"
+    },
+    {
+      "batch": 4,
+      "execution_mode": "primary",
+      "claim_ids": [
+        "claim-63478ad7db4614c3",
+        "claim-cae029775fd8a02b",
+        "claim-dda808f491d5cb72"
+      ],
+      "actual_model_calls": 1,
+      "runtime_seconds": 4.684620296000503,
+      "provider_request_id": null,
+      "response_length": 1234,
+      "content_empty": false,
+      "completion_tokens": 369,
+      "reasoning_tokens": null,
+      "reasoning_content_length": 0,
+      "finish_reason": "stop",
+      "parse_status": [
+        "parsed"
+      ],
+      "truncated_response": false,
+      "response_sha256": "86afa70e65705ff77d816ebda74c6c53dc1f853a62746b8b3e35d2da4cec3879"
+    },
+    {
+      "batch": 5,
+      "execution_mode": "primary",
+      "claim_ids": [
+        "claim-9cf7649cc430f62d",
+        "claim-fdb6477afdb5dc04",
+        "claim-07ab6a2242540b6a"
+      ],
+      "actual_model_calls": 1,
+      "runtime_seconds": 4.498181659000693,
+      "provider_request_id": null,
+      "response_length": 1159,
+      "content_empty": false,
+      "completion_tokens": 346,
+      "reasoning_tokens": null,
+      "reasoning_content_length": 0,
+      "finish_reason": "stop",
+      "parse_status": [
+        "parsed"
+      ],
+      "truncated_response": false,
+      "response_sha256": "1f51373b4fd1b58212ab1da5354c9ea9535f3b99f639232ccff2c0b66e01a81b"
+    }
+  ],
+  "runtime_seconds": 30.971672176005086,
+  "evidence_network_requests": 0,
+  "fallback_calls": 0,
+  "success": true,
+  "raw_response_saved": false
+}

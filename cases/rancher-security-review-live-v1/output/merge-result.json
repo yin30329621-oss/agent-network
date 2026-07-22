@@ -1,0 +1,10 @@
+{
+  "agent": "merge",
+  "status": "incomplete",
+  "skip_reason": "logic_failed",
+  "completed_inputs": [
+    "fact_a",
+    "fact_b",
+    "security"
+  ]
+}
