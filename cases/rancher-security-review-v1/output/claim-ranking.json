@@ -1,7 +1,12 @@
 {
+  "artifact_schema_version": "2",
   "ranking_version": "v0.5.1",
   "algorithm": "deterministic_claim_metadata_v2",
+  "config_id": "rancher-security-review-v1-legacy-v0.5.1",
+  "config_version": "1",
+  "config_sha256": "sha256:47f94745338b803b1bc97414599000423d9c04486cb60f331ccd7f90334f8b4b",
   "source_claim_file": "cases/rancher-security-review-v1/output/claims.json",
+  "source_claim_sha256": "sha256:b46151ebebc91d96563d02f0647a09f5a34d0be88ac85998bb7390ea10966c15",
   "input_identifier": "rancher-security-review-v1-candidate-149",
   "total_claim_count": 149,
   "selection_limit": 50,

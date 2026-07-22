@@ -1,0 +1,83 @@
+config_id: default
+config_version: "1"
+ranking_version: v0.5.2
+algorithm: deterministic_claim_metadata_v3
+
+score:
+  base_priority:
+    low: 10
+    medium: 30
+    high: 60
+    critical: 85
+  claim_type_weights:
+    authorization: 20
+    security_control: 18
+    architecture: 16
+    version_support: 12
+    citation_or_provenance: 12
+    configuration: 8
+    behavior: 5
+    quantitative: 4
+    other: 0
+  security_sensitive_weight: 12
+  architecture_core_weight: 12
+  external_evidence_weight: 5
+  max_score: 100
+  priority_bands:
+    critical: 80
+    high: 60
+    medium: 30
+    low: 0
+
+security_signal:
+  claim_types:
+    - authorization
+    - security_control
+  terms:
+    - authentication
+    - authorization
+    - credential
+    - credentials
+    - rbac
+    - secret
+    - security
+    - token
+    - tls
+    - encryption
+    - cve
+    - vulnerability
+    - fips
+    - cis
+    - 认证
+    - 授权
+    - 凭证
+    - 密钥
+    - 安全
+    - 令牌
+    - 加密
+    - 漏洞
+    - 权限
+
+architecture_signal:
+  claim_types:
+    - architecture
+  terms:
+    - api server
+    - cluster agent
+    - cluster controller
+    - etcd
+    - management plane
+    - rancher server
+    - reverse tunnel
+    - serviceaccount
+    - 管理平面
+    - 控制器
+    - 集群代理
+    - 数据存储
+    - 反向隧道
+    - 通信平面
+
+section_salience: []
+tie_break:
+  - priority_score_desc
+  - claim_id_asc

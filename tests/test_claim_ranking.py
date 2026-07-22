@@ -1,5 +1,6 @@
 from agent_network.claim import Claim, ClaimRegistry, ClaimType
 from agent_network.claim.ranking import ClaimRanker
+from agent_network.claim.ranking_config import load_ranking_config
 
 
 def make_claim(claim_id: str, **overrides) -> Claim:
@@ -78,7 +79,10 @@ def test_ranking_applies_section_salience_without_changing_claims() -> None:
         requires_external_evidence=True,
     )
 
-    item = ClaimRanker().rank([claim]).ranked_claims[0]
+    legacy = load_ranking_config(
+        "configs/ranking/rancher-security-review-v1-legacy-v0.5.1.yaml"
+    )
+    item = ClaimRanker(legacy).rank([claim]).ranked_claims[0]
 
     assert item.factors["section_salience"] == 20
     assert "section_cluster_agent" in item.reason_codes
@@ -120,7 +124,11 @@ def test_ranking_metadata_is_versioned_and_traceable() -> None:
     )
 
     payload = result.to_dict()
-    assert payload["ranking_version"] == "v0.5.1"
-    assert payload["algorithm"] == "deterministic_claim_metadata_v2"
+    assert payload["ranking_version"] == "v0.5.2"
+    assert payload["algorithm"] == "deterministic_claim_metadata_v3"
+    assert payload["artifact_schema_version"] == "2"
+    assert payload["config_id"] == "default"
+    assert payload["config_version"] == "1"
+    assert payload["config_sha256"].startswith("sha256:")
     assert payload["source_claim_file"] == "cases/example/output/claims.json"
     assert payload["input_identifier"] == "example-candidate-1"

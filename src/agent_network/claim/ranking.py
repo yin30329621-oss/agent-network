@@ -2,60 +2,20 @@
 
 from __future__ import annotations
 
-import re
 from collections.abc import Iterable
+from pathlib import Path
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from agent_network.claim.claim import Claim, ClaimType
+from agent_network.claim.claim import Claim
 from agent_network.claim.registry import ClaimRegistry
-
-
-_BASE_SCORES = {
-    "low": 10,
-    "medium": 30,
-    "high": 60,
-    "critical": 85,
-}
-_CLAIM_TYPE_SCORES = {
-    ClaimType.AUTHORIZATION: 20,
-    ClaimType.SECURITY_CONTROL: 18,
-    ClaimType.ARCHITECTURE: 16,
-    ClaimType.VERSION_SUPPORT: 12,
-    ClaimType.CITATION_OR_PROVENANCE: 12,
-    ClaimType.CONFIGURATION: 8,
-    ClaimType.BEHAVIOR: 5,
-    ClaimType.QUANTITATIVE: 4,
-    ClaimType.OTHER: 0,
-}
-_PRIORITY_BANDS = ((80, "critical"), (60, "high"), (30, "medium"), (0, "low"))
-_SECURITY_TYPES = {ClaimType.AUTHORIZATION, ClaimType.SECURITY_CONTROL}
-_SECURITY_TERMS = re.compile(
-    r"\b(authentication|authorization|credential|credentials|rbac|secret|security|token|tls|encryption|cve|vulnerability|fips|cis)\b"
-    r"|认证|授权|凭证|密钥|安全|令牌|加密|漏洞|权限",
-    re.IGNORECASE,
-)
-_ARCHITECTURE_CORE_TERMS = re.compile(
-    r"\b(api server|cluster agent|cluster controller|etcd|management plane|rancher server|reverse tunnel|serviceaccount)\b"
-    r"|管理平面|控制器|集群代理|数据存储|反向隧道|通信平面",
-    re.IGNORECASE,
-)
-_SECTION_SALIENCE_RULES = (
-    ("3.3.1 cluster agent", 20, "section_cluster_agent"),
-    ("3.2.3 cluster controller", 18, "section_cluster_controller"),
-    ("3.2.2 rancher api server", 18, "section_api_server"),
-    ("3.2.4 data store", 18, "section_data_store"),
-    ("3.3.2", 18, "section_credentials"),
-    ("6.1", 18, "section_vulnerability"),
-    ("3.3 cluster communication", 16, "section_communication_plane"),
-    ("3.2 management plane", 16, "section_management_plane"),
-    ("3.1 rancher", 14, "section_architecture_overview"),
-    ("token", 14, "section_token"),
-    ("credential", 14, "section_credential"),
-    ("authentication", 14, "section_authentication"),
-    ("cve", 16, "section_cve"),
-    ("漏洞", 16, "section_vulnerability"),
+from agent_network.claim.ranking_config import (
+    RankingConfig,
+    RankingScoreConfig,
+    default_ranking_config,
+    matches_term,
+    source_sha256,
 )
 
 
@@ -86,9 +46,14 @@ class ClaimRankingResult(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    ranking_version: str = "v0.5.1"
-    algorithm: str = "deterministic_claim_metadata_v2"
+    artifact_schema_version: str = "2"
+    ranking_version: str
+    algorithm: str
+    config_id: str
+    config_version: str
+    config_sha256: str
     source_claim_file: str | None = None
+    source_claim_sha256: str | None = None
     input_identifier: str | None = None
     total_claim_count: int = Field(ge=0)
     selection_limit: int | None = Field(default=None, ge=1)
@@ -107,6 +72,9 @@ class ClaimRankingResult(BaseModel):
 
 class ClaimRanker:
     """Rank Claims using only existing deterministic Claim metadata."""
+
+    def __init__(self, config: RankingConfig | None = None) -> None:
+        self.config = config or default_ranking_config()
 
     def rank(
         self,
@@ -128,7 +96,15 @@ class ClaimRanker:
         ]
         selected = ranked if top_k is None else ranked[:top_k]
         return ClaimRankingResult(
+            ranking_version=self.config.ranking_version,
+            algorithm=self.config.algorithm,
+            config_id=self.config.config_id,
+            config_version=self.config.config_version,
+            config_sha256=self.config.sha256(),
             source_claim_file=source_claim_file,
+            source_claim_sha256=(
+                source_sha256(source_claim_file) if source_claim_file and Path(source_claim_file).exists() else None
+            ),
             input_identifier=input_identifier,
             total_claim_count=len(claim_list),
             selection_limit=top_k,
@@ -141,21 +117,28 @@ class ClaimRanker:
         context = " ".join(
             [normalized, claim.component or "", " / ".join(claim.heading_path)]
         )
-        security_sensitive = claim.claim_type in _SECURITY_TYPES or bool(
-            _SECURITY_TERMS.search(context)
+        security_signal = self.config.security_signal
+        architecture_signal = self.config.architecture_signal
+        security_sensitive = (
+            claim.claim_type.value in security_signal.claim_types
+            or any(matches_term(context, term) for term in security_signal.terms)
         )
-        architecture_core = claim.claim_type is ClaimType.ARCHITECTURE and bool(
-            _ARCHITECTURE_CORE_TERMS.search(context)
+        architecture_core = (
+            claim.claim_type.value in architecture_signal.claim_types
+            and any(matches_term(context, term) for term in architecture_signal.terms)
         )
-        section_salience, section_reason = _section_salience(claim)
+        section_salience, section_reason = _section_salience(claim, self.config)
         requires_external_evidence = claim.requires_external_evidence
+        score_config = self.config.score
         factors = {
-            "base_priority": _BASE_SCORES[claim.priority],
-            "claim_type": _CLAIM_TYPE_SCORES[claim.claim_type],
-            "security_sensitive": 12 if security_sensitive else 0,
-            "architecture_core": 12 if architecture_core else 0,
+            "base_priority": score_config.base_priority[claim.priority],
+            "claim_type": score_config.claim_type_weights.get(claim.claim_type.value, 0),
+            "security_sensitive": score_config.security_sensitive_weight if security_sensitive else 0,
+            "architecture_core": score_config.architecture_core_weight if architecture_core else 0,
             "section_salience": section_salience,
-            "requires_external_evidence": 5 if requires_external_evidence else 0,
+            "requires_external_evidence": score_config.external_evidence_weight
+            if requires_external_evidence
+            else 0,
         }
         uncapped_score = sum(factors.values())
         reason_codes = [f"base_priority_{claim.priority}"]
@@ -171,26 +154,27 @@ class ClaimRanker:
             reason_codes.append("requires_external_evidence")
         return {
             "claim_id": claim.claim_id,
-            "priority_score": min(100, uncapped_score),
-            "priority_band": _band_for(min(100, uncapped_score)),
+            "priority_score": min(score_config.max_score, uncapped_score),
+            "priority_band": _band_for(min(score_config.max_score, uncapped_score), score_config),
             "original_priority": claim.priority,
             "reason_codes": reason_codes,
             "factors": {**factors, "uncapped_score": uncapped_score},
         }
 
 
-def _section_salience(claim: Claim) -> tuple[int, str | None]:
+def _section_salience(claim: Claim, config: RankingConfig) -> tuple[int, str | None]:
     context = " / ".join(
         [*claim.heading_path, claim.section or "", claim.source_location or ""]
     ).lower()
-    for pattern, score, reason in _SECTION_SALIENCE_RULES:
-        if pattern in context:
-            return score, reason
+    for rule in config.section_salience:
+        if any(pattern in context for pattern in rule.patterns):
+            return rule.weight, rule.reason_code
     return 0, None
 
 
-def _band_for(score: int) -> str:
-    for threshold, band in _PRIORITY_BANDS:
+def _band_for(score: int, config: RankingScoreConfig) -> str:
+    bands = sorted(config.priority_bands.items(), key=lambda item: item[1], reverse=True)
+    for band, threshold in bands:
         if score >= threshold:
             return band
     return "low"

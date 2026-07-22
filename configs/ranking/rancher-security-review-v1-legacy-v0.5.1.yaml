@@ -1,0 +1,154 @@
+config_id: rancher-security-review-v1-legacy-v0.5.1
+config_version: "1"
+ranking_version: v0.5.1
+algorithm: deterministic_claim_metadata_v2
+
+score:
+  base_priority:
+    low: 10
+    medium: 30
+    high: 60
+    critical: 85
+  claim_type_weights:
+    authorization: 20
+    security_control: 18
+    architecture: 16
+    version_support: 12
+    citation_or_provenance: 12
+    configuration: 8
+    behavior: 5
+    quantitative: 4
+    other: 0
+  security_sensitive_weight: 12
+  architecture_core_weight: 12
+  external_evidence_weight: 5
+  max_score: 100
+  priority_bands:
+    critical: 80
+    high: 60
+    medium: 30
+    low: 0
+
+security_signal:
+  claim_types:
+    - authorization
+    - security_control
+  terms:
+    - authentication
+    - authorization
+    - credential
+    - credentials
+    - rbac
+    - secret
+    - security
+    - token
+    - tls
+    - encryption
+    - cve
+    - vulnerability
+    - fips
+    - cis
+    - 认证
+    - 授权
+    - 凭证
+    - 密钥
+    - 安全
+    - 令牌
+    - 加密
+    - 漏洞
+    - 权限
+
+architecture_signal:
+  claim_types:
+    - architecture
+  terms:
+    - api server
+    - cluster agent
+    - cluster controller
+    - etcd
+    - management plane
+    - rancher server
+    - reverse tunnel
+    - serviceaccount
+    - 管理平面
+    - 控制器
+    - 集群代理
+    - 数据存储
+    - 反向隧道
+    - 通信平面
+
+section_salience:
+  - rule_id: section_cluster_agent
+    patterns:
+      - 3.3.1 cluster agent
+    weight: 20
+    reason_code: section_cluster_agent
+  - rule_id: section_cluster_controller
+    patterns:
+      - 3.2.3 cluster controller
+    weight: 18
+    reason_code: section_cluster_controller
+  - rule_id: section_api_server
+    patterns:
+      - 3.2.2 rancher api server
+    weight: 18
+    reason_code: section_api_server
+  - rule_id: section_data_store
+    patterns:
+      - 3.2.4 data store
+    weight: 18
+    reason_code: section_data_store
+  - rule_id: section_credentials
+    patterns:
+      - 3.3.2
+    weight: 18
+    reason_code: section_credentials
+  - rule_id: section_vulnerability
+    patterns:
+      - "6.1"
+    weight: 18
+    reason_code: section_vulnerability
+  - rule_id: section_communication_plane
+    patterns:
+      - 3.3 cluster communication
+    weight: 16
+    reason_code: section_communication_plane
+  - rule_id: section_management_plane
+    patterns:
+      - 3.2 management plane
+    weight: 16
+    reason_code: section_management_plane
+  - rule_id: section_architecture_overview
+    patterns:
+      - 3.1 rancher
+    weight: 14
+    reason_code: section_architecture_overview
+  - rule_id: section_token
+    patterns:
+      - token
+    weight: 14
+    reason_code: section_token
+  - rule_id: section_credential
+    patterns:
+      - credential
+    weight: 14
+    reason_code: section_credential
+  - rule_id: section_authentication
+    patterns:
+      - authentication
+    weight: 14
+    reason_code: section_authentication
+  - rule_id: section_cve
+    patterns:
+      - cve
+    weight: 16
+    reason_code: section_cve
+  - rule_id: section_vulnerability_cn
+    patterns:
+      - 漏洞
+    weight: 16
+    reason_code: section_vulnerability
+
+tie_break:
+  - priority_score_desc
+  - claim_id_asc
