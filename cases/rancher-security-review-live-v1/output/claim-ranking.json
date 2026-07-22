@@ -1,0 +1,704 @@
+{
+  "ranking_version": "v0.5.1",
+  "algorithm": "deterministic_claim_metadata_v2",
+  "source_claim_file": "cases/rancher-security-review-live-v1/output/claims.json",
+  "input_identifier": "rancher-security-review-live-v1-live-30",
+  "total_claim_count": 30,
+  "selection_limit": 8,
+  "ranked_claims": [
+    {
+      "rank": 1,
+      "claim_id": "claim-63478ad7db4614c3",
+      "priority_score": 93,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_architecture",
+        "security_sensitive",
+        "architecture_core",
+        "section_api_server",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 16,
+        "security_sensitive": 12,
+        "architecture_core": 12,
+        "section_salience": 18,
+        "requires_external_evidence": 5,
+        "uncapped_score": 93
+      }
+    },
+    {
+      "rank": 2,
+      "claim_id": "claim-7b5f317a9d38ff68",
+      "priority_score": 87,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_authorization",
+        "security_sensitive",
+        "section_cluster_agent",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 20,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 20,
+        "requires_external_evidence": 5,
+        "uncapped_score": 87
+      }
+    },
+    {
+      "rank": 3,
+      "claim_id": "claim-fdb6477afdb5dc04",
+      "priority_score": 87,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_authorization",
+        "security_sensitive",
+        "section_cluster_agent",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 20,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 20,
+        "requires_external_evidence": 5,
+        "uncapped_score": 87
+      }
+    },
+    {
+      "rank": 4,
+      "claim_id": "claim-25f0a58a1a8efbd4",
+      "priority_score": 85,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_authorization",
+        "security_sensitive",
+        "section_data_store",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 20,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 18,
+        "requires_external_evidence": 5,
+        "uncapped_score": 85
+      }
+    },
+    {
+      "rank": 5,
+      "claim_id": "claim-46ea46c2eab1762a",
+      "priority_score": 85,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_authorization",
+        "security_sensitive",
+        "section_credentials",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 20,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 18,
+        "requires_external_evidence": 5,
+        "uncapped_score": 85
+      }
+    },
+    {
+      "rank": 6,
+      "claim_id": "claim-1c25dfbc7034846b",
+      "priority_score": 83,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_architecture",
+        "architecture_core",
+        "section_cluster_agent",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 16,
+        "security_sensitive": 0,
+        "architecture_core": 12,
+        "section_salience": 20,
+        "requires_external_evidence": 5,
+        "uncapped_score": 83
+      }
+    },
+    {
+      "rank": 7,
+      "claim_id": "claim-235a797973d69fad",
+      "priority_score": 83,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_security_control",
+        "security_sensitive",
+        "section_data_store",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 18,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 18,
+        "requires_external_evidence": 5,
+        "uncapped_score": 83
+      }
+    },
+    {
+      "rank": 8,
+      "claim_id": "claim-28724412fb92c4bc",
+      "priority_score": 83,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_architecture",
+        "architecture_core",
+        "section_cluster_agent",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 16,
+        "security_sensitive": 0,
+        "architecture_core": 12,
+        "section_salience": 20,
+        "requires_external_evidence": 5,
+        "uncapped_score": 83
+      }
+    },
+    {
+      "rank": 9,
+      "claim_id": "claim-4e5a6e18fd06091d",
+      "priority_score": 83,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_security_control",
+        "security_sensitive",
+        "section_credentials",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 18,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 18,
+        "requires_external_evidence": 5,
+        "uncapped_score": 83
+      }
+    },
+    {
+      "rank": 10,
+      "claim_id": "claim-5dd455aa1d3e5489",
+      "priority_score": 83,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_security_control",
+        "security_sensitive",
+        "section_api_server",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 18,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 18,
+        "requires_external_evidence": 5,
+        "uncapped_score": 83
+      }
+    },
+    {
+      "rank": 11,
+      "claim_id": "claim-7d87a09616951654",
+      "priority_score": 83,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_security_control",
+        "security_sensitive",
+        "section_credentials",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 18,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 18,
+        "requires_external_evidence": 5,
+        "uncapped_score": 83
+      }
+    },
+    {
+      "rank": 12,
+      "claim_id": "claim-8a20421aa3a005eb",
+      "priority_score": 83,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_architecture",
+        "architecture_core",
+        "section_cluster_agent",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 16,
+        "security_sensitive": 0,
+        "architecture_core": 12,
+        "section_salience": 20,
+        "requires_external_evidence": 5,
+        "uncapped_score": 83
+      }
+    },
+    {
+      "rank": 13,
+      "claim_id": "claim-b2393c3c95243737",
+      "priority_score": 83,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_architecture",
+        "architecture_core",
+        "section_cluster_agent",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 16,
+        "security_sensitive": 0,
+        "architecture_core": 12,
+        "section_salience": 20,
+        "requires_external_evidence": 5,
+        "uncapped_score": 83
+      }
+    },
+    {
+      "rank": 14,
+      "claim_id": "claim-cae029775fd8a02b",
+      "priority_score": 83,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_security_control",
+        "security_sensitive",
+        "section_cluster_controller",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 18,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 18,
+        "requires_external_evidence": 5,
+        "uncapped_score": 83
+      }
+    },
+    {
+      "rank": 15,
+      "claim_id": "claim-cc8a4b9123dd3a04",
+      "priority_score": 83,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_architecture",
+        "architecture_core",
+        "section_cluster_agent",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 16,
+        "security_sensitive": 0,
+        "architecture_core": 12,
+        "section_salience": 20,
+        "requires_external_evidence": 5,
+        "uncapped_score": 83
+      }
+    },
+    {
+      "rank": 16,
+      "claim_id": "claim-dfe9bd4c30fe9871",
+      "priority_score": 83,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_security_control",
+        "security_sensitive",
+        "section_data_store",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 18,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 18,
+        "requires_external_evidence": 5,
+        "uncapped_score": 83
+      }
+    },
+    {
+      "rank": 17,
+      "claim_id": "claim-0da3750861fead32",
+      "priority_score": 81,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_architecture",
+        "architecture_core",
+        "section_api_server",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 16,
+        "security_sensitive": 0,
+        "architecture_core": 12,
+        "section_salience": 18,
+        "requires_external_evidence": 5,
+        "uncapped_score": 81
+      }
+    },
+    {
+      "rank": 18,
+      "claim_id": "claim-487c9b0f9f97e410",
+      "priority_score": 81,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_architecture",
+        "architecture_core",
+        "section_cluster_controller",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 16,
+        "security_sensitive": 0,
+        "architecture_core": 12,
+        "section_salience": 18,
+        "requires_external_evidence": 5,
+        "uncapped_score": 81
+      }
+    },
+    {
+      "rank": 19,
+      "claim_id": "claim-8567da682028e848",
+      "priority_score": 81,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_architecture",
+        "architecture_core",
+        "section_cluster_controller",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 16,
+        "security_sensitive": 0,
+        "architecture_core": 12,
+        "section_salience": 18,
+        "requires_external_evidence": 5,
+        "uncapped_score": 81
+      }
+    },
+    {
+      "rank": 20,
+      "claim_id": "claim-dda808f491d5cb72",
+      "priority_score": 81,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_architecture",
+        "architecture_core",
+        "section_cluster_controller",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 16,
+        "security_sensitive": 0,
+        "architecture_core": 12,
+        "section_salience": 18,
+        "requires_external_evidence": 5,
+        "uncapped_score": 81
+      }
+    },
+    {
+      "rank": 21,
+      "claim_id": "claim-efa7ecd3f540c26a",
+      "priority_score": 81,
+      "priority_band": "critical",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_authorization",
+        "security_sensitive",
+        "section_authentication",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 20,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 14,
+        "requires_external_evidence": 5,
+        "uncapped_score": 81
+      }
+    },
+    {
+      "rank": 22,
+      "claim_id": "claim-a430ef3fb491d40b",
+      "priority_score": 79,
+      "priority_band": "high",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_security_control",
+        "security_sensitive",
+        "section_architecture_overview",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 18,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 14,
+        "requires_external_evidence": 5,
+        "uncapped_score": 79
+      }
+    },
+    {
+      "rank": 23,
+      "claim_id": "claim-e10bf8632ed8b152",
+      "priority_score": 79,
+      "priority_band": "high",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_security_control",
+        "security_sensitive",
+        "section_authentication",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 18,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 14,
+        "requires_external_evidence": 5,
+        "uncapped_score": 79
+      }
+    },
+    {
+      "rank": 24,
+      "claim_id": "claim-07ab6a2242540b6a",
+      "priority_score": 77,
+      "priority_band": "high",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_version_support",
+        "security_sensitive",
+        "section_vulnerability",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 12,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 18,
+        "requires_external_evidence": 5,
+        "uncapped_score": 77
+      }
+    },
+    {
+      "rank": 25,
+      "claim_id": "claim-3a5bd3fd2b1fd13a",
+      "priority_score": 67,
+      "priority_band": "high",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_authorization",
+        "security_sensitive",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 20,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 0,
+        "requires_external_evidence": 5,
+        "uncapped_score": 67
+      }
+    },
+    {
+      "rank": 26,
+      "claim_id": "claim-2c276d7e37626ba9",
+      "priority_score": 65,
+      "priority_band": "high",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_security_control",
+        "security_sensitive",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 18,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 0,
+        "requires_external_evidence": 5,
+        "uncapped_score": 65
+      }
+    },
+    {
+      "rank": 27,
+      "claim_id": "claim-9cf7649cc430f62d",
+      "priority_score": 65,
+      "priority_band": "high",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_security_control",
+        "security_sensitive",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 18,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 0,
+        "requires_external_evidence": 5,
+        "uncapped_score": 65
+      }
+    },
+    {
+      "rank": 28,
+      "claim_id": "claim-ad51af831ebb77ac",
+      "priority_score": 65,
+      "priority_band": "high",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_security_control",
+        "security_sensitive",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 18,
+        "security_sensitive": 12,
+        "architecture_core": 0,
+        "section_salience": 0,
+        "requires_external_evidence": 5,
+        "uncapped_score": 65
+      }
+    },
+    {
+      "rank": 29,
+      "claim_id": "claim-c86311533ca78a45",
+      "priority_score": 63,
+      "priority_band": "high",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_architecture",
+        "architecture_core",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 16,
+        "security_sensitive": 0,
+        "architecture_core": 12,
+        "section_salience": 0,
+        "requires_external_evidence": 5,
+        "uncapped_score": 63
+      }
+    },
+    {
+      "rank": 30,
+      "claim_id": "claim-6da7330b58d38357",
+      "priority_score": 47,
+      "priority_band": "medium",
+      "original_priority": "medium",
+      "reason_codes": [
+        "base_priority_medium",
+        "claim_type_version_support",
+        "requires_external_evidence"
+      ],
+      "factors": {
+        "base_priority": 30,
+        "claim_type": 12,
+        "security_sensitive": 0,
+        "architecture_core": 0,
+        "section_salience": 0,
+        "requires_external_evidence": 5,
+        "uncapped_score": 47
+      }
+    }
+  ],
+  "selected_claim_ids": [
+    "claim-63478ad7db4614c3",
+    "claim-7b5f317a9d38ff68",
+    "claim-fdb6477afdb5dc04",
+    "claim-25f0a58a1a8efbd4",
+    "claim-46ea46c2eab1762a",
+    "claim-1c25dfbc7034846b",
+    "claim-235a797973d69fad",
+    "claim-28724412fb92c4bc"
+  ]
+}
